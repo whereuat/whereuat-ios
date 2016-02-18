@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		83346B3A1C6D419B0065EAC0 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83346B391C6D419B0065EAC0 /* ContactView.swift */; };
 		839A4FEA1C69426900870B57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A4FE91C69426900870B57 /* AppDelegate.swift */; };
-		839A4FEC1C69426900870B57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A4FEB1C69426900870B57 /* ViewController.swift */; };
 		839A4FEF1C69426900870B57 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 839A4FED1C69426900870B57 /* Main.storyboard */; };
 		839A4FF11C69426900870B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 839A4FF01C69426900870B57 /* Assets.xcassets */; };
 		839A4FF41C69426900870B57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 839A4FF21C69426900870B57 /* LaunchScreen.storyboard */; };
 		839A4FFF1C69426900870B57 /* whereuat_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A4FFE1C69426900870B57 /* whereuat_iosTests.swift */; };
 		839A500A1C69426900870B57 /* whereuat_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A50091C69426900870B57 /* whereuat_iosUITests.swift */; };
+		83B3807A1C6B21D100D00578 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B380791C6B21D100D00578 /* ContactsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +35,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		83346B391C6D419B0065EAC0 /* ContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactView.swift; path = ../ContactView.swift; sourceTree = "<group>"; };
 		839A4FE61C69426900870B57 /* whereuat-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "whereuat-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		839A4FE91C69426900870B57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		839A4FEB1C69426900870B57 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		839A4FEE1C69426900870B57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		839A4FF01C69426900870B57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		839A4FF31C69426900870B57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +48,7 @@
 		839A50051C69426900870B57 /* whereuat-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "whereuat-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		839A50091C69426900870B57 /* whereuat_iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = whereuat_iosUITests.swift; sourceTree = "<group>"; };
 		839A500B1C69426900870B57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		83B380791C6B21D100D00578 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,11 +100,12 @@
 			isa = PBXGroup;
 			children = (
 				839A4FE91C69426900870B57 /* AppDelegate.swift */,
-				839A4FEB1C69426900870B57 /* ViewController.swift */,
+				83B380791C6B21D100D00578 /* ContactsViewController.swift */,
+				83346B391C6D419B0065EAC0 /* ContactView.swift */,
 				839A4FED1C69426900870B57 /* Main.storyboard */,
-				839A4FF01C69426900870B57 /* Assets.xcassets */,
 				839A4FF21C69426900870B57 /* LaunchScreen.storyboard */,
 				839A4FF51C69426900870B57 /* Info.plist */,
+				839A4FF01C69426900870B57 /* Assets.xcassets */,
 			);
 			path = "whereuat-ios";
 			sourceTree = "<group>";
@@ -256,7 +259,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				839A4FEC1C69426900870B57 /* ViewController.swift in Sources */,
+				83B3807A1C6B21D100D00578 /* ContactsViewController.swift in Sources */,
+				83346B3A1C6D419B0065EAC0 /* ContactView.swift in Sources */,
 				839A4FEA1C69426900870B57 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,7 +402,6 @@
 		839A500F1C69426900870B57 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "whereuat-ios/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xyz.whereuat.whereuat-ios";
@@ -409,7 +412,6 @@
 		839A50101C69426900870B57 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "whereuat-ios/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "xyz.whereuat.whereuat-ios";
@@ -484,6 +486,7 @@
 				839A50101C69426900870B57 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		839A50111C69426900870B57 /* Build configuration list for PBXNativeTarget "whereuat-iosTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +495,7 @@
 				839A50131C69426900870B57 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		839A50141C69426900870B57 /* Build configuration list for PBXNativeTarget "whereuat-iosUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +504,7 @@
 				839A50161C69426900870B57 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
