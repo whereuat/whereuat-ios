@@ -26,7 +26,6 @@ class ContactsViewController: UICollectionViewController {
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
-//        cell.backgroundColor = randomColor()
         return cell
     }
     
@@ -40,7 +39,5 @@ class ContactsViewController: UICollectionViewController {
         let cellSize = screenWidth / CGFloat(numCells)
         return CGSizeMake(cellSize, cellSize);
     }
-    //
-
 
 }

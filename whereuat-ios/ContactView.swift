@@ -10,7 +10,7 @@ import UIKit
 
 class ContactView: UIView {
     
-    var displayContactView: UIView!
+    var displayContactView: DisplayContactView!
     var editContactView: UIView!
     var displayContactMode = true
     
@@ -24,12 +24,8 @@ class ContactView: UIView {
     
     func initialize() {
         // Initialize views
-        displayContactView = UIView()
-        editContactView = UIView()
-        contactColor = self.randomColor()
-        
-        displayContactView.backgroundColor = contactColor
-        editContactView.backgroundColor = UIColor(red: 248/255, green: 247/255, blue: 243/255, alpha: 1.0)
+        displayContactView = DisplayContactView(color: self.randomColor(), contactName: "Raymond Jacobson")
+        editContactView = EditContactView(contactName: "Raymond Jacobson") // TODO: Make this stored and dynamic!
         
         let longPress = UILongPressGestureRecognizer(target: self, action: Selector("contactCardFlip:"))
         longPress.minimumPressDuration = 0.25
@@ -68,7 +64,7 @@ class ContactView: UIView {
         self.addConstraints([leftSideConstraint, bottomConstraint, widthConstraint, heightConstraint])
     }
     
-    func randomColor() -> UIColor{
+    func randomColor() -> UIColor {
         let randomRed:CGFloat = CGFloat(drand48())
         let randomGreen:CGFloat = CGFloat(drand48())
         let randomBlue:CGFloat = CGFloat(drand48())
