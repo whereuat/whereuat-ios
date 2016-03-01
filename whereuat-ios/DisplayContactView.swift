@@ -14,6 +14,7 @@ class DisplayContactView: UIView {
     
     var initialsView: UITextView!
     var fullnameView: UITextView!
+    var autoShareShapeView: UIView!
     
     let spacingMargin = CGFloat(10)
 
@@ -35,6 +36,7 @@ class DisplayContactView: UIView {
     func drawDisplayContactContent() {
         drawInitialsTextView()
         drawFullnameTextView()
+        drawAutoShareShapeView()
     }
     
     func drawFullnameTextView() {
@@ -50,9 +52,9 @@ class DisplayContactView: UIView {
 
         // Define contents
         self.fullnameView.textAlignment = NSTextAlignment.Center
-        self.fullnameView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
-        self.fullnameView.textColor = UIColor(red: 248/255, green: 247/255, blue: 243/255, alpha: 1.0)
-        self.fullnameView.font = UIFont(name: "Helvetica", size: 18)
+        self.fullnameView.backgroundColor = ColorWheel.transparent
+        self.fullnameView.textColor = ColorWheel.lightGray
+        self.fullnameView.font = FontStyle.p
         self.fullnameView.text = self.contactName
         
         // Disable interactions
@@ -61,6 +63,13 @@ class DisplayContactView: UIView {
     
     func generateInitials(fullname: String) -> String {
         return "JA"
+        // TODO: Implement this function
+        // such that we can extract JA from Julius Alexander
+        // Julius Alexander IV --> JA
+        // Raymond Jacobson --> RJ
+        // Raymond Shu Jacobson --> RJ
+        // Raymond --> R
+        // Raymond Jacob Jingle Heimer Schmitt --> RS
     }
     
     func drawInitialsTextView() {
@@ -76,13 +85,35 @@ class DisplayContactView: UIView {
         
         // Define contents
         self.initialsView.textAlignment = NSTextAlignment.Center
-        self.initialsView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
-        self.initialsView.textColor = UIColor(red: 248/255, green: 247/255, blue: 243/255, alpha: 1.0)
-        self.initialsView.font = UIFont(name: "Helvetica", size: 60)
+        self.initialsView.backgroundColor = ColorWheel.transparent
+        self.initialsView.textColor = ColorWheel.lightGray
+        self.initialsView.font = FontStyle.h1
         self.initialsView.text = self.generateInitials(self.contactName)
         
         // Disable interactions
         self.initialsView.userInteractionEnabled = false
+    }
+    
+    func drawAutoShareShapeView() {
+        let starWidth = CGFloat(32)
+        let starHeight = CGFloat(28)
+        self.autoShareShapeView = UIView(frame: CGRect(x: 0, y:spacingMargin, width: starWidth, height: starHeight))
+        
+        self.autoShareShapeView.backgroundColor = UIColor.redColor()
+        
+        // Define sizing and positioning
+        self.addSubview(self.autoShareShapeView)
+        self.autoShareShapeView.translatesAutoresizingMaskIntoConstraints = false
+        let rightConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: -(starWidth + spacingMargin))
+        let topConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: spacingMargin)
+        self.addConstraints([rightConstraint, topConstraint])
+
+        // Draw a star!
+        let width = self.autoShareShapeView.layer.frame.size.width
+        let height = self.autoShareShapeView.layer.frame.size.height
+        let shape = Shape.drawStar(self.bounds, width, height, ColorWheel.lightGray, ColorWheel.lightGray)
+        
+        self.autoShareShapeView.layer.insertSublayer(shape, atIndex: 0)
     }
     
 }

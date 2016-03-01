@@ -24,7 +24,7 @@ class ContactView: UIView {
     
     func initialize() {
         // Initialize views
-        displayContactView = DisplayContactView(color: self.randomColor(), contactName: "Raymond Jacobson")
+        displayContactView = DisplayContactView(color: ColorWheel.randomColor(), contactName: "Raymond Jacobson")
         editContactView = EditContactView(contactName: "Raymond Jacobson") // TODO: Make this stored and dynamic!
         
         let longPress = UILongPressGestureRecognizer(target: self, action: Selector("contactCardFlip:"))
@@ -62,13 +62,6 @@ class ContactView: UIView {
         let widthConstraint = NSLayoutConstraint(item: viewName, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1.0, constant: 0.0)
         let heightConstraint = NSLayoutConstraint(item: viewName, attribute: .Height, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: 1.0, constant: 0.0)
         self.addConstraints([leftSideConstraint, bottomConstraint, widthConstraint, heightConstraint])
-    }
-    
-    func randomColor() -> UIColor {
-        let randomRed:CGFloat = CGFloat(drand48())
-        let randomGreen:CGFloat = CGFloat(drand48())
-        let randomBlue:CGFloat = CGFloat(drand48())
-        return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
     }
 
 }

@@ -18,8 +18,12 @@ class EditContactView: UIView {
     var autoShareTextView: UITextView!
     var autoShareShapeView: UIView!
     
-    var requestedCountView: UITextView!
+    // To determine if auto-share enabled for this contact
+    var autoShareEnabled = false
     
+    var requestedCountView: UITextView!
+
+    // Layout variables
     let spacingMargin = CGFloat(10)
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,7 +35,7 @@ class EditContactView: UIView {
         // The parent ContactView controls the constraint sizing of this view during animation
         super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         
-        self.backgroundColor = UIColor(red: 248/255, green: 247/255, blue: 243/255, alpha: 1.0) // TODO: Replace all instances of this color with a global
+        self.backgroundColor = ColorWheel.lightGray
         self.contactName = contactName
         
         self.drawEditContactContent()
@@ -51,14 +55,14 @@ class EditContactView: UIView {
         self.addSubview(self.nameView)
         self.nameView.translatesAutoresizingMaskIntoConstraints = false
         let widthConstraint = NSLayoutConstraint(item: self.nameView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1.0, constant: 0.0)
-        let topConstraint = NSLayoutConstraint(item: self.nameView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: spacingMargin)
+        let topConstraint = NSLayoutConstraint(item: self.nameView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 1.5*spacingMargin)
         self.addConstraints([widthConstraint, topConstraint])
         
         // Define contents
         self.nameView.textAlignment = NSTextAlignment.Center
-        self.nameView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
-        self.nameView.textColor = UIColor(red: 133/255, green: 133/255, blue: 133/255, alpha: 1.0)
-        self.nameView.font = UIFont.boldSystemFontOfSize(18.0)
+        self.nameView.backgroundColor = ColorWheel.transparent
+        self.nameView.textColor = ColorWheel.darkGray
+        self.nameView.font = FontStyle.h5
         self.nameView.text = self.contactName
         
         // Disable interactions
@@ -95,9 +99,9 @@ class EditContactView: UIView {
         self.addConstraints([heightConstraint, widthConstraint, topConstraint, leftConstraint])
         
         // Define contents
-        self.autoShareTextView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
-        self.autoShareTextView.textColor = UIColor(red: 133/255, green: 133/255, blue: 133/255, alpha: 1.0)
-        self.autoShareTextView.font = UIFont(name: "Helvetica", size: 18.0)
+        self.autoShareTextView.backgroundColor = ColorWheel.transparent
+        self.autoShareTextView.textColor = ColorWheel.darkGray
+        self.autoShareTextView.font = FontStyle.p
         self.autoShareTextView.text = "Auto Share?" // TODO put this in a constant somewhere
         self.autoShareTextView.textAlignment = NSTextAlignment.Right
         
@@ -106,50 +110,37 @@ class EditContactView: UIView {
     }
     
     func drawAutoShareShapeView() {
-        self.autoShareShapeView = UIView(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
-        
+        self.autoShareShapeView = UIView(frame: CGRect(x: 0, y: 0, width: 32, height: 28))
         
         // Define sizing and positioning
         self.autoShareView.addSubview(self.autoShareShapeView)
         self.autoShareShapeView.translatesAutoresizingMaskIntoConstraints = false
-        let heightConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Height, relatedBy: .Equal, toItem: self.autoShareView, attribute: .Height, multiplier: 1.0, constant: 0.0)
         let widthConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 0.33, constant: 0.0)
-        let topConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Top, relatedBy: .Equal, toItem: self.autoShareView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let topConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Top, relatedBy: .Equal, toItem: self.autoShareTextView, attribute: .Top, multiplier: 1.0, constant: 0.0)
         let leftConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Left, relatedBy: .Equal, toItem: self.autoShareTextView, attribute: .Right, multiplier: 1.0, constant: 0.0)
-        self.addConstraints([heightConstraint, widthConstraint, topConstraint, leftConstraint])
+        self.addConstraints([widthConstraint, leftConstraint, topConstraint])
         
-        let mask = CAShapeLayer()
-        mask.frame = self.autoShareShapeView.layer.bounds
-        
+        // Draw a star!
         let width = self.autoShareShapeView.layer.frame.size.width
         let height = self.autoShareShapeView.layer.frame.size.height
-
-        let path = CGPathCreateMutable()
-        
-        CGPathMoveToPoint(path, nil, 0.5*width, 0.0*height) // TODO: Function
-        CGPathAddLineToPoint(path, nil, 0.65*width, 0.36*height)
-        CGPathAddLineToPoint(path, nil, 1.0*width, 0.39*height)
-        CGPathAddLineToPoint(path, nil, 0.75*width, 0.65*height)
-        CGPathAddLineToPoint(path, nil, 0.86*width, 1.0*height)
-        CGPathAddLineToPoint(path, nil, 0.5*width, 0.82*height)
-        CGPathAddLineToPoint(path, nil, 0.14*width, 1.0*height)
-        CGPathAddLineToPoint(path, nil, 0.25*width, 0.65*height)
-        CGPathAddLineToPoint(path, nil, 0.0*width, 0.39*height)
-        CGPathAddLineToPoint(path, nil, 0.36*width, 0.36*height)
-        CGPathAddLineToPoint(path, nil, 0.5*width, 0.0*height)
-        
-        mask.path = path
-        
-        self.autoShareShapeView.layer.mask = mask
-        
-        let shape = CAShapeLayer()
-        shape.frame = self.bounds
-        shape.path = path
-        shape.lineWidth = 3.0
-        shape.strokeColor = UIColor(red: 133/255, green: 133/255, blue: 133/255, alpha: 1.0).CGColor
-        shape.fillColor = UIColor(red: 133/255, green: 133/255, blue: 133/255, alpha: 0.0).CGColor
+        let shape = Shape.drawStar(self.bounds, width, height, ColorWheel.darkGray, ColorWheel.transparent)
         
         self.autoShareShapeView.layer.insertSublayer(shape, atIndex: 0)
+        
+        // Add gestures
+        let tap = UITapGestureRecognizer(target: self, action: Selector("toggleAutoShare"))
+        self.autoShareView.addGestureRecognizer(tap)
+    }
+    
+    func toggleAutoShare() {
+        var star = CAShapeLayer()
+        star = self.autoShareShapeView.layer.sublayers![0] as! CAShapeLayer
+        if (!autoShareEnabled) {
+            star.fillColor = star.strokeColor
+        } else {
+            star.fillColor = ColorWheel.transparent.CGColor
+        }
+        autoShareEnabled = !autoShareEnabled
     }
 
     func drawRequestedCountTextView() {
@@ -159,16 +150,16 @@ class EditContactView: UIView {
         self.requestedCountView.scrollEnabled = false // Scroll disabled to allow constraints
         self.addSubview(self.requestedCountView)
         self.requestedCountView.translatesAutoresizingMaskIntoConstraints = false
-        let widthConstraint = NSLayoutConstraint(item: self.requestedCountView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 0.75, constant: 0.0)
+        let widthConstraint = NSLayoutConstraint(item: self.requestedCountView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 0.70, constant: 0.0)
         let bottomConstraint = NSLayoutConstraint(item: self.requestedCountView, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1.0, constant: -spacingMargin)
         let centerXConstraint = NSLayoutConstraint(item: self.requestedCountView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
         self.addConstraints([widthConstraint, bottomConstraint, centerXConstraint])
         
         // Define contents
         self.requestedCountView.textAlignment = NSTextAlignment.Center
-        self.requestedCountView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
-        self.requestedCountView.textColor = UIColor(red: 133/255, green: 133/255, blue: 133/255, alpha: 1.0)
-        self.requestedCountView.font = UIFont(name: "Helvetica", size: 18)
+        self.requestedCountView.backgroundColor = ColorWheel.transparent
+        self.requestedCountView.textColor = ColorWheel.darkGray
+        self.requestedCountView.font = FontStyle.p
         self.requestedCountView.text = "Requested 5002 times"
         
         // Disable interactions
