@@ -22,6 +22,9 @@ struct ColorWheel {
     static let transparent = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
     static let lightGray = UIColor(hex: 0xF8F7F3)
     static let darkGray = UIColor(hex: 0x979797)
+    static let coolRed = UIColor(hex: 0xF15369)
+    static let offBlack = UIColor(hex: 0x101820)
+    static let offWhite = UIColor(hex: 0xFAFAFA)
     
     static func randomColor() -> UIColor {
         let randomRed:CGFloat = CGFloat(drand48())
@@ -39,6 +42,8 @@ struct FontStyle {
     static let h4 = UIFont(name: "Lato-Bold", size: 24)
     static let h5 = UIFont(name: "Lato-Bold", size: 18)
     static let p = UIFont(name: "Lato-Regular", size: 18)
+    static let small = UIFont(name: "Lato-Light", size: 16)
+    static let smallLight = UIFont(name: "Lato-Thin", size: 16)
     
 }
 
@@ -72,4 +77,8 @@ struct Shape {
         return shape
     }
 
+}
+
+struct SizingConstants {
+    static let spacingMargin = CGFloat(10)
 }

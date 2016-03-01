@@ -95,7 +95,7 @@ class DisplayContactView: UIView {
     }
     
     func drawAutoShareShapeView() {
-        let starWidth = CGFloat(32)
+        let starWidth = CGFloat(28)
         let starHeight = CGFloat(28)
         self.autoShareShapeView = UIView(frame: CGRect(x: 0, y:spacingMargin, width: starWidth, height: starHeight))
         

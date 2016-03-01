@@ -8,7 +8,7 @@
         <!--Contacts View Controller-->
         <scene sceneID="7bc-ke-5Nb">
             <objects>
-                <collectionViewController id="zhz-X9-nu2" customClass="ContactsViewController" customModule="whereuat_ios" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="ContactsViewController" id="zhz-X9-nu2" customClass="ContactsViewController" customModule="whereuat_ios" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="b2r-0r-UoT">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -51,15 +51,15 @@
             </objects>
             <point key="canvasLocation" x="933" y="493"/>
         </scene>
-        <!--View Controller-->
+        <!--Register View Controller-->
         <scene sceneID="coD-kA-Xtx">
             <objects>
-                <viewController id="T5d-BM-53d" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RegisterViewController" id="T5d-BM-53d" customClass="RegisterViewController" customModule="whereuat_ios" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Yc0-DL-UdY"/>
                         <viewControllerLayoutGuide type="bottom" id="xBA-FU-PI8"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Wgd-Ka-Kv2">
+                    <view key="view" contentMode="scaleToFill" id="Wgd-Ka-Kv2" customClass="RegisterView" customModule="whereuat_ios" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

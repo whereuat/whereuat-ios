@@ -16,7 +16,9 @@
 		839A4FFF1C69426900870B57 /* whereuat_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A4FFE1C69426900870B57 /* whereuat_iosTests.swift */; };
 		839A500A1C69426900870B57 /* whereuat_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A50091C69426900870B57 /* whereuat_iosUITests.swift */; };
 		83B3807A1C6B21D100D00578 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B380791C6B21D100D00578 /* ContactsViewController.swift */; };
-		83C084B41C85639100B8C383 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C084B31C85639100B8C383 /* RegisterViewController.swift */; };
+		83C084BA1C8565A000B8C383 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C084B91C8565A000B8C383 /* RegisterViewController.swift */; };
+		83C084BC1C85668000B8C383 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C084BB1C85668000B8C383 /* RegisterView.swift */; };
+		83C084BE1C85794600B8C383 /* whereuat.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C084BD1C85794600B8C383 /* whereuat.png */; };
 		83C25CD01C84F206007DA05E /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C25CCF1C84F206007DA05E /* Style.swift */; };
 		83C25CF81C84FB66007DA05E /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83C25CE61C84FA2B007DA05E /* Lato-Black.ttf */; };
 		83C25CF91C84FB66007DA05E /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83C25CE71C84FA2B007DA05E /* Lato-BlackItalic.ttf */; };
@@ -72,7 +74,9 @@
 		839A50091C69426900870B57 /* whereuat_iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = whereuat_iosUITests.swift; sourceTree = "<group>"; };
 		839A500B1C69426900870B57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83B380791C6B21D100D00578 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
-		83C084B31C85639100B8C383 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		83C084B91C8565A000B8C383 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegisterViewController.swift; path = ../RegisterViewController.swift; sourceTree = "<group>"; };
+		83C084BB1C85668000B8C383 /* RegisterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		83C084BD1C85794600B8C383 /* whereuat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whereuat.png; sourceTree = "<group>"; };
 		83C25CCF1C84F206007DA05E /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		83C25CE61C84FA2B007DA05E /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
 		83C25CE71C84FA2B007DA05E /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -176,7 +180,8 @@
 		83C084B21C85636D00B8C383 /* RegisterView */ = {
 			isa = PBXGroup;
 			children = (
-				83C084B31C85639100B8C383 /* RegisterViewController.swift */,
+				83C084BB1C85668000B8C383 /* RegisterView.swift */,
+				83C084B91C8565A000B8C383 /* RegisterViewController.swift */,
 			);
 			name = RegisterView;
 			sourceTree = "<group>";
@@ -195,6 +200,7 @@
 		83C25CD21C84F9E2007DA05E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				83C084BD1C85794600B8C383 /* whereuat.png */,
 				83C25CE51C84FA14007DA05E /* Lato */,
 				839A4FF51C69426900870B57 /* Info.plist */,
 			);
@@ -333,6 +339,7 @@
 			files = (
 				83C25CFE1C84FB66007DA05E /* Lato-Heavy.ttf in Resources */,
 				83C25D091C84FB66007DA05E /* Lato-ThinItalic.ttf in Resources */,
+				83C084BE1C85794600B8C383 /* whereuat.png in Resources */,
 				83C25D011C84FB66007DA05E /* Lato-Light.ttf in Resources */,
 				83C25CF81C84FB66007DA05E /* Lato-Black.ttf in Resources */,
 				83C25CFA1C84FB66007DA05E /* Lato-Bold.ttf in Resources */,
@@ -378,9 +385,10 @@
 			files = (
 				83DAEB991C766FDD004519EB /* DisplayContactView.swift in Sources */,
 				83B3807A1C6B21D100D00578 /* ContactsViewController.swift in Sources */,
-				83C084B41C85639100B8C383 /* RegisterViewController.swift in Sources */,
+				83C084BA1C8565A000B8C383 /* RegisterViewController.swift in Sources */,
 				8397186B1C7BFA5A001931CF /* EditContactView.swift in Sources */,
 				8363D1691C7FA75400777C5C /* ContactView.swift in Sources */,
+				83C084BC1C85668000B8C383 /* RegisterView.swift in Sources */,
 				839A4FEA1C69426900870B57 /* AppDelegate.swift in Sources */,
 				83C25CD01C84F206007DA05E /* Style.swift in Sources */,
 			);
