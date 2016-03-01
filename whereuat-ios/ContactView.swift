@@ -45,7 +45,6 @@ class ContactView: UIView {
             displayContactMode = false
             self.addConstrainedSubview(editContactView)
         } else {
-            self.addSubview(displayContactView)
             UIView.transitionFromView(editContactView, toView: displayContactView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, completion: nil)
             displayContactMode = true
             self.addConstrainedSubview(displayContactView)
