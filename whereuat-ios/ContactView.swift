@@ -33,7 +33,6 @@ class ContactView: UIView {
         self.userInteractionEnabled = true
 
         self.addConstrainedSubview(displayContactView)
-        
     }
     
     func contactCardFlip(sender: UILongPressGestureRecognizer) {

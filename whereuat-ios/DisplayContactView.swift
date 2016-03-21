@@ -15,7 +15,7 @@ class DisplayContactView: UIView {
     var initialsView: UITextView!
     var fullnameView: UITextView!
     var autoShareShapeView: UIView!
-    
+
     let spacingMargin = CGFloat(10)
 
     required init?(coder aDecoder: NSCoder) {
