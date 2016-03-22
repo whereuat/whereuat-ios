@@ -15,7 +15,7 @@ class DisplayContactView: UIView {
     var initialsView: UITextView!
     var fullnameView: UITextView!
     var autoShareShapeView: UIView!
-    
+
     let spacingMargin = CGFloat(10)
 
     required init?(coder aDecoder: NSCoder) {
@@ -95,7 +95,7 @@ class DisplayContactView: UIView {
     }
     
     func drawAutoShareShapeView() {
-        let starWidth = CGFloat(32)
+        let starWidth = CGFloat(28)
         let starHeight = CGFloat(28)
         self.autoShareShapeView = UIView(frame: CGRect(x: 0, y:spacingMargin, width: starWidth, height: starHeight))
         

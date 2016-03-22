@@ -22,9 +22,6 @@ class EditContactView: UIView {
     var autoShareEnabled = false
     
     var requestedCountView: UITextView!
-
-    // Layout variables
-    let spacingMargin = CGFloat(10)
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -55,7 +52,7 @@ class EditContactView: UIView {
         self.addSubview(self.nameView)
         self.nameView.translatesAutoresizingMaskIntoConstraints = false
         let widthConstraint = NSLayoutConstraint(item: self.nameView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1.0, constant: 0.0)
-        let topConstraint = NSLayoutConstraint(item: self.nameView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 1.5*spacingMargin)
+        let topConstraint = NSLayoutConstraint(item: self.nameView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 1.5*SizingConstants.spacingMargin)
         self.addConstraints([widthConstraint, topConstraint])
         
         // Define contents
@@ -77,7 +74,7 @@ class EditContactView: UIView {
         self.autoShareView.translatesAutoresizingMaskIntoConstraints = false
         let widthConstraint = NSLayoutConstraint(item: self.autoShareView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1.0, constant: 0.0)
         let centerXConstraint = NSLayoutConstraint(item: self.autoShareView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
-        let centerYConstraint = NSLayoutConstraint(item: self.autoShareView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1.0, constant: -spacingMargin)
+        let centerYConstraint = NSLayoutConstraint(item: self.autoShareView, attribute: .CenterY, relatedBy: .Equal, toItem: self, attribute: .CenterY, multiplier: 1.0, constant: -SizingConstants.spacingMargin)
         self.addConstraints([widthConstraint, centerXConstraint, centerYConstraint])
         
         // Draw children
@@ -110,7 +107,7 @@ class EditContactView: UIView {
     }
     
     func drawAutoShareShapeView() {
-        self.autoShareShapeView = UIView(frame: CGRect(x: 0, y: 0, width: 32, height: 28))
+        self.autoShareShapeView = UIView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
         
         // Define sizing and positioning
         self.autoShareView.addSubview(self.autoShareShapeView)
@@ -151,7 +148,7 @@ class EditContactView: UIView {
         self.addSubview(self.requestedCountView)
         self.requestedCountView.translatesAutoresizingMaskIntoConstraints = false
         let widthConstraint = NSLayoutConstraint(item: self.requestedCountView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 0.70, constant: 0.0)
-        let bottomConstraint = NSLayoutConstraint(item: self.requestedCountView, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1.0, constant: -spacingMargin)
+        let bottomConstraint = NSLayoutConstraint(item: self.requestedCountView, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1.0, constant: -SizingConstants.spacingMargin)
         let centerXConstraint = NSLayoutConstraint(item: self.requestedCountView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
         self.addConstraints([widthConstraint, bottomConstraint, centerXConstraint])
         

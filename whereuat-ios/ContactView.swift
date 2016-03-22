@@ -30,10 +30,12 @@ class ContactView: UIView {
         let longPress = UILongPressGestureRecognizer(target: self, action: Selector("contactCardFlip:"))
         longPress.minimumPressDuration = 0.25
         self.addGestureRecognizer(longPress)
-        self.userInteractionEnabled = true
-
-        self.addConstrainedSubview(displayContactView)
         
+        let tap = UITapGestureRecognizer(target: self, action: Selector("requestLocationFromContact:"))
+        self.addGestureRecognizer(tap)
+        
+        self.userInteractionEnabled = true
+        self.addConstrainedSubview(displayContactView)
     }
     
     func contactCardFlip(sender: UILongPressGestureRecognizer) {
@@ -49,6 +51,21 @@ class ContactView: UIView {
             displayContactMode = true
             self.addConstrainedSubview(displayContactView)
         }
+    }
+    
+    func requestLocationFromContact(sender: UITapGestureRecognizer) {
+        // TODO: Perform http request to whereuat.xyz/where
+//        Route: /where
+//        Type: POST
+//        Payload:
+//        FromNumber (string)
+//        ToNumber (string)
+//        Reference Payload:
+//        {
+//            "from" : "+19732297771",
+//            "to" : "+13014672873"
+//        }
+        print("request location")
     }
     
     func addConstrainedSubview(viewName: UIView) {

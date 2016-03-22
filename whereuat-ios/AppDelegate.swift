@@ -21,18 +21,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window?.tintColor = themeColor
         
-        let prefs = NSUserDefaults.standardUserDefaults()
+//        let prefs = NSUserDefaults.standardUserDefaults()
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        let nav = self.window?.rootViewController as! UINavigationController
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         
-        if false {
-            
-            nav.pushViewController(storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController, animated: false)
-        }
+        let initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
         
-        
-        
+        self.window?.rootViewController = initialViewController
+        self.window?.makeKeyAndVisible()
+
         return true
     }
 
