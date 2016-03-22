@@ -15,17 +15,27 @@ class ContactView: UIView {
     var displayContactMode = true
     
     var contactColor: UIColor!
+    var contactData: Contact!
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    init(contactData: Contact) {
+        // Initialize contact data from parent cell
+        self.contactData = contactData
+            
+        // Initialize contactColor
+        self.contactColor = ColorWheel.randomColor()
+        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         
         self.initialize()
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     func initialize() {
         // Initialize views
-        displayContactView = DisplayContactView(color: ColorWheel.randomColor(), contactName: "Raymond Jacobson")
-        editContactView = EditContactView(contactName: "Raymond Jacobson") // TODO: Make this stored and dynamic!
+        displayContactView = DisplayContactView(color: self.contactColor, contactData: contactData)
+        editContactView = EditContactView(contactData: contactData) // TODO: Make this stored and dynamic!
         
         let longPress = UILongPressGestureRecognizer(target: self, action: Selector("contactCardFlip:"))
         longPress.minimumPressDuration = 0.25
