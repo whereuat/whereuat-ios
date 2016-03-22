@@ -7,14 +7,16 @@
 //
 
 import UIKit
+import Contacts
+import ContactsUI
 
 private let reuseIdentifier = "Cell"
 
-class ContactsViewController: UICollectionViewController {
+class ContactsViewController: UICollectionViewController, CNContactPickerDelegate {
 
     private let reuseIdentifier = "ContactCell"
     
-    var contactData = ["PK", "JA", "SW", "RJ", "RM", "SR", "PP"]
+    var contactData = ["PK", "JA", "SW", "RJ", "RM", "SR", "PP", "EE", "JJ"]
 
     var buttonContainer: UIView!
     var addContactButton: PushButtonView!
@@ -47,8 +49,8 @@ class ContactsViewController: UICollectionViewController {
     }
     
     func drawAddContactButton() {
-        self.buttonContainer = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        self.buttonContainer.backgroundColor = UIColor.blackColor()
+        // Draw the add contact button
+        self.buttonContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         self.addContactButton = PushButtonView()
         self.addContactButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         
@@ -58,14 +60,62 @@ class ContactsViewController: UICollectionViewController {
         self.addContactButton.layer.shadowOpacity = 0.3
         self.addContactButton.layer.shadowPath = UIBezierPath(roundedRect: self.addContactButton.bounds, cornerRadius: 100.0).CGPath
         
+        // Add the button to the button container
         self.buttonContainer.addSubview(self.addContactButton)
-        self.view.addSubview(self.buttonContainer)
+        let bottomButtonConstraint = NSLayoutConstraint(item: self.addContactButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.buttonContainer, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let rightButtonConstraint = NSLayoutConstraint(item: self.addContactButton, attribute: .Right, relatedBy: .Equal, toItem: self.buttonContainer, attribute: .Right, multiplier: 1.0, constant: 0.0)
+        self.buttonContainer.addConstraints([bottomButtonConstraint, rightButtonConstraint])
         
         self.buttonContainer.translatesAutoresizingMaskIntoConstraints = false
+        // Click event handler for add contact
+        self.addContactButton.userInteractionEnabled = true
+        self.addContactButton.becomeFirstResponder()
+        let tap = UITapGestureRecognizer(target: self, action: Selector("addContact:"))
+        self.addContactButton.addGestureRecognizer(tap)
         
-        let bottomConstraint = NSLayoutConstraint(item: self.buttonContainer, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: -8*SizingConstants.spacingMargin)
-        let rightContstraint = NSLayoutConstraint(item: self.buttonContainer, attribute: .Right, relatedBy: .Equal, toItem: self.view, attribute: .Right, multiplier: 1.0, constant: -8*SizingConstants.spacingMargin)
+        // Add the button container to the parent view and constrain it
+        self.view.addSubview(self.buttonContainer)
+        let bottomConstraint = NSLayoutConstraint(item: self.buttonContainer, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: -2*SizingConstants.spacingMargin)
+        let rightContstraint = NSLayoutConstraint(item: self.buttonContainer, attribute: .Right, relatedBy: .Equal, toItem: self.view, attribute: .Right, multiplier: 1.0, constant: -2*SizingConstants.spacingMargin)
         self.view.addConstraints([bottomConstraint, rightContstraint])
+
+    }
+    
+    func addContact(sender: UITapGestureRecognizer) {
+        // Ensure user hasn't previously denied contact access
+        let status = CNContactStore.authorizationStatusForEntityType(.Contacts)
+        if status == .Denied || status == .Restricted {
+            // user previously denied, so tell them to fix that in settings
+            return
+        }
+        
+        // Change to contact view
+        let controller = CNContactPickerViewController()
+        controller.delegate = self
+        self.presentViewController(controller,
+            animated: true, completion: nil)
+    }
+    
+    func contactPicker(picker: CNContactPickerViewController, didSelectContact contact: CNContact) {
+        if contact.isKeyAvailable(CNContactPhoneNumbersKey){
+            // If the contact has a mobile phone number, add the contact (and first mobile number) to the database
+            // Otherwise we do nothing
+            for phoneNumber in contact.phoneNumbers {
+                let countryCodeLookup: [String: String] = [
+                     "us": "1"
+                ]
+                if (phoneNumber.label == "_$!<Mobile>!$_") {
+                    let number = phoneNumber.value as! CNPhoneNumber
+                    let countryCode = number.valueForKey("countryCode") as! String
+                    let numberString = number.valueForKey("digits") as! String
+                    var formattedNumberString = "+"
+                    formattedNumberString += countryCodeLookup[countryCode]!
+                    formattedNumberString += numberString
+                    print(formattedNumberString)
+                    break
+                }
+            }
+        }
     }
 
 }
