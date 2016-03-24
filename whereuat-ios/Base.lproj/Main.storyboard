@@ -8,7 +8,7 @@
         <!--Contacts View Controller-->
         <scene sceneID="7bc-ke-5Nb">
             <objects>
-                <collectionViewController storyboardIdentifier="ContactsViewController" id="zhz-X9-nu2" customClass="ContactsViewController" customModule="whereuat_ios" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="ContactsViewController" extendedLayoutIncludesOpaqueBars="YES" id="zhz-X9-nu2" customClass="ContactsViewController" customModule="whereuat_ios" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="b2r-0r-UoT">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
