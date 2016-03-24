@@ -37,6 +37,7 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="aGo-66-zVr"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nGg-iT-52D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
