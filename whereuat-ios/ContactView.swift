@@ -35,7 +35,7 @@ class ContactView: UIView {
     func initialize() {
         // Initialize views
         displayContactView = DisplayContactView(color: self.contactColor, contactData: contactData)
-        editContactView = EditContactView(contactData: contactData) // TODO: Make this stored and dynamic!
+        editContactView = EditContactView(contactData: contactData)
         
         let longPress = UILongPressGestureRecognizer(target: self, action: Selector("contactCardFlip:"))
         longPress.minimumPressDuration = 0.25

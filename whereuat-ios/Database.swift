@@ -25,18 +25,12 @@ class Contact {
         self.requestedCount = requestedCount
     }
     
-    // This function gets a concatinated version of a contact's first and last names
+    // This function gets a concatenated version of a contact's first and last names
     func getName() -> String {
         return self.firstName + " " + self.lastName
     }
     
-    // This function takes a fullname argument, like "Spetelius Ray" and returns "SR"
-    // Edge cases:
-    // Julius Alexander IV --> JA
-    // Raymond Jacobson --> RJ
-    // Raymond Shu Jacobson --> RJ
-    // Raymond --> R
-    // Raymond Jacob Jingle Heimer Schmitt --> RS
+    // This function returns the initials of a contact (first letter of first and last names)
     func generateInitials() -> String {
         if (self.firstName.characters.count == 0 && self.lastName.characters.count == 0) {
             return "**"
