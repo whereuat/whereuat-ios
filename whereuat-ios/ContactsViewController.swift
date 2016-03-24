@@ -16,7 +16,10 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
 
     private let reuseIdentifier = "ContactCell"
     
-    var contactData = ["PK", "JA", "SW", "RJ", "RM", "SR", "PP", "EE", "JJ"]
+    // Set up Database as Singleton
+    var contactDatabase = ContactDatabase.sharedInstance
+    
+    var contactData: Array<Contact>!
 
     var buttonContainer: UIView!
     var addContactButton: PushButtonView!
@@ -25,15 +28,26 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         super.viewDidLoad()
         self.view.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
         
+        self.contactDatabase.dropDatabase()
+
+        // Create database tables
+        self.contactDatabase.setUpDatabase()
+        // Load mock data into database
+        self.contactDatabase.generateMockData()
+        // Load mock data into contactData array
+        self.contactData = self.contactDatabase.getContacts()
+        
         self.drawAddContactButton()
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return contactData.count
+        return self.contactData.count
     }
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ContactViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ContactViewCell
+        cell.contactData = self.contactData[indexPath.row]
+        cell.addContactView()
         return cell
     }
     
@@ -97,6 +111,8 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
     }
     
     func contactPicker(picker: CNContactPickerViewController, didSelectContact contact: CNContact) {
+        // Get the total number of already drawn contacts
+        let contactCount = self.contactData.count
         if contact.isKeyAvailable(CNContactPhoneNumbersKey){
             // If the contact has a mobile phone number, add the contact (and first mobile number) to the database
             // Otherwise we do nothing
@@ -111,7 +127,10 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                     var formattedNumberString = "+"
                     formattedNumberString += countryCodeLookup[countryCode]!
                     formattedNumberString += numberString
-                    print(formattedNumberString)
+                    let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0)
+                    self.contactData.append(newContact)
+                    self.contactDatabase.insertContact(newContact)
+                    self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: contactCount, inSection: 0)])
                     break
                 }
             }

@@ -11,6 +11,7 @@ import UIKit
 class DisplayContactView: UIView {
     
     var contactName: String!
+    var contactInitials: String!
     
     var initialsView: UITextView!
     var fullnameView: UITextView!
@@ -22,13 +23,14 @@ class DisplayContactView: UIView {
         super.init(coder: aDecoder)
     }
     
-    init(color: UIColor, contactName: String) {
+    init(color: UIColor, contactData: Contact) {
         // Default initialize the size of the view.
         // The parent ContactView controls the constraint sizing of this view during animation
         super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         
         self.backgroundColor = color
-        self.contactName = contactName
+        self.contactName = contactData.getName()
+        self.contactInitials = contactData.generateInitials()
         
         self.drawDisplayContactContent()
     }
@@ -61,17 +63,6 @@ class DisplayContactView: UIView {
         self.fullnameView.userInteractionEnabled = false
     }
     
-    func generateInitials(fullname: String) -> String {
-        return "JA"
-        // TODO: Implement this function
-        // such that we can extract JA from Julius Alexander
-        // Julius Alexander IV --> JA
-        // Raymond Jacobson --> RJ
-        // Raymond Shu Jacobson --> RJ
-        // Raymond --> R
-        // Raymond Jacob Jingle Heimer Schmitt --> RS
-    }
-    
     func drawInitialsTextView() {
         self.initialsView = UITextView()
         
@@ -88,7 +79,7 @@ class DisplayContactView: UIView {
         self.initialsView.backgroundColor = ColorWheel.transparent
         self.initialsView.textColor = ColorWheel.lightGray
         self.initialsView.font = FontStyle.h1
-        self.initialsView.text = self.generateInitials(self.contactName)
+        self.initialsView.text = self.contactInitials
         
         // Disable interactions
         self.initialsView.userInteractionEnabled = false

@@ -27,13 +27,13 @@ class EditContactView: UIView {
         super.init(coder: aDecoder)
     }
     
-    init(contactName: String) {
+    init(contactData: Contact) {
         // Default initialize the size of the view.
         // The parent ContactView controls the constraint sizing of this view during animation
         super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         
         self.backgroundColor = ColorWheel.lightGray
-        self.contactName = contactName
+        self.contactName = contactData.getName()
         
         self.drawEditContactContent()
     }
