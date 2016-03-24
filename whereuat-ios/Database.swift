@@ -8,6 +8,7 @@
 
 import Foundation
 import SQLite
+import UIKit
 
 // Models
 class Contact {
@@ -16,6 +17,7 @@ class Contact {
     var phoneNumber: String
     var autoShare: Bool
     var requestedCount: Int
+    var color: UIColor
     
     init(firstName: String, lastName: String, phoneNumber: String, autoShare: Bool, requestedCount: Int) {
         self.firstName = firstName
@@ -23,6 +25,7 @@ class Contact {
         self.phoneNumber = phoneNumber
         self.autoShare = autoShare
         self.requestedCount = requestedCount
+        self.color = ColorWheel.randomColor()
     }
     
     // This function gets a concatenated version of a contact's first and last names

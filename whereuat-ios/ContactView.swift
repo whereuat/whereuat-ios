@@ -34,7 +34,7 @@ class ContactView: UIView {
     
     func initialize() {
         // Initialize views
-        displayContactView = DisplayContactView(color: self.contactColor, contactData: contactData)
+        displayContactView = DisplayContactView(contactData: contactData)
         editContactView = EditContactView(contactData: contactData)
         
         let longPress = UILongPressGestureRecognizer(target: self, action: Selector("contactCardFlip:"))
