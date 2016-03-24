@@ -25,6 +25,9 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
     var addContactButton: PushButtonView!
     
     override func viewDidLoad() {
+        
+        self.collectionView?.contentInset = UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0)
+        
         super.viewDidLoad()
         self.view.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
         
