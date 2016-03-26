@@ -19,13 +19,13 @@ class Contact {
     var requestedCount: Int
     var color: UIColor
     
-    init(firstName: String, lastName: String, phoneNumber: String, autoShare: Bool, requestedCount: Int) {
+    init(firstName: String, lastName: String, phoneNumber: String, autoShare: Bool, requestedCount: Int, color: UIColor) {
         self.firstName = firstName
         self.lastName = lastName
         self.phoneNumber = phoneNumber
         self.autoShare = autoShare
         self.requestedCount = requestedCount
-        self.color = ColorWheel.randomColor()
+        self.color = color
     }
     
     // This function gets a concatenated version of a contact's first and last names
@@ -61,6 +61,7 @@ class ContactDatabase {
     var phoneNumberColumn: SQLite.Expression<String>
     var autoShareColumn: SQLite.Expression<Bool>
     var requestedCountColumn: SQLite.Expression<Int>
+    var colorColumn: SQLite.Expression<NSData> // Color is stored as NSData of a UIColor object
   
     init() {
         if let dirs: [NSString] = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory,
@@ -82,6 +83,7 @@ class ContactDatabase {
         self.phoneNumberColumn = SQLite.Expression<String>("phoneNumber")
         self.autoShareColumn = SQLite.Expression<Bool>("autoShare")
         self.requestedCountColumn = SQLite.Expression<Int>("requestedCount")
+        self.colorColumn = SQLite.Expression<NSData>("color")
     }
 
     func setUpDatabase() {
@@ -94,6 +96,7 @@ class ContactDatabase {
                 t.column(self.phoneNumberColumn, unique: true)
                 t.column(self.autoShareColumn, defaultValue: false)
                 t.column(self.requestedCountColumn, defaultValue: 0)
+                t.column(self.colorColumn)
             })
         } catch {
             print("Unable to set up Database")
@@ -111,19 +114,48 @@ class ContactDatabase {
     
     func generateMockData() {
         // Insert mock data
-        do {
-            try((self.db!).run(self.contacts.insert(self.firstNameColumn <- "Damian", self.lastNameColumn <- "Mastylo", self.phoneNumberColumn <- "+19133700735")))
-            try((self.db!).run(self.contacts.insert(self.firstNameColumn <- "Raymond", self.lastNameColumn <- "Jacobson", self.phoneNumberColumn <- "+13014672873")))
-            try((self.db!).run(self.contacts.insert(self.firstNameColumn <- "Anders", self.lastNameColumn <- "Jepson", self.phoneNumberColumn <- "+12077308728")))
-        } catch {
-            print("Unable to insert mock data")
-        }
+        let contact1 = Contact(firstName: "Damian",
+                               lastName: "Mastylo",
+                               phoneNumber: "+19133700735",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact2 = Contact(firstName: "Raymond",
+                               lastName: "Jacobson",
+                               phoneNumber: "+13014672873",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact3 = Contact(firstName: "Anders",
+                               lastName: "Jepson",
+                               phoneNumber: "+12077308728",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact4 = Contact(firstName: "Peyton",
+                               lastName: "Manning",
+                               phoneNumber: "+12073308728",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact5 = Contact(firstName: "Dante",
+                               lastName: "Inferno",
+                               phoneNumber: "+12075308728",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        insertContact(contact1)
+        insertContact(contact2)
+        insertContact(contact3)
+        insertContact(contact4)
+        insertContact(contact5)
     }
     
     func insertContact(contact: Contact) {
         let insert = self.contacts.insert(self.firstNameColumn <- contact.firstName,
                                           self.lastNameColumn <- contact.lastName,
-                                          self.phoneNumberColumn <- contact.phoneNumber)
+                                          self.phoneNumberColumn <- contact.phoneNumber,
+                                          self.colorColumn <- NSKeyedArchiver.archivedDataWithRootObject(contact.color))
         do {
             try (self.db!).run(insert)
         } catch {
@@ -139,7 +171,8 @@ class ContactDatabase {
                                             lastName: contact[self.lastNameColumn],
                                             phoneNumber: contact[self.phoneNumberColumn],
                                             autoShare: contact[self.autoShareColumn],
-                                            requestedCount: contact[self.requestedCountColumn]))
+                                            requestedCount: contact[self.requestedCountColumn],
+                                            color: NSKeyedUnarchiver.unarchiveObjectWithData(contact[self.colorColumn]) as! UIColor))
             }
         } catch {
             print("Unable to get contacts")

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RandomColorSwift
 
 extension UIColor {
     convenience init(hex : Int) {
@@ -27,10 +28,7 @@ struct ColorWheel {
     static let offWhite = UIColor(hex: 0xFAFAFA)
     
     static func randomColor() -> UIColor {
-        let randomRed:CGFloat = CGFloat(drand48())
-        let randomGreen:CGFloat = CGFloat(drand48())
-        let randomBlue:CGFloat = CGFloat(drand48())
-        return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
+        return RandomColorSwift.randomColor(hue: .Random, luminosity: .Dark)
     }
 }
 
