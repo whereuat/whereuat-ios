@@ -15,18 +15,33 @@ let themeColor = UIColor(red: 0.01, green: 0.41, blue: 0.22, alpha: 1.0)
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var contactDatabase = ContactDatabase.sharedInstance
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         window?.tintColor = themeColor
         
-//        let prefs = NSUserDefaults.standardUserDefaults()
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         
-        let initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
+        let isRegistered = NSUserDefaults.standardUserDefaults().boolForKey("isRegistered")
+        
+        var initialViewController: UIViewController
+        
+        if (isRegistered) {
+            initialViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
+        } else {
+            initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
+            
+            self.contactDatabase.dropDatabase()
+            
+            // Create database tables
+            self.contactDatabase.setUpDatabase()
+            // Load mock data into database
+            self.contactDatabase.generateMockData()
+        }
         
         self.window?.rootViewController = initialViewController
         self.window?.makeKeyAndVisible()

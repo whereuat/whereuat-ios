@@ -30,13 +30,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         
         super.viewDidLoad()
         self.view.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
-        
-        self.contactDatabase.dropDatabase()
 
-        // Create database tables
-        self.contactDatabase.setUpDatabase()
-        // Load mock data into database
-        self.contactDatabase.generateMockData()
         // Load mock data into contactData array
         self.contactData = self.contactDatabase.getContacts()
         

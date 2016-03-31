@@ -10,10 +10,13 @@ import UIKit
 
 class RegisterViewController: UIViewController, RegisterViewDelegate {
     
+    var isAuthenticated = false
+    var registerView: RegisterView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        let registerView = RegisterView()
+        registerView = RegisterView()
         registerView.delegate = self
         view.addSubview(registerView)
     }
@@ -24,10 +27,20 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
     }
     
     func goButtonClickHandler() {
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        let contactsViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
-        
-        self.presentViewController(contactsViewController, animated: true, completion: nil)
+        // HTTP: Send verification code through
+        let verificationCode = self.registerView.verficationCodeView.text
+        if (verificationCode == "11111") {
+            isAuthenticated = true
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isRegistered")
+        }
+        if (isAuthenticated) {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let contactsViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
+            
+            self.presentViewController(contactsViewController, animated: true, completion: nil)
+        } else {
+            registerView.askForAuthentication();
+        }
     }
 
 }

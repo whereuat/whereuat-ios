@@ -22,6 +22,7 @@ class RegisterView: UIView {
     var phoneNumberView: UIView!
     var areaCodeView: UITextField!
     var lineNumberView: UITextField!
+    var verficationCodeView: UITextField!
     var goButton: UIButton!
 
     required init?(coder aDecoder: NSCoder) {
@@ -38,6 +39,7 @@ class RegisterView: UIView {
         self.drawLogoView()
         self.drawEnterTextView()
         self.drawPhoneNumberView()
+        self.drawVerificationCodeView()
         self.drawGoButton()
     }
     
@@ -61,7 +63,7 @@ class RegisterView: UIView {
         self.enterTextView.backgroundColor = ColorWheel.transparent
         self.enterTextView.textColor = ColorWheel.coolRed
         self.enterTextView.font = FontStyle.small
-        self.enterTextView.text = "put your shitty phone number here"
+        self.enterTextView.text = "please enter your phone number"
         self.enterTextView.textAlignment = .Center
         
         self.addSubview(self.enterTextView)
@@ -97,7 +99,6 @@ class RegisterView: UIView {
         self.areaCodeView.font = FontStyle.smallLight
         self.areaCodeView.textColor = ColorWheel.offBlack
         self.areaCodeView.textAlignment = .Center
-
         
         self.areaCodeView.layer.borderWidth = 1
         self.areaCodeView.layer.borderColor = ColorWheel.darkGray.CGColor
@@ -110,6 +111,30 @@ class RegisterView: UIView {
         let topConstraint = NSLayoutConstraint(item: self.areaCodeView, attribute: .Top, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Top, multiplier: 1.0, constant: 0.0)
         let heightConstraint = NSLayoutConstraint(item: self.areaCodeView, attribute: .Height, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Height, multiplier: 1.0, constant: 0.0)
         self.addConstraints([widthConstraint, topConstraint, heightConstraint, leftConstraint])
+    }
+    
+    func drawVerificationCodeView() {
+        self.verficationCodeView = UITextField()
+        
+        self.verficationCodeView.backgroundColor = ColorWheel.offWhite
+        let placeholder = NSAttributedString(string: "12345", attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
+        self.verficationCodeView.attributedPlaceholder = placeholder
+        self.verficationCodeView.font = FontStyle.smallLight
+        self.verficationCodeView.textColor = ColorWheel.offBlack
+        self.verficationCodeView.textAlignment = .Center
+        
+        self.verficationCodeView.layer.borderWidth = 1
+        self.verficationCodeView.layer.borderColor = ColorWheel.darkGray.CGColor
+        
+        self.verficationCodeView.alpha = 0.0
+        self.addSubview(self.verficationCodeView)
+        self.verficationCodeView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let widthConstraint = NSLayoutConstraint(item: self.verficationCodeView, attribute: .Width, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Width, multiplier: 0.33, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: self.verficationCodeView, attribute: .CenterX, relatedBy: .Equal, toItem: self.enterTextView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        let topConstraint = NSLayoutConstraint(item: self.verficationCodeView, attribute: .Top, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let heightConstraint = NSLayoutConstraint(item: self.verficationCodeView, attribute: .Height, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Height, multiplier: 1.0, constant: 0.0)
+        self.addConstraints([widthConstraint, topConstraint, heightConstraint, centerXConstraint])
     }
     
     func drawLineNumberView() {
@@ -137,7 +162,7 @@ class RegisterView: UIView {
     
     func drawGoButton() {
         self.goButton = UIButton()
-        self.goButton.setTitle("let's fuckin go", forState: .Normal)
+        self.goButton.setTitle("send sms", forState: .Normal)
         self.goButton.setTitleColor(ColorWheel.lightGray, forState: .Normal)
         self.goButton.titleLabel!.font = FontStyle.h5
         self.goButton.backgroundColor = ColorWheel.coolRed
@@ -152,6 +177,20 @@ class RegisterView: UIView {
         self.addConstraints([widthConstraint, topConstraint, heightConstraint, centerXConstraint])
         
         self.goButton.addTarget(self.delegate, action: "goButtonClickHandler", forControlEvents: .TouchUpInside)
+    }
+    
+    func askForAuthentication() {
+        // HTTP: SEND PHONE # TO SERVER
+        UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
+                self.lineNumberView.alpha = 0.0
+                self.areaCodeView.alpha = 0.0
+                self.verficationCodeView.alpha = 1.0
+                self.enterTextView.text = "enter the sms verification code here"
+                self.goButton.setTitle("register", forState: .Normal)
+            }, completion: { finished in
+                self.lineNumberView.removeFromSuperview()
+                self.areaCodeView.removeFromSuperview()
+        })
     }
     
 }
