@@ -7,6 +7,7 @@
 //
 
 import UIKit
+//import Alamofire
 
 class RegisterViewController: UIViewController, RegisterViewDelegate {
     
@@ -28,7 +29,7 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
     
     func goButtonClickHandler() {
         // HTTP: Send verification code through
-        let verificationCode = self.registerView.verficationCodeView.text
+        let verificationCode = self.registerView.verificationCodeView.text
         if (verificationCode == "11111") {
             isAuthenticated = true
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isRegistered")

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 
 protocol RegisterViewDelegate : class {
@@ -22,7 +23,7 @@ class RegisterView: UIView {
     var phoneNumberView: UIView!
     var areaCodeView: UITextField!
     var lineNumberView: UITextField!
-    var verficationCodeView: UITextField!
+    var verificationCodeView: UITextField!
     var goButton: UIButton!
 
     required init?(coder aDecoder: NSCoder) {
@@ -99,6 +100,7 @@ class RegisterView: UIView {
         self.areaCodeView.font = FontStyle.smallLight
         self.areaCodeView.textColor = ColorWheel.offBlack
         self.areaCodeView.textAlignment = .Center
+        self.areaCodeView.keyboardType = UIKeyboardType.NumberPad
         
         self.areaCodeView.layer.borderWidth = 1
         self.areaCodeView.layer.borderColor = ColorWheel.darkGray.CGColor
@@ -114,26 +116,27 @@ class RegisterView: UIView {
     }
     
     func drawVerificationCodeView() {
-        self.verficationCodeView = UITextField()
+        self.verificationCodeView = UITextField()
         
-        self.verficationCodeView.backgroundColor = ColorWheel.offWhite
+        self.verificationCodeView.backgroundColor = ColorWheel.offWhite
         let placeholder = NSAttributedString(string: "12345", attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
-        self.verficationCodeView.attributedPlaceholder = placeholder
-        self.verficationCodeView.font = FontStyle.smallLight
-        self.verficationCodeView.textColor = ColorWheel.offBlack
-        self.verficationCodeView.textAlignment = .Center
+        self.verificationCodeView.attributedPlaceholder = placeholder
+        self.verificationCodeView.font = FontStyle.smallLight
+        self.verificationCodeView.textColor = ColorWheel.offBlack
+        self.verificationCodeView.textAlignment = .Center
+        self.verificationCodeView.keyboardType = UIKeyboardType.NumberPad
         
-        self.verficationCodeView.layer.borderWidth = 1
-        self.verficationCodeView.layer.borderColor = ColorWheel.darkGray.CGColor
+        self.verificationCodeView.layer.borderWidth = 1
+        self.verificationCodeView.layer.borderColor = ColorWheel.darkGray.CGColor
         
-        self.verficationCodeView.alpha = 0.0
-        self.addSubview(self.verficationCodeView)
-        self.verficationCodeView.translatesAutoresizingMaskIntoConstraints = false
+        self.verificationCodeView.alpha = 0.0
+        self.addSubview(self.verificationCodeView)
+        self.verificationCodeView.translatesAutoresizingMaskIntoConstraints = false
         
-        let widthConstraint = NSLayoutConstraint(item: self.verficationCodeView, attribute: .Width, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Width, multiplier: 0.33, constant: 0.0)
-        let centerXConstraint = NSLayoutConstraint(item: self.verficationCodeView, attribute: .CenterX, relatedBy: .Equal, toItem: self.enterTextView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
-        let topConstraint = NSLayoutConstraint(item: self.verficationCodeView, attribute: .Top, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Top, multiplier: 1.0, constant: 0.0)
-        let heightConstraint = NSLayoutConstraint(item: self.verficationCodeView, attribute: .Height, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Height, multiplier: 1.0, constant: 0.0)
+        let widthConstraint = NSLayoutConstraint(item: self.verificationCodeView, attribute: .Width, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Width, multiplier: 0.33, constant: 0.0)
+        let centerXConstraint = NSLayoutConstraint(item: self.verificationCodeView, attribute: .CenterX, relatedBy: .Equal, toItem: self.enterTextView, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
+        let topConstraint = NSLayoutConstraint(item: self.verificationCodeView, attribute: .Top, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let heightConstraint = NSLayoutConstraint(item: self.verificationCodeView, attribute: .Height, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Height, multiplier: 1.0, constant: 0.0)
         self.addConstraints([widthConstraint, topConstraint, heightConstraint, centerXConstraint])
     }
     
@@ -146,6 +149,7 @@ class RegisterView: UIView {
         self.lineNumberView.font = FontStyle.smallLight
         self.lineNumberView.textColor = ColorWheel.offBlack
         self.lineNumberView.textAlignment = .Center
+        self.lineNumberView.keyboardType = UIKeyboardType.NumberPad
         
         self.lineNumberView.layer.borderWidth = 1
         self.lineNumberView.layer.borderColor = ColorWheel.darkGray.CGColor
@@ -180,17 +184,23 @@ class RegisterView: UIView {
     }
     
     func askForAuthentication() {
-        // HTTP: SEND PHONE # TO SERVER
-        UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
-                self.lineNumberView.alpha = 0.0
-                self.areaCodeView.alpha = 0.0
-                self.verficationCodeView.alpha = 1.0
-                self.enterTextView.text = "enter the sms verification code here"
-                self.goButton.setTitle("register", forState: .Normal)
-            }, completion: { finished in
-                self.lineNumberView.removeFromSuperview()
-                self.areaCodeView.removeFromSuperview()
-        })
+        let phone_parameters = [
+            "phone-#": "+1" + self.areaCodeView.text! + self.lineNumberView.text!
+        ]
+        Alamofire.request(.POST, "http://whereuat.xyz/account/request", parameters: phone_parameters, encoding: .JSON)
+                 .responseString { response in
+                    debugPrint(response)
+                    UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
+                            self.lineNumberView.alpha = 0.0
+                            self.areaCodeView.alpha = 0.0
+                            self.verificationCodeView.alpha = 1.0
+                            self.enterTextView.text = "enter the sms verification code here"
+                            self.goButton.setTitle("register", forState: .Normal)
+                        }, completion: { finished in
+                            self.lineNumberView.removeFromSuperview()
+                            self.areaCodeView.removeFromSuperview()
+                    })
+        }
     }
     
 }
