@@ -10,6 +10,7 @@
 		832023C11CA1EF5800F08194 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832023C01CA1EF5800F08194 /* Database.swift */; };
 		8324A1221CA334C600709EDC /* ContactViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8324A1211CA334C600709EDC /* ContactViewCell.swift */; };
 		8324A1241CA358C800709EDC /* contactTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8324A1231CA358C800709EDC /* contactTests.swift */; };
+		832E8EBC1CB5B60000DC4258 /* LocationSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832E8EBB1CB5B60000DC4258 /* LocationSender.swift */; };
 		83631B7F1CB4C8040022EC6B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83631B7E1CB4C8040022EC6B /* GoogleService-Info.plist */; };
 		8363D1691C7FA75400777C5C /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83346B391C6D419B0065EAC0 /* ContactView.swift */; };
 		8397186B1C7BFA5A001931CF /* EditContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8397186A1C7BFA5A001931CF /* EditContactView.swift */; };
@@ -69,6 +70,7 @@
 		832023C01CA1EF5800F08194 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		8324A1211CA334C600709EDC /* ContactViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewCell.swift; sourceTree = "<group>"; };
 		8324A1231CA358C800709EDC /* contactTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = contactTests.swift; sourceTree = "<group>"; };
+		832E8EBB1CB5B60000DC4258 /* LocationSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSender.swift; sourceTree = "<group>"; };
 		83346B391C6D419B0065EAC0 /* ContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
 		8353F1151CB4B7EF00E8BDBF /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		83631B7E1CB4C8040022EC6B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				839A4FE91C69426900870B57 /* AppDelegate.swift */,
 				83C25CCF1C84F206007DA05E /* Style.swift */,
 				832023C01CA1EF5800F08194 /* Database.swift */,
+				832E8EBB1CB5B60000DC4258 /* LocationSender.swift */,
 				83C084B21C85636D00B8C383 /* RegisterView */,
 				83C25CD21C84F9E2007DA05E /* Supporting Files */,
 				83C25CD11C84F4AF007DA05E /* ContactView */,
@@ -478,6 +481,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83DAEB991C766FDD004519EB /* DisplayContactView.swift in Sources */,
+				832E8EBC1CB5B60000DC4258 /* LocationSender.swift in Sources */,
 				83C084C21C89192B00B8C383 /* PushButtonView.swift in Sources */,
 				83B3807A1C6B21D100D00578 /* ContactsViewController.swift in Sources */,
 				83C084BA1C8565A000B8C383 /* RegisterViewController.swift in Sources */,

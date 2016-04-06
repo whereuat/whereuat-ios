@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 let themeColor = UIColor(red: 0.01, green: 0.41, blue: 0.22, alpha: 1.0)
 
@@ -57,18 +58,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         let gcmConfig = GCMConfig.defaultConfig()
         gcmConfig.receiverDelegate = self
         GCMService.sharedInstance().startWithConfig(gcmConfig)
-        
+
         print("App is launching")
         
         // Override point for customization after application launch.
         window?.tintColor = themeColor
-        
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        
         let isRegistered = NSUserDefaults.standardUserDefaults().boolForKey("isRegistered")
-        
         var initialViewController: UIViewController
         
         // Check if we are registered already. If so, instantiate ContactsViewController. Otherwise present RegisterViewController
@@ -76,7 +73,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
             initialViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
         } else {
             initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
-            
             self.contactDatabase.dropDatabase()
             // Create database tables
             self.contactDatabase.setUpDatabase()
@@ -219,7 +215,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 

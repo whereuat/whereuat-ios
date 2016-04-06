@@ -9,12 +9,14 @@
 import UIKit
 import Contacts
 import ContactsUI
+import CoreLocation
 
 private let reuseIdentifier = "Cell"
 
-class ContactsViewController: UICollectionViewController, CNContactPickerDelegate {
+class ContactsViewController: UICollectionViewController, CNContactPickerDelegate, CLLocationManagerDelegate{
 
     private let reuseIdentifier = "ContactCell"
+    let locationManager = CLLocationManager()
     
     // Set up Database as Singleton
     var contactDatabase = ContactDatabase.sharedInstance
@@ -35,6 +37,21 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         self.contactData = self.contactDatabase.getContacts()
         
         self.drawAddContactButton()
+        
+        // Grant location permissions
+        self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+        
+    }
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
