@@ -23,12 +23,12 @@ class DisplayContactView: UIView {
         super.init(coder: aDecoder)
     }
     
-    init(color: UIColor, contactData: Contact) {
+    init(contactData: Contact) {
         // Default initialize the size of the view.
         // The parent ContactView controls the constraint sizing of this view during animation
         super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         
-        self.backgroundColor = color
+        self.backgroundColor = contactData.color
         self.contactName = contactData.getName()
         self.contactInitials = contactData.generateInitials()
         

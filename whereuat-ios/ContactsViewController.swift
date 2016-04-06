@@ -130,7 +130,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                     var formattedNumberString = "+"
                     formattedNumberString += countryCodeLookup[countryCode]!
                     formattedNumberString += numberString
-                    let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0)
+                    let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0, color: ColorWheel.randomColor())
                     self.contactData.append(newContact)
                     self.contactDatabase.insertContact(newContact)
                     self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: contactCount, inSection: 0)])
