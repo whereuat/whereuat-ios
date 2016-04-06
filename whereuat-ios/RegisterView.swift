@@ -42,6 +42,13 @@ class RegisterView: UIView {
         self.drawPhoneNumberView()
         self.drawVerificationCodeView()
         self.drawGoButton()
+        
+        let keyboardDismissTap = UITapGestureRecognizer(target: self, action: "dismissKeyboard:")
+        self.addGestureRecognizer(keyboardDismissTap)
+    }
+    
+    func dismissKeyboard(sender:UITapGestureRecognizer){
+        self.endEditing(true)
     }
     
     func drawLogoView() {
@@ -183,24 +190,17 @@ class RegisterView: UIView {
         self.goButton.addTarget(self.delegate, action: "goButtonClickHandler", forControlEvents: .TouchUpInside)
     }
     
-    func askForAuthentication() {
-        let phone_parameters = [
-            "phone-#": "+1" + self.areaCodeView.text! + self.lineNumberView.text!
-        ]
-        Alamofire.request(.POST, "http://whereuat.xyz/account/request", parameters: phone_parameters, encoding: .JSON)
-                 .responseString { response in
-                    debugPrint(response)
-                    UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
-                            self.lineNumberView.alpha = 0.0
-                            self.areaCodeView.alpha = 0.0
-                            self.verificationCodeView.alpha = 1.0
-                            self.enterTextView.text = "enter the sms verification code here"
-                            self.goButton.setTitle("register", forState: .Normal)
-                        }, completion: { finished in
-                            self.lineNumberView.removeFromSuperview()
-                            self.areaCodeView.removeFromSuperview()
-                    })
-        }
+    func changeToVerificationUI() {
+        UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
+            self.lineNumberView.alpha = 0.0
+            self.areaCodeView.alpha = 0.0
+            self.verificationCodeView.alpha = 1.0
+            self.enterTextView.text = "enter the sms verification code here"
+            self.goButton.setTitle("register", forState: .Normal)
+            }, completion: { finished in
+                self.lineNumberView.removeFromSuperview()
+                self.areaCodeView.removeFromSuperview()
+        })
     }
     
 }

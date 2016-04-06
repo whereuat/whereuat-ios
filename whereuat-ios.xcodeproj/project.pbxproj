@@ -10,6 +10,7 @@
 		832023C11CA1EF5800F08194 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832023C01CA1EF5800F08194 /* Database.swift */; };
 		8324A1221CA334C600709EDC /* ContactViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8324A1211CA334C600709EDC /* ContactViewCell.swift */; };
 		8324A1241CA358C800709EDC /* contactTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8324A1231CA358C800709EDC /* contactTests.swift */; };
+		83631B7F1CB4C8040022EC6B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83631B7E1CB4C8040022EC6B /* GoogleService-Info.plist */; };
 		8363D1691C7FA75400777C5C /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83346B391C6D419B0065EAC0 /* ContactView.swift */; };
 		8397186B1C7BFA5A001931CF /* EditContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8397186A1C7BFA5A001931CF /* EditContactView.swift */; };
 		839A4FEA1C69426900870B57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839A4FE91C69426900870B57 /* AppDelegate.swift */; };
@@ -69,6 +70,8 @@
 		8324A1211CA334C600709EDC /* ContactViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewCell.swift; sourceTree = "<group>"; };
 		8324A1231CA358C800709EDC /* contactTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = contactTests.swift; sourceTree = "<group>"; };
 		83346B391C6D419B0065EAC0 /* ContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		8353F1151CB4B7EF00E8BDBF /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		83631B7E1CB4C8040022EC6B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8397186A1C7BFA5A001931CF /* EditContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContactView.swift; sourceTree = "<group>"; };
 		839A4FE61C69426900870B57 /* whereuat-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "whereuat-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		839A4FE91C69426900870B57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -146,6 +149,7 @@
 		839A4FDD1C69426900870B57 = {
 			isa = PBXGroup;
 			children = (
+				8353F1151CB4B7EF00E8BDBF /* Bridging-Header.h */,
 				839A4FE81C69426900870B57 /* whereuat-ios */,
 				839A4FFD1C69426900870B57 /* whereuat-iosTests */,
 				839A50081C69426900870B57 /* whereuat-iosUITests */,
@@ -224,6 +228,7 @@
 		83C25CD21C84F9E2007DA05E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				83631B7E1CB4C8040022EC6B /* GoogleService-Info.plist */,
 				83C084BD1C85794600B8C383 /* whereuat.png */,
 				83C25CE51C84FA14007DA05E /* Lato */,
 				839A4FF51C69426900870B57 /* Info.plist */,
@@ -332,11 +337,16 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0720;
-				ORGANIZATIONNAME = "whereu@";
+				ORGANIZATIONNAME = whereuat;
 				TargetAttributes = {
 					839A4FE51C69426900870B57 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = TY3ABMV9WE;
+						DevelopmentTeam = H33449RM5Y;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					839A4FF91C69426900870B57 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -392,6 +402,7 @@
 				83C25D001C84FB66007DA05E /* Lato-Italic.ttf in Resources */,
 				839A4FEF1C69426900870B57 /* Main.storyboard in Resources */,
 				83C25D081C84FB66007DA05E /* Lato-Thin.ttf in Resources */,
+				83631B7F1CB4C8040022EC6B /* GoogleService-Info.plist in Resources */,
 				83C25D021C84FB66007DA05E /* Lato-LightItalic.ttf in Resources */,
 				83C25D051C84FB66007DA05E /* Lato-Regular.ttf in Resources */,
 			);
@@ -621,12 +632,14 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "whereuat-ios/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "xyz.whereuat.whereuat-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = xyz.whereuat.whereuat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -636,12 +649,14 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "whereuat-ios/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "xyz.whereuat.whereuat-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = xyz.whereuat.whereuat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 			};
 			name = Release;
 		};
