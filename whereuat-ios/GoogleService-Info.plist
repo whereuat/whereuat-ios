@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>GCM_SENDER_ID</key>
-	<string>1023787123549</string>
+	<string>890060835415</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
@@ -19,8 +19,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<false/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1023787123549:ios:e4e1a0435df1aee1</string>
+	<string>1:890060835415:ios:e4e1a0435df1aee1</string>
 	<key>PROJECT_ID</key>
-	<string>whereuat-9be59</string>
+	<string>causal-acumen-123905</string>
 </dict>
 </plist>
