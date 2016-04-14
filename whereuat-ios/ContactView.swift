@@ -65,13 +65,14 @@ class ContactView: UIView {
     }
     
     func requestLocationFromContact(sender: UITapGestureRecognizer) {
+        let whereRequestURL = Global.serverURL + "/where"
         let fromPhoneNumber = NSUserDefaults.standardUserDefaults().stringForKey("phoneNumber")!
         let toPhoneNumber = contactData.phoneNumber
         let verificationParameters = [
             "from" : fromPhoneNumber,
             "to" : toPhoneNumber,
         ]
-        Alamofire.request(.POST, "http://whereuat.xyz/where", parameters: verificationParameters, encoding: .JSON)
+        Alamofire.request(.POST, whereRequestURL, parameters: verificationParameters, encoding: .JSON)
             .validate()
             .responseString { response in
                 switch response.result {
@@ -83,6 +84,9 @@ class ContactView: UIView {
                     print("Failed to request location:", toPhoneNumber)
                 }
         }
+        // Propagate request to database layer: update request count number
+        ContactDatabase.sharedInstance.updateRequestedCount(self.contactData.phoneNumber)
+        self.editContactView.setNeedsDisplay()
     }
     
     func addConstrainedSubview(viewName: UIView) {

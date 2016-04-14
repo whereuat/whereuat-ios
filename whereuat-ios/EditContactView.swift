@@ -9,8 +9,10 @@
 import UIKit
 
 class EditContactView: UIView {
-    
+
     var contactName: String!
+    var phoneNumber: String!
+    var requestedCount: Int!
     
     var nameView: UITextView!
     
@@ -34,6 +36,9 @@ class EditContactView: UIView {
         
         self.backgroundColor = ColorWheel.lightGray
         self.contactName = contactData.getName()
+        self.phoneNumber = contactData.phoneNumber
+        self.requestedCount = contactData.requestedCount
+        self.autoShareEnabled = contactData.autoShare
         
         self.drawEditContactContent()
     }
@@ -122,6 +127,9 @@ class EditContactView: UIView {
         let height = self.autoShareShapeView.layer.frame.size.height
         let shape = Shape.drawStar(self.bounds, width, height, ColorWheel.darkGray, ColorWheel.transparent)
         
+        if (autoShareEnabled) {
+            shape.fillColor = shape.strokeColor
+        }
         self.autoShareShapeView.layer.insertSublayer(shape, atIndex: 0)
         
         // Add gestures
@@ -138,6 +146,9 @@ class EditContactView: UIView {
             star.fillColor = ColorWheel.transparent.CGColor
         }
         autoShareEnabled = !autoShareEnabled
+        // Propagate change to database layer
+        ContactDatabase.sharedInstance.toggleAutoShare(self.phoneNumber)
+        self.setNeedsDisplay()
     }
 
     func drawRequestedCountTextView() {
@@ -157,7 +168,7 @@ class EditContactView: UIView {
         self.requestedCountView.backgroundColor = ColorWheel.transparent
         self.requestedCountView.textColor = ColorWheel.darkGray
         self.requestedCountView.font = FontStyle.p
-        self.requestedCountView.text = "Requested 5002 times"
+        self.requestedCountView.text = "Requested " + String(self.requestedCount) + " times"
         
         // Disable interactions
         self.requestedCountView.userInteractionEnabled = false

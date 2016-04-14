@@ -181,15 +181,24 @@ class ContactDatabase {
         return contactArray
     }
     
-    func getContact(id: Int64) {
+    func toggleAutoShare(phoneNumber: String) {
+        let current = self.contacts.filter(self.phoneNumberColumn == phoneNumber)
+        let update = current.update(self.autoShareColumn <- !self.autoShareColumn)
+        do {
+            try (self.db!).run(update)
+        } catch {
+            print("Unable to insert contact")
+        }
     }
     
-    func toggleAutoShare(name: String) {
-        
-    }
-    
-    func updateRequestedCount(name: String) {
-        
+    func updateRequestedCount(phoneNumber: String) {
+        let current = self.contacts.filter(self.phoneNumberColumn == phoneNumber)
+        let update = current.update(self.requestedCountColumn <- (self.requestedCountColumn + 1))
+        do {
+            try (self.db!).run(update)
+        } catch {
+            print("Unable to insert contact")
+        }
     }
     
 }

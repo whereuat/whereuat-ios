@@ -39,9 +39,10 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
             let verificationParameters = [
                 "phone-#" : phoneNumber,
                 "gcm-token" : gcmToken,
-                "verification-code" : verificationCode
+                "verification-code" : verificationCode,
+                "client-os" : "IOS"
             ]
-            Alamofire.request(.POST, "http://whereuat.xyz/account/new", parameters: verificationParameters, encoding: .JSON)
+            Alamofire.request(.POST, Global.serverURL + "/account/new", parameters: verificationParameters, encoding: .JSON)
                 .validate()
                 .responseString { response in
                     switch response.result {
@@ -62,7 +63,7 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
             let requestAuthParameters = [
                 "phone-#": phoneNumber
             ]
-            Alamofire.request(.POST, "http://whereuat.xyz/account/request", parameters: requestAuthParameters, encoding: .JSON)
+            Alamofire.request(.POST, Global.serverURL + "/account/request", parameters: requestAuthParameters, encoding: .JSON)
                 .responseString { response in
                     debugPrint(response)
                     NSUserDefaults.standardUserDefaults().setObject(phoneNumber, forKey: "phoneNumber")

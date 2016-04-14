@@ -35,7 +35,7 @@ class LocationSender {
                 ],
                 "key-location" : NSNull()
                 ]
-            Alamofire.request(.POST, "http://whereuat.xyz/at", parameters: parameters, encoding: .JSON)
+            Alamofire.request(.POST, Global.serverURL + "/at", parameters: parameters, encoding: .JSON)
                 .validate()
                 .responseString { response in
                     switch response.result {

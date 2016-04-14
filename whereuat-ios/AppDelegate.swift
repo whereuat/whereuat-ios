@@ -33,8 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         
         
         // Configure push notifications
-        let notificationTypes: UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
-        let pushNotificationSettings = UIUserNotificationSettings(forTypes: notificationTypes, categories: nil)
+        let request_location_category = getRequestLocationNotificationCategory()
+        let receive_location_category = getReceiveLocationNotificationCategory()
+        let pushNotificationSettings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: [request_location_category, receive_location_category])
         application.registerUserNotificationSettings(pushNotificationSettings)
         application.registerForRemoteNotifications()
         
@@ -43,18 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         GGLContext.sharedInstance().configureWithError(&configureError)
         assert(configureError == nil, "Error configuring Google services: \(configureError)")
         gcmSenderID = GGLContext.sharedInstance().configuration.gcmSenderID
-        // [END_EXCLUDE]
-        // Register for remote notifications
-        if #available(iOS 8.0, *) {
-            let settings: UIUserNotificationSettings =
-            UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
-        } else {
-            // Fallback
-            let types: UIRemoteNotificationType = [.Alert, .Badge, .Sound]
-            application.registerForRemoteNotificationTypes(types)
-        }
         let gcmConfig = GCMConfig.defaultConfig()
         gcmConfig.receiverDelegate = self
         GCMService.sharedInstance().startWithConfig(gcmConfig)
@@ -87,6 +76,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         return true
     }
     
+    func getRequestLocationNotificationCategory() -> UIMutableUserNotificationCategory {
+        let ignoreAction = UIMutableUserNotificationAction()
+        ignoreAction.identifier = "IGNORE_IDENTIFIER"
+        ignoreAction.title = "Ignore"
+        ignoreAction.activationMode = .Foreground
+        let sendAction = UIMutableUserNotificationAction()
+        sendAction.identifier = "SEND_IDENTIFIER"
+        sendAction.title = "Send"
+        sendAction.activationMode = .Foreground
+        
+        let request_location_category = UIMutableUserNotificationCategory()
+        request_location_category.identifier = "REQUEST_LOCATION_CATEGORY"
+        request_location_category.setActions([ignoreAction, sendAction], forContext: .Default)
+        
+        return request_location_category
+    }
+    
+    func getReceiveLocationNotificationCategory() -> UIMutableUserNotificationCategory {
+        let doneAction = UIMutableUserNotificationAction()
+        doneAction.identifier = "DONE_IDENTIFIER"
+        doneAction.title = "Done"
+        doneAction.activationMode = .Foreground
+        
+        let received_location_category = UIMutableUserNotificationCategory()
+        received_location_category.identifier = "RECEIVE_LOCATION_CATEGORY"
+        received_location_category.setActions([doneAction], forContext: .Default)
+        
+        return received_location_category
+    }
+    
     func application( application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken
         deviceToken: NSData ) {
             // Create a config and set a delegate that implements the GGLInstaceIDDelegate protocol.
@@ -110,16 +129,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
                 registrationKey, object: nil, userInfo: userInfo)
     }
     
-    func application( application: UIApplication,
-        didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-            print("Notification received: \(userInfo)")
-            // This works only if the app started the GCM service
-            GCMService.sharedInstance().appDidReceiveMessage(userInfo);
-            // Handle the received message
-            // [START_EXCLUDE]
-            NSNotificationCenter.defaultCenter().postNotificationName(messageKey, object: nil,
-                userInfo: userInfo)
-            // [END_EXCLUDE]
+    // This method is invoked when a notification is received.
+    // If the application is in the foreground, it is received as an alert
+    // If the application is in the background, it is received as a push notification
+    func application(application: UIApplication,
+                     didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
+                     fetchCompletionHandler handler: (UIBackgroundFetchResult) -> Void) {
+        GCMService.sharedInstance().appDidReceiveMessage(userInfo)
+        if application.applicationState == .Background {
+            let notification = Notification(data: userInfo, notificationType: NotificationType.PushNotification)
+            notification.fire()
+        }
+        else {
+            let notification = Notification(data: userInfo, notificationType: NotificationType.Alert)
+            notification.fire()
+        }
+        handler(UIBackgroundFetchResult.NoData);
     }
     
     func registrationHandler(registrationToken: String!, error: NSError!) {
@@ -130,28 +155,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
             let userInfo = ["registrationToken": registrationToken]
             NSNotificationCenter.defaultCenter().postNotificationName(
                 self.registrationKey, object: nil, userInfo: userInfo)
-            NSUserDefaults.standardUserDefaults().setObject(self.registrationKey, forKey: "gcmToken")
+            NSUserDefaults.standardUserDefaults().setObject(self.registrationToken, forKey: "gcmToken")
         } else {
             print("Registration to GCM failed with error: \(error.localizedDescription)")
             let userInfo = ["error": error.localizedDescription]
             NSNotificationCenter.defaultCenter().postNotificationName(
                 self.registrationKey, object: nil, userInfo: userInfo)
         }
-    }
-    
-    func application( application: UIApplication,
-        didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
-        fetchCompletionHandler handler: (UIBackgroundFetchResult) -> Void) {
-            print("Notification received: \(userInfo)")
-            // This works only if the app started the GCM service
-            GCMService.sharedInstance().appDidReceiveMessage(userInfo);
-            // Handle the received message
-            // Invoke the completion handler passing the appropriate UIBackgroundFetchResult value
-            // [START_EXCLUDE]
-            NSNotificationCenter.defaultCenter().postNotificationName(messageKey, object: nil,
-                userInfo: userInfo)
-            handler(UIBackgroundFetchResult.NoData);
-            // [END_EXCLUDE]
     }
     
     func subscribeToTopic() {
@@ -207,13 +217,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         // [END_EXCLUDE]
     }
 
-
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
+        let aps = userInfo["aps"] as! [String: AnyObject]
+        print("here")
+        if (identifier == "SEND_IDENTIFIER") {
+            print(aps)
+        }
+        completionHandler()
     }
 }
 

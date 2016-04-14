@@ -12,6 +12,7 @@ class DisplayContactView: UIView {
     
     var contactName: String!
     var contactInitials: String!
+    var autoShareEnabled: Bool!
     
     var initialsView: UITextView!
     var fullnameView: UITextView!
@@ -31,6 +32,7 @@ class DisplayContactView: UIView {
         self.backgroundColor = contactData.color
         self.contactName = contactData.getName()
         self.contactInitials = contactData.generateInitials()
+        self.autoShareEnabled = contactData.autoShare
         
         self.drawDisplayContactContent()
     }
@@ -38,7 +40,9 @@ class DisplayContactView: UIView {
     func drawDisplayContactContent() {
         drawInitialsTextView()
         drawFullnameTextView()
-        drawAutoShareShapeView()
+        if (self.autoShareEnabled == true) {
+            drawAutoShareShapeView()
+        }
     }
     
     func drawFullnameTextView() {

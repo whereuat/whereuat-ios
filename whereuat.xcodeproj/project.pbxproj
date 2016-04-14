@@ -11,6 +11,7 @@
 		8324A1221CA334C600709EDC /* ContactViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8324A1211CA334C600709EDC /* ContactViewCell.swift */; };
 		8324A1241CA358C800709EDC /* contactTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8324A1231CA358C800709EDC /* contactTests.swift */; };
 		832E8EBC1CB5B60000DC4258 /* LocationSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832E8EBB1CB5B60000DC4258 /* LocationSender.swift */; };
+		8343EDAD1CC5775B00DD8606 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8343EDAC1CC5775B00DD8606 /* Notification.swift */; };
 		8363D1691C7FA75400777C5C /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83346B391C6D419B0065EAC0 /* ContactView.swift */; };
 		8397186B1C7BFA5A001931CF /* EditContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8397186A1C7BFA5A001931CF /* EditContactView.swift */; };
 		8398D8D91CB60BAE00FD58AE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8398D8D81CB60BAE00FD58AE /* GoogleService-Info.plist */; };
@@ -44,6 +45,7 @@
 		83C25D081C84FB66007DA05E /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83C25CF61C84FA2B007DA05E /* Lato-Thin.ttf */; };
 		83C25D091C84FB66007DA05E /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83C25CF71C84FA2B007DA05E /* Lato-ThinItalic.ttf */; };
 		83DAEB991C766FDD004519EB /* DisplayContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DAEB981C766FDD004519EB /* DisplayContactView.swift */; };
+		83FEBCCD1CC4392300D1FC99 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FEBCCC1CC4392300D1FC99 /* Global.swift */; };
 		8CECF74847AFAE4FD4A72C8D /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B42B215A2EA268A51988265 /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +74,7 @@
 		8324A1231CA358C800709EDC /* contactTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = contactTests.swift; sourceTree = "<group>"; };
 		832E8EBB1CB5B60000DC4258 /* LocationSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSender.swift; sourceTree = "<group>"; };
 		83346B391C6D419B0065EAC0 /* ContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		8343EDAC1CC5775B00DD8606 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		8353F1151CB4B7EF00E8BDBF /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		8397186A1C7BFA5A001931CF /* EditContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContactView.swift; sourceTree = "<group>"; };
 		8398D8D81CB60BAE00FD58AE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -111,6 +114,7 @@
 		83C25CF61C84FA2B007DA05E /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
 		83C25CF71C84FA2B007DA05E /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
 		83DAEB981C766FDD004519EB /* DisplayContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayContactView.swift; sourceTree = "<group>"; };
+		83FEBCCC1CC4392300D1FC99 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		A9CCC653F82A8D0BF822C369 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,7 +179,9 @@
 			isa = PBXGroup;
 			children = (
 				839A4FE91C69426900870B57 /* AppDelegate.swift */,
+				8343EDAC1CC5775B00DD8606 /* Notification.swift */,
 				83C25CCF1C84F206007DA05E /* Style.swift */,
+				83FEBCCC1CC4392300D1FC99 /* Global.swift */,
 				832023C01CA1EF5800F08194 /* Database.swift */,
 				832E8EBB1CB5B60000DC4258 /* LocationSender.swift */,
 				83C084B21C85636D00B8C383 /* RegisterView */,
@@ -480,11 +486,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8343EDAD1CC5775B00DD8606 /* Notification.swift in Sources */,
 				83DAEB991C766FDD004519EB /* DisplayContactView.swift in Sources */,
 				832E8EBC1CB5B60000DC4258 /* LocationSender.swift in Sources */,
 				83C084C21C89192B00B8C383 /* PushButtonView.swift in Sources */,
 				83B3807A1C6B21D100D00578 /* ContactsViewController.swift in Sources */,
 				83C084BA1C8565A000B8C383 /* RegisterViewController.swift in Sources */,
+				83FEBCCD1CC4392300D1FC99 /* Global.swift in Sources */,
 				8397186B1C7BFA5A001931CF /* EditContactView.swift in Sources */,
 				8363D1691C7FA75400777C5C /* ContactView.swift in Sources */,
 				83C084BC1C85668000B8C383 /* RegisterView.swift in Sources */,
