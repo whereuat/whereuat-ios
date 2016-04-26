@@ -46,6 +46,12 @@
 		83DAEB991C766FDD004519EB /* DisplayContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DAEB981C766FDD004519EB /* DisplayContactView.swift */; };
 		83ED58131CCF326D00D24133 /* FloatingActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED58121CCF326D00D24133 /* FloatingActionButton.swift */; };
 		83ED58161CCF352200D24133 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83ED58151CCF352200D24133 /* Images.xcassets */; };
+		83ED581B1CCF373500D24133 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED58171CCF373500D24133 /* Contact.swift */; };
+		83ED581C1CCF373500D24133 /* ContactTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED58181CCF373500D24133 /* ContactTable.swift */; };
+		83ED581D1CCF373500D24133 /* KeyLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED58191CCF373500D24133 /* KeyLocation.swift */; };
+		83ED581E1CCF373500D24133 /* KeyLocationTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED581A1CCF373500D24133 /* KeyLocationTable.swift */; };
+		83ED58221CCF38C700D24133 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED58201CCF38C700D24133 /* Model.swift */; };
+		83ED58231CCF38C700D24133 /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED58211CCF38C700D24133 /* Table.swift */; };
 		83FEBCCD1CC4392300D1FC99 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FEBCCC1CC4392300D1FC99 /* Global.swift */; };
 		8CECF74847AFAE4FD4A72C8D /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B42B215A2EA268A51988265 /* Pods.framework */; };
 /* End PBXBuildFile section */
@@ -116,6 +122,12 @@
 		83DAEB981C766FDD004519EB /* DisplayContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayContactView.swift; sourceTree = "<group>"; };
 		83ED58121CCF326D00D24133 /* FloatingActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingActionButton.swift; sourceTree = "<group>"; };
 		83ED58151CCF352200D24133 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		83ED58171CCF373500D24133 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		83ED58181CCF373500D24133 /* ContactTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTable.swift; sourceTree = "<group>"; };
+		83ED58191CCF373500D24133 /* KeyLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyLocation.swift; sourceTree = "<group>"; };
+		83ED581A1CCF373500D24133 /* KeyLocationTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyLocationTable.swift; sourceTree = "<group>"; };
+		83ED58201CCF38C700D24133 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		83ED58211CCF38C700D24133 /* Table.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		83FEBCCC1CC4392300D1FC99 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		A9CCC653F82A8D0BF822C369 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -180,11 +192,11 @@
 		839A4FE81C69426900870B57 /* whereuat-ios */ = {
 			isa = PBXGroup;
 			children = (
+				83ED581F1CCF373900D24133 /* Database */,
 				839A4FE91C69426900870B57 /* AppDelegate.swift */,
 				8343EDAC1CC5775B00DD8606 /* Notification.swift */,
 				83C25CCF1C84F206007DA05E /* Style.swift */,
 				83FEBCCC1CC4392300D1FC99 /* Global.swift */,
-				832023C01CA1EF5800F08194 /* Database.swift */,
 				832E8EBB1CB5B60000DC4258 /* LocationSender.swift */,
 				83C084B21C85636D00B8C383 /* RegisterView */,
 				83C25CD21C84F9E2007DA05E /* Supporting Files */,
@@ -271,6 +283,20 @@
 				83C25CF71C84FA2B007DA05E /* Lato-ThinItalic.ttf */,
 			);
 			name = Lato;
+			sourceTree = "<group>";
+		};
+		83ED581F1CCF373900D24133 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				83ED58201CCF38C700D24133 /* Model.swift */,
+				83ED58211CCF38C700D24133 /* Table.swift */,
+				832023C01CA1EF5800F08194 /* Database.swift */,
+				83ED58171CCF373500D24133 /* Contact.swift */,
+				83ED58181CCF373500D24133 /* ContactTable.swift */,
+				83ED58191CCF373500D24133 /* KeyLocation.swift */,
+				83ED581A1CCF373500D24133 /* KeyLocationTable.swift */,
+			);
+			name = Database;
 			sourceTree = "<group>";
 		};
 		9A7CB15EB43904BBB31607CF /* Pods */ = {
@@ -491,9 +517,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8343EDAD1CC5775B00DD8606 /* Notification.swift in Sources */,
+				83ED581C1CCF373500D24133 /* ContactTable.swift in Sources */,
 				83DAEB991C766FDD004519EB /* DisplayContactView.swift in Sources */,
+				83ED581E1CCF373500D24133 /* KeyLocationTable.swift in Sources */,
 				832E8EBC1CB5B60000DC4258 /* LocationSender.swift in Sources */,
 				83B3807A1C6B21D100D00578 /* ContactsViewController.swift in Sources */,
+				83ED58231CCF38C700D24133 /* Table.swift in Sources */,
 				83C084BA1C8565A000B8C383 /* RegisterViewController.swift in Sources */,
 				83FEBCCD1CC4392300D1FC99 /* Global.swift in Sources */,
 				83ED58131CCF326D00D24133 /* FloatingActionButton.swift in Sources */,
@@ -502,6 +531,9 @@
 				83C084BC1C85668000B8C383 /* RegisterView.swift in Sources */,
 				8324A1221CA334C600709EDC /* ContactViewCell.swift in Sources */,
 				839A4FEA1C69426900870B57 /* AppDelegate.swift in Sources */,
+				83ED581D1CCF373500D24133 /* KeyLocation.swift in Sources */,
+				83ED581B1CCF373500D24133 /* Contact.swift in Sources */,
+				83ED58221CCF38C700D24133 /* Model.swift in Sources */,
 				832023C11CA1EF5800F08194 /* Database.swift in Sources */,
 				83C25CD01C84F206007DA05E /* Style.swift in Sources */,
 			);

@@ -9,7 +9,7 @@
 import Foundation
 
 struct Global {
-    static let serverURL = "http://a9bb9e94.ngrok.io"
+    static let serverURL = "http://whereuat.xyz"
 }
 
 struct Language {

@@ -16,7 +16,7 @@ let themeColor = UIColor(red: 0.01, green: 0.41, blue: 0.22, alpha: 1.0)
 class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GCMReceiverDelegate {
 
     var window: UIWindow?
-    var contactDatabase = ContactDatabase.sharedInstance
+    var contactTable = Database.sharedInstance.contactTable
     
     // GCM Variables
     var connectedToGCM = false
@@ -62,11 +62,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
             initialViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
         } else {
             initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
-            self.contactDatabase.dropDatabase()
+            self.contactTable.dropTable()
             // Create database tables
-            self.contactDatabase.setUpDatabase()
+            self.contactTable.setUpTable()
             // Load mock data into database
-            self.contactDatabase.generateMockData()
+            self.contactTable.generateMockData()
         }
         
         // Set up the initial view controller

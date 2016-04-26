@@ -147,7 +147,7 @@ class EditContactView: UIView {
         }
         autoShareEnabled = !autoShareEnabled
         // Propagate change to database layer
-        ContactDatabase.sharedInstance.toggleAutoShare(self.phoneNumber)
+        Database.sharedInstance.contactTable.toggleAutoShare(self.phoneNumber)
         self.setNeedsDisplay()
     }
 

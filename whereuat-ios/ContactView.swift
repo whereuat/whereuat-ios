@@ -85,7 +85,7 @@ class ContactView: UIView {
                 }
         }
         // Propagate request to database layer: update request count number
-        ContactDatabase.sharedInstance.updateRequestedCount(self.contactData.phoneNumber)
+        Database.sharedInstance.contactTable.updateRequestedCount(self.contactData.phoneNumber)
         self.editContactView.setNeedsDisplay()
     }
     

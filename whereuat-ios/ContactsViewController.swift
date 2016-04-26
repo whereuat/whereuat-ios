@@ -17,11 +17,13 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
 
     private let reuseIdentifier = "ContactCell"
     let locationManager = CLLocationManager()
+    var location: CLLocationCoordinate2D!
     
-    // Set up Database as Singleton
-    var contactDatabase = ContactDatabase.sharedInstance
+    // Set up Databases as Singletons
+    var database: Database!
     
     var contactData: Array<Contact>!
+    var keyLocationData: Array<KeyLocation>!
 
     var mainFAB: FloatingActionButton!
     
@@ -33,7 +35,9 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         self.view.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
 
         // Load mock data into contactData array
-        self.contactData = self.contactDatabase.getContacts()
+        database = Database.sharedInstance
+        self.contactData = database.contactTable.getAll() as! Array<Contact>
+        self.keyLocationData = database.keyLocationTable.getAll() as! Array<KeyLocation>
         
         // Draw the FAB to appear on the bottom right of the screen
         self.mainFAB = FloatingActionButton(color: ColorWheel.coolRed)
@@ -52,8 +56,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-//        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        self.location = manager.location!.coordinate
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -112,7 +115,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                     formattedNumberString += numberString
                     let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0, color: ColorWheel.randomColor())
                     self.contactData.append(newContact)
-                    self.contactDatabase.insertContact(newContact)
+                    self.database.contactTable.insert(newContact)
                     self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: contactCount, inSection: 0)])
                     break
                 }
@@ -121,7 +124,19 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
     }
     
     func addKeyLocation() {
-        print("Add Key Location")
+        let alert = UIAlertController(title: nil, message: "Set Current Location As", preferredStyle: .Alert)
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
+            let textField = alert.textFields![0] as UITextField
+            print("Text field: \(textField.text)")
+        }))
+        alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: { (action) -> Void in
+            let textField = alert.textFields![0] as UITextField
+            let newKeyLocation = KeyLocation(name: textField.text!, longitude: self.location.longitude, latitude: self.location.latitude)
+            self.database.keyLocationTable.insert(newKeyLocation)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 
 }

@@ -30,8 +30,8 @@ class LocationSender {
                 "from" : fromPhoneNumber,
                 "to" : self.toPhoneNumber,
                 "current-location": [
-                        "lat" : 42.727940,
-                        "lng" : -73.68986
+                        "lat" : self.lat,
+                        "lng" : self.long
                 ],
                 "key-location" : NSNull()
                 ]
