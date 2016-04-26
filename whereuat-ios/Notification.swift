@@ -28,6 +28,8 @@ class Notification {
     var alert: UIAlertController?
     var notification: UILocalNotification?
     
+    let location = Location.sharedInstance
+    
     // Initialize a notification. If the isAlert parameter is true, the notification is presented as an alert
     init(data: [NSObject : AnyObject], notificationType: NotificationType = NotificationType.PushNotification) {
         self.notificationType = notificationType
@@ -59,6 +61,7 @@ class Notification {
     
     func constructPushNotification() -> UILocalNotification {
         let localNotification:UILocalNotification = UILocalNotification()
+        localNotification.userInfo = self.data
         if (self.requestType == RequestType.AtRequest) {
             let fromNumber = data["from-#"]! as! String
             localNotification.soundName = UILocalNotificationDefaultSoundName
@@ -82,7 +85,10 @@ class Notification {
             let fromNumber = data["from-#"]! as! String
             alertController.message = fromNumber + Language.atRequest
             alertController.addAction(UIAlertAction(title: "Ignore", style: UIAlertActionStyle.Default, handler: nil))
-            alertController.addAction(UIAlertAction(title: "Send", style: UIAlertActionStyle.Default, handler: nil))
+            alertController.addAction(UIAlertAction(title: "Send", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction) in
+                let number = self.data["from-#"]! as! String
+                self.location.sendLocation(number)
+            }))
         } else if (self.requestType == RequestType.AtResponse) {
             let fromNumber = data["from-#"]! as! String
             let place = data["place"]! as! String

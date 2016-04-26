@@ -13,11 +13,11 @@ import CoreLocation
 
 private let reuseIdentifier = "Cell"
 
-class ContactsViewController: UICollectionViewController, CNContactPickerDelegate, CLLocationManagerDelegate, FABDelegate {
+class ContactsViewController: UICollectionViewController, CNContactPickerDelegate, FABDelegate {
 
     private let reuseIdentifier = "ContactCell"
-    let locationManager = CLLocationManager()
-    var location: CLLocationCoordinate2D!
+    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     // Set up Databases as Singletons
     var database: Database!
@@ -43,20 +43,6 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         self.mainFAB = FloatingActionButton(color: ColorWheel.coolRed)
         self.mainFAB.delegate = self
         self.view.addSubview(self.mainFAB.floatingActionButton)
-        
-        // Grant location permissions
-        self.locationManager.requestAlwaysAuthorization()
-        self.locationManager.requestWhenInUseAuthorization()
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        }
-        
-    }
-    
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        self.location = manager.location!.coordinate
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -133,7 +119,8 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         }))
         alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as UITextField
-            let newKeyLocation = KeyLocation(name: textField.text!, longitude: self.location.longitude, latitude: self.location.latitude)
+            let loc = self.appDelegate.location.location
+            let newKeyLocation = KeyLocation(name: textField.text!, longitude: loc.longitude, latitude: loc.latitude)
             self.database.keyLocationTable.insert(newKeyLocation)
         }))
         self.presentViewController(alert, animated: true, completion: nil)

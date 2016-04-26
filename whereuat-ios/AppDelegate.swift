@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreLocation
 
 let themeColor = UIColor(red: 0.01, green: 0.41, blue: 0.22, alpha: 1.0)
 
@@ -17,6 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
 
     var window: UIWindow?
     var contactTable = Database.sharedInstance.contactTable
+    
+    // Configure location finder
+    let location = Location.sharedInstance
     
     // GCM Variables
     var connectedToGCM = false
@@ -28,9 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
     let messageKey = "onMessageReceived"
     let subscriptionTopic = "/topics/global"
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
         
         // Configure push notifications
         let request_location_category = getRequestLocationNotificationCategory()
@@ -62,11 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
             initialViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
         } else {
             initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
-            self.contactTable.dropTable()
-            // Create database tables
-            self.contactTable.setUpTable()
-            // Load mock data into database
-            self.contactTable.generateMockData()
         }
         
         // Set up the initial view controller
@@ -80,15 +75,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         let ignoreAction = UIMutableUserNotificationAction()
         ignoreAction.identifier = "IGNORE_IDENTIFIER"
         ignoreAction.title = "Ignore"
-        ignoreAction.activationMode = .Foreground
+        ignoreAction.activationMode = .Background
         let sendAction = UIMutableUserNotificationAction()
         sendAction.identifier = "SEND_IDENTIFIER"
         sendAction.title = "Send"
-        sendAction.activationMode = .Foreground
+        sendAction.activationMode = .Background
         
         let request_location_category = UIMutableUserNotificationCategory()
         request_location_category.identifier = "REQUEST_LOCATION_CATEGORY"
-        request_location_category.setActions([ignoreAction, sendAction], forContext: .Default)
+        request_location_category.setActions([sendAction, ignoreAction], forContext: .Default)
+        request_location_category.setActions([sendAction, ignoreAction], forContext: .Minimal)
         
         return request_location_category
     }
@@ -97,11 +93,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         let doneAction = UIMutableUserNotificationAction()
         doneAction.identifier = "DONE_IDENTIFIER"
         doneAction.title = "Done"
-        doneAction.activationMode = .Foreground
+        doneAction.activationMode = .Background
         
         let received_location_category = UIMutableUserNotificationCategory()
         received_location_category.identifier = "RECEIVE_LOCATION_CATEGORY"
         received_location_category.setActions([doneAction], forContext: .Default)
+        received_location_category.setActions([doneAction], forContext: .Minimal)
         
         return received_location_category
     }
@@ -225,11 +222,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
-        let aps = userInfo["aps"] as! [String: AnyObject]
-        print("here")
-        if (identifier == "SEND_IDENTIFIER") {
-            print(aps)
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+        if (notification.category == "REQUEST_LOCATION_CATEGORY") {
+            switch identifier!{
+            case "SEND_IDENTIFIER":
+                let number = notification.userInfo!["from-#"]! as! String
+                self.location.sendLocation(number)
+            default:
+                print("Invalid response type")
+            }
         }
         completionHandler()
     }

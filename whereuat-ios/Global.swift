@@ -14,5 +14,5 @@ struct Global {
 
 struct Language {
     static let atRequest = ": whereu@?"
-    static let atResponse = " is @"
+    static let atResponse = " is @ "
 }
