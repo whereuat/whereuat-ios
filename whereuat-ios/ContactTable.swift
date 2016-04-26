@@ -177,8 +177,14 @@ class ContactTable: Table {
         }
     }
     
-    func updateRequestedCount(name: String) {
-        
+    func updateRequestedCount(phoneNumber: String) {
+        let contact = getContact(phoneNumber)!
+        let query = contacts.filter(phoneNumberColumn == phoneNumber)
+        do {
+            try db!.run(query.update(self.requestedCountColumn <- contact.requestedCount + 1))
+        } catch {
+            print("Unable to update contact")
+        }
     }
     
 }

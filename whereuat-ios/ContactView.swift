@@ -71,6 +71,8 @@ class ContactView: UIView {
             displayContactMode = false
             self.addConstrainedSubview(editContactView)
             self.displayContactView.removeFromSuperview()
+            self.editContactView.requestedCountView.removeFromSuperview()
+            self.editContactView.drawRequestedCountTextView()
         } else {
             UIView.transitionFromView(editContactView, toView: displayContactView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, completion: nil)
             displayContactMode = true
@@ -102,7 +104,6 @@ class ContactView: UIView {
         }
         // Propagate request to database layer: update request count number
         Database.sharedInstance.contactTable.updateRequestedCount(self.contactData.phoneNumber)
-        self.editContactView.setNeedsDisplay()
     }
     
     func addConstrainedSubview(viewName: UIView) {

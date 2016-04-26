@@ -28,7 +28,7 @@ struct ColorWheel {
     static let offWhite = UIColor(hex: 0xFAFAFA)
     
     static func randomColor() -> UIColor {
-        return RandomColorSwift.randomColor(hue: .Random, luminosity: .Dark)
+        return RandomColorSwift.randomColor(hue: .Random, luminosity: .Light)
     }
 }
 
