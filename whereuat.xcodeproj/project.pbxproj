@@ -684,6 +684,7 @@
 				INFOPLIST_FILE = "whereuat-ios/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
+				"OTHER_SWIFT_FLAGS[arch=*]" = "\"-D\" \"DEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.whereuat.whereuat;
 				PRODUCT_NAME = whereuat;
 				PROVISIONING_PROFILE = "";
