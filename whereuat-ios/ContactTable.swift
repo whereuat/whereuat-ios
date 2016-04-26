@@ -144,11 +144,37 @@ class ContactTable: Table {
         return contactArray
     }
     
-    func getContact(id: Int64) {
+    func getContact(phoneNumber: String) -> Contact? {
+        do {
+            let query = contacts.filter(phoneNumberColumn == phoneNumber)
+            let c = try (db!).prepare(query)
+            for contact in  c {
+                return Contact(firstName: contact[self.firstNameColumn],
+                               lastName: contact[self.lastNameColumn],
+                               phoneNumber: contact[self.phoneNumberColumn],
+                               autoShare: contact[self.autoShareColumn],
+                               requestedCount: contact[self.requestedCountColumn],
+                               color: NSKeyedUnarchiver.unarchiveObjectWithData(contact[self.colorColumn]) as! UIColor)
+            }
+            return nil
+        } catch {
+            print("Unable to get contact")
+            return nil
+        }
     }
     
-    func toggleAutoShare(name: String) {
-        
+    func toggleAutoShare(phoneNumber: String) {
+        let contact = getContact(phoneNumber)!
+        let query = contacts.filter(phoneNumberColumn == phoneNumber)
+        do {
+            if (contact.autoShare == true) {
+                try db!.run(query.update(self.autoShareColumn <- false))
+            } else {
+                try db!.run(query.update(self.autoShareColumn <- true))
+            }
+        } catch {
+            print("Unable to update contact")
+        }
     }
     
     func updateRequestedCount(name: String) {

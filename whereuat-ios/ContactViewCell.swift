@@ -9,6 +9,8 @@
 import UIKit
 
 class ContactViewCell: UICollectionViewCell {
+    
+    var delegate: ContactsViewController!
     var contactView: ContactView!
     
     var contactData: Contact!
@@ -19,6 +21,8 @@ class ContactViewCell: UICollectionViewCell {
     
     func addContactView() {
         self.contactView = ContactView(contactData: contactData)
+        self.contactView.delegate = delegate
+        
         self.addSubview(contactView)
         self.contactView.translatesAutoresizingMaskIntoConstraints = false
         let leftSideConstraint = NSLayoutConstraint(item: self.contactView, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1.0, constant: 0.0)

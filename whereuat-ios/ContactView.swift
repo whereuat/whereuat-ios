@@ -11,8 +11,10 @@ import Alamofire
 
 class ContactView: UIView {
     
+    var delegate: ContactsViewController!
+    
     var displayContactView: DisplayContactView!
-    var editContactView: UIView!
+    var editContactView: EditContactView!
     var displayContactMode = true
     
     var contactColor: UIColor!
@@ -50,6 +52,17 @@ class ContactView: UIView {
     }
     
     func contactCardFlip(sender: UILongPressGestureRecognizer) {
+        // TODO: This should be moved to a more sensible location, but it needs to happen
+        // after initialization because of the order in which the contactViewCell is drawn
+        self.displayContactView.delegate = self.delegate
+        self.editContactView.delegate = self.delegate
+        
+        // Fetch the latest contact data
+        self.contactData = Database.sharedInstance.contactTable.getContact((contactData?.phoneNumber)!)
+        self.displayContactView.autoShareEnabled = contactData.autoShare
+        self.editContactView.autoShareEnabled = contactData.autoShare
+        self.editContactView.requestedCount = contactData.requestedCount
+        
         if (sender.state != UIGestureRecognizerState.Ended) {
             return
         }
@@ -57,10 +70,13 @@ class ContactView: UIView {
             UIView.transitionFromView(displayContactView, toView: editContactView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromRight, completion: nil);
             displayContactMode = false
             self.addConstrainedSubview(editContactView)
+            self.displayContactView.removeFromSuperview()
         } else {
             UIView.transitionFromView(editContactView, toView: displayContactView, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromLeft, completion: nil)
             displayContactMode = true
             self.addConstrainedSubview(displayContactView)
+            self.editContactView.removeFromSuperview()
+            self.displayContactView.drawDisplayContactContent()
         }
     }
     

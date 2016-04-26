@@ -10,6 +10,9 @@ import UIKit
 
 class DisplayContactView: UIView {
     
+    var delegate: ContactsViewController!
+    
+    var contactData: Contact!
     var contactName: String!
     var contactInitials: String!
     var autoShareEnabled: Bool!
@@ -42,6 +45,8 @@ class DisplayContactView: UIView {
         drawFullnameTextView()
         if (self.autoShareEnabled == true) {
             drawAutoShareShapeView()
+        } else {
+            self.autoShareShapeView?.removeFromSuperview()
         }
     }
     

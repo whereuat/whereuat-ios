@@ -47,7 +47,6 @@ class LocationSender {
         ]
         parameters.updateValue(keyLocation as! NSObject, forKey: "key-location")
 
-        print(parameters)
         Alamofire.request(.POST, Global.serverURL + "/at", parameters: parameters, encoding: .JSON)
             .validate()
             .responseString { response in

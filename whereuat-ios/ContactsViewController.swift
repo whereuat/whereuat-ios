@@ -51,6 +51,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ContactViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ContactViewCell
+        cell.delegate = self
         cell.contactData = self.contactData[indexPath.row]
         cell.addContactView()
         return cell

@@ -243,8 +243,8 @@
 			isa = PBXGroup;
 			children = (
 				83ED58121CCF326D00D24133 /* FloatingActionButton.swift */,
-				8324A1211CA334C600709EDC /* ContactViewCell.swift */,
 				83B380791C6B21D100D00578 /* ContactsViewController.swift */,
+				8324A1211CA334C600709EDC /* ContactViewCell.swift */,
 				83346B391C6D419B0065EAC0 /* ContactView.swift */,
 				83DAEB981C766FDD004519EB /* DisplayContactView.swift */,
 				8397186A1C7BFA5A001931CF /* EditContactView.swift */,

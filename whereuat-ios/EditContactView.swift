@@ -9,6 +9,8 @@
 import UIKit
 
 class EditContactView: UIView {
+    
+    var delegate: ContactsViewController!
 
     var contactName: String!
     var phoneNumber: String!
@@ -148,7 +150,6 @@ class EditContactView: UIView {
         autoShareEnabled = !autoShareEnabled
         // Propagate change to database layer
         Database.sharedInstance.contactTable.toggleAutoShare(self.phoneNumber)
-        self.setNeedsDisplay()
     }
 
     func drawRequestedCountTextView() {
