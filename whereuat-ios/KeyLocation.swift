@@ -18,4 +18,8 @@ class KeyLocation: Model {
         self.longitude = longitude
         self.latitude = latitude
     }
+    
+    func getLocation() -> Location {
+        return Location(long: self.longitude, lat: self.latitude)
+    }
 }

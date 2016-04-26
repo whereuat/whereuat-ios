@@ -17,8 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
     var window: UIWindow?
     var contactTable = Database.sharedInstance.contactTable
     
-    // Configure location finder
-    let location = Location.sharedInstance
+    // Configure location manager
+    let locManager = LocationManager.sharedInstance
     
     // GCM Variables
     var connectedToGCM = false
@@ -227,7 +227,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
             switch identifier!{
             case "SEND_IDENTIFIER":
                 let number = notification.userInfo!["from-#"]! as! String
-                self.location.sendLocation(number)
+                self.locManager.sendLocation(number)
             default:
                 print("Invalid response type")
             }

@@ -28,7 +28,7 @@ class Notification {
     var alert: UIAlertController?
     var notification: UILocalNotification?
     
-    let location = Location.sharedInstance
+    let locManager = LocationManager.sharedInstance
     
     // Initialize a notification. If the isAlert parameter is true, the notification is presented as an alert
     init(data: [NSObject : AnyObject], notificationType: NotificationType = NotificationType.PushNotification) {
@@ -87,7 +87,7 @@ class Notification {
             alertController.addAction(UIAlertAction(title: "Ignore", style: UIAlertActionStyle.Default, handler: nil))
             alertController.addAction(UIAlertAction(title: "Send", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction) in
                 let number = self.data["from-#"]! as! String
-                self.location.sendLocation(number)
+                self.locManager.sendLocation(number)
             }))
         } else if (self.requestType == RequestType.AtResponse) {
             let fromNumber = data["from-#"]! as! String

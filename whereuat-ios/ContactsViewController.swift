@@ -119,9 +119,12 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         }))
         alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as UITextField
-            let loc = self.appDelegate.location.location
+            let loc = self.appDelegate.locManager.location
             let newKeyLocation = KeyLocation(name: textField.text!, longitude: loc.longitude, latitude: loc.latitude)
             self.database.keyLocationTable.insert(newKeyLocation)
+            for kl in self.database.keyLocationTable.getAll() {
+                print((kl as! KeyLocation).name)
+            }
         }))
         self.presentViewController(alert, animated: true, completion: nil)
     }

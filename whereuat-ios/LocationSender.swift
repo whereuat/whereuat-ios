@@ -13,26 +13,40 @@ import CoreLocation
 class LocationSender {
     
     var toPhoneNumber: String
-    var lat: Double
-    var long: Double
+    var location: Location
     
-    init(toPhoneNumber: String, lat: Double, long: Double) {
+    init(toPhoneNumber: String, location: Location) {
         self.toPhoneNumber = toPhoneNumber
-        self.lat = lat
-        self.long = long
+        self.location = location
     }
     
     func sendLocation() {
         let fromPhoneNumber = NSUserDefaults.standardUserDefaults().stringForKey("phoneNumber")!
-        let parameters = [
+        let nearestKeyLocation = Database.sharedInstance.keyLocationTable.getNearestKeyLocation()
+        var keyLocation: AnyObject?
+        if (nearestKeyLocation != nil) {
+            keyLocation = [
+                "name" : nearestKeyLocation!.name,
+                "geometry" : [
+                    "location" : [
+                        "lat" : nearestKeyLocation!.latitude,
+                        "lng" : nearestKeyLocation!.longitude
+                    ]
+                ]
+            ]
+        } else {
+            keyLocation = NSNull()
+        }
+        var parameters: Dictionary = [
             "from" : fromPhoneNumber,
             "to" : self.toPhoneNumber,
             "current-location": [
-                    "lat" : self.lat,
-                    "lng" : self.long
+                "lat" : self.location.lat,
+                "lng" : self.location.long
             ],
-            "key-location" : NSNull()
-            ]
+        ]
+        parameters.updateValue(keyLocation as! NSObject, forKey: "key-location")
+
         print(parameters)
         Alamofire.request(.POST, Global.serverURL + "/at", parameters: parameters, encoding: .JSON)
             .validate()

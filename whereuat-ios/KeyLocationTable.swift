@@ -50,7 +50,7 @@ class KeyLocationTable: Table {
                 t.column(self.idColumn, primaryKey: true)
                 t.column(self.nameColumn)
                 t.column(self.longitudeColumn)
-                t.column(self.latitutdeColumn, unique: true)
+                t.column(self.latitutdeColumn)
                 })
         } catch {
             print("Unable to set up the table")
@@ -69,7 +69,7 @@ class KeyLocationTable: Table {
     func generateMockData() {
         // Insert mock data
         let keyLocation1 = KeyLocation(name: "Home",
-                                       longitude: -73.6901100,
+                                       longitude: -74.6901100,
                                        latitude: 42.7279760)
         insert(keyLocation1)
     }
@@ -99,6 +99,30 @@ class KeyLocationTable: Table {
             return Array<KeyLocation>()
         }
         return keyLocationArray
+    }
+    
+    func getNearestKeyLocation() -> KeyLocation? {
+        // TODO: Perhaps this should do an intelligent query on the db
+        // but for no we'll assume that there just aren't many keylocations, so this is
+        // not too expensive.
+        let keyLocations = self.getAll()
+        if keyLocations.count == 0 {
+            return nil
+        }
+        else {
+            let currentLocation = LocationManager.sharedInstance.getLocation()
+            var nearestKeyLocation = (keyLocations[0] as! KeyLocation)
+            var minDist = Location.getDistance(currentLocation, point2: nearestKeyLocation.getLocation())
+            for keyLocation in keyLocations {
+                let curDist = Location.getDistance(currentLocation, point2: (keyLocation as! KeyLocation).getLocation())
+                print(curDist)
+                if (curDist < minDist) {
+                    nearestKeyLocation = keyLocation as! KeyLocation
+                    minDist = curDist
+                }
+            }
+            return nearestKeyLocation
+        }
     }
     
 }
