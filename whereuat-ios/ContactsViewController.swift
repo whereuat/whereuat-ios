@@ -13,7 +13,7 @@ import CoreLocation
 
 private let reuseIdentifier = "Cell"
 
-class ContactsViewController: UICollectionViewController, CNContactPickerDelegate, CLLocationManagerDelegate{
+class ContactsViewController: UICollectionViewController, CNContactPickerDelegate, CLLocationManagerDelegate, FABDelegate {
 
     private let reuseIdentifier = "ContactCell"
     let locationManager = CLLocationManager()
@@ -23,8 +23,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
     
     var contactData: Array<Contact>!
 
-    var buttonContainer: UIView!
-    var addContactButton: PushButtonView!
+    var mainFAB: FloatingActionButton!
     
     override func viewDidLoad() {
         
@@ -36,7 +35,10 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         // Load mock data into contactData array
         self.contactData = self.contactDatabase.getContacts()
         
-        self.drawAddContactButton()
+        // Draw the FAB to appear on the bottom right of the screen
+        self.mainFAB = FloatingActionButton(color: ColorWheel.coolRed)
+        self.mainFAB.delegate = self
+        self.view.addSubview(self.mainFAB.floatingActionButton)
         
         // Grant location permissions
         self.locationManager.requestAlwaysAuthorization()
@@ -76,40 +78,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         return CGSizeMake(cellSize, cellSize);
     }
     
-    func drawAddContactButton() {
-        // Draw the add contact button
-        self.buttonContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        self.addContactButton = PushButtonView()
-        self.addContactButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-        
-        self.addContactButton.layer.shadowColor = UIColor.blackColor().CGColor
-        self.addContactButton.layer.shadowOffset = CGSizeMake(3, 3)
-        self.addContactButton.layer.shadowRadius = 2
-        self.addContactButton.layer.shadowOpacity = 0.3
-        self.addContactButton.layer.shadowPath = UIBezierPath(roundedRect: self.addContactButton.bounds, cornerRadius: 100.0).CGPath
-        
-        // Add the button to the button container
-        self.buttonContainer.addSubview(self.addContactButton)
-        let bottomButtonConstraint = NSLayoutConstraint(item: self.addContactButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.buttonContainer, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        let rightButtonConstraint = NSLayoutConstraint(item: self.addContactButton, attribute: .Right, relatedBy: .Equal, toItem: self.buttonContainer, attribute: .Right, multiplier: 1.0, constant: 0.0)
-        self.buttonContainer.addConstraints([bottomButtonConstraint, rightButtonConstraint])
-        
-        self.buttonContainer.translatesAutoresizingMaskIntoConstraints = false
-        // Click event handler for add contact
-        self.addContactButton.userInteractionEnabled = true
-        self.addContactButton.becomeFirstResponder()
-        let tap = UITapGestureRecognizer(target: self, action: Selector("addContact:"))
-        self.addContactButton.addGestureRecognizer(tap)
-        
-        // Add the button container to the parent view and constrain it
-        self.view.addSubview(self.buttonContainer)
-        let bottomConstraint = NSLayoutConstraint(item: self.buttonContainer, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: -2*SizingConstants.spacingMargin)
-        let rightContstraint = NSLayoutConstraint(item: self.buttonContainer, attribute: .Right, relatedBy: .Equal, toItem: self.view, attribute: .Right, multiplier: 1.0, constant: -2*SizingConstants.spacingMargin)
-        self.view.addConstraints([bottomConstraint, rightContstraint])
-
-    }
-    
-    func addContact(sender: UITapGestureRecognizer) {
+    func addContact() {
         // Ensure user hasn't previously denied contact access
         let status = CNContactStore.authorizationStatusForEntityType(.Contacts)
         if status == .Denied || status == .Restricted {
@@ -149,6 +118,10 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                 }
             }
         }
+    }
+    
+    func addKeyLocation() {
+        print("Add Key Location")
     }
 
 }

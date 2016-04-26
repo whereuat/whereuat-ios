@@ -24,7 +24,6 @@
 		83C084BA1C8565A000B8C383 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C084B91C8565A000B8C383 /* RegisterViewController.swift */; };
 		83C084BC1C85668000B8C383 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C084BB1C85668000B8C383 /* RegisterView.swift */; };
 		83C084BE1C85794600B8C383 /* whereuat.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C084BD1C85794600B8C383 /* whereuat.png */; };
-		83C084C21C89192B00B8C383 /* PushButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C084C11C89192B00B8C383 /* PushButtonView.swift */; };
 		83C25CD01C84F206007DA05E /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C25CCF1C84F206007DA05E /* Style.swift */; };
 		83C25CF81C84FB66007DA05E /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83C25CE61C84FA2B007DA05E /* Lato-Black.ttf */; };
 		83C25CF91C84FB66007DA05E /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83C25CE71C84FA2B007DA05E /* Lato-BlackItalic.ttf */; };
@@ -45,6 +44,8 @@
 		83C25D081C84FB66007DA05E /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83C25CF61C84FA2B007DA05E /* Lato-Thin.ttf */; };
 		83C25D091C84FB66007DA05E /* Lato-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83C25CF71C84FA2B007DA05E /* Lato-ThinItalic.ttf */; };
 		83DAEB991C766FDD004519EB /* DisplayContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DAEB981C766FDD004519EB /* DisplayContactView.swift */; };
+		83ED58131CCF326D00D24133 /* FloatingActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83ED58121CCF326D00D24133 /* FloatingActionButton.swift */; };
+		83ED58161CCF352200D24133 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83ED58151CCF352200D24133 /* Images.xcassets */; };
 		83FEBCCD1CC4392300D1FC99 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FEBCCC1CC4392300D1FC99 /* Global.swift */; };
 		8CECF74847AFAE4FD4A72C8D /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B42B215A2EA268A51988265 /* Pods.framework */; };
 /* End PBXBuildFile section */
@@ -93,7 +94,6 @@
 		83C084B91C8565A000B8C383 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		83C084BB1C85668000B8C383 /* RegisterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		83C084BD1C85794600B8C383 /* whereuat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whereuat.png; sourceTree = "<group>"; };
-		83C084C11C89192B00B8C383 /* PushButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushButtonView.swift; sourceTree = "<group>"; };
 		83C25CCF1C84F206007DA05E /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		83C25CE61C84FA2B007DA05E /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
 		83C25CE71C84FA2B007DA05E /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -114,6 +114,8 @@
 		83C25CF61C84FA2B007DA05E /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
 		83C25CF71C84FA2B007DA05E /* Lato-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-ThinItalic.ttf"; sourceTree = "<group>"; };
 		83DAEB981C766FDD004519EB /* DisplayContactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayContactView.swift; sourceTree = "<group>"; };
+		83ED58121CCF326D00D24133 /* FloatingActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingActionButton.swift; sourceTree = "<group>"; };
+		83ED58151CCF352200D24133 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		83FEBCCC1CC4392300D1FC99 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		A9CCC653F82A8D0BF822C369 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -224,9 +226,9 @@
 		83C25CD11C84F4AF007DA05E /* ContactView */ = {
 			isa = PBXGroup;
 			children = (
+				83ED58121CCF326D00D24133 /* FloatingActionButton.swift */,
 				8324A1211CA334C600709EDC /* ContactViewCell.swift */,
 				83B380791C6B21D100D00578 /* ContactsViewController.swift */,
-				83C084C11C89192B00B8C383 /* PushButtonView.swift */,
 				83346B391C6D419B0065EAC0 /* ContactView.swift */,
 				83DAEB981C766FDD004519EB /* DisplayContactView.swift */,
 				8397186A1C7BFA5A001931CF /* EditContactView.swift */,
@@ -239,6 +241,7 @@
 			children = (
 				8398D8D81CB60BAE00FD58AE /* GoogleService-Info.plist */,
 				83C084BD1C85794600B8C383 /* whereuat.png */,
+				83ED58151CCF352200D24133 /* Images.xcassets */,
 				83C25CE51C84FA14007DA05E /* Lato */,
 				839A4FF51C69426900870B57 /* Info.plist */,
 			);
@@ -393,6 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83C25CFE1C84FB66007DA05E /* Lato-Heavy.ttf in Resources */,
+				83ED58161CCF352200D24133 /* Images.xcassets in Resources */,
 				83C25D091C84FB66007DA05E /* Lato-ThinItalic.ttf in Resources */,
 				83C084BE1C85794600B8C383 /* whereuat.png in Resources */,
 				83C25D011C84FB66007DA05E /* Lato-Light.ttf in Resources */,
@@ -489,10 +493,10 @@
 				8343EDAD1CC5775B00DD8606 /* Notification.swift in Sources */,
 				83DAEB991C766FDD004519EB /* DisplayContactView.swift in Sources */,
 				832E8EBC1CB5B60000DC4258 /* LocationSender.swift in Sources */,
-				83C084C21C89192B00B8C383 /* PushButtonView.swift in Sources */,
 				83B3807A1C6B21D100D00578 /* ContactsViewController.swift in Sources */,
 				83C084BA1C8565A000B8C383 /* RegisterViewController.swift in Sources */,
 				83FEBCCD1CC4392300D1FC99 /* Global.swift in Sources */,
+				83ED58131CCF326D00D24133 /* FloatingActionButton.swift in Sources */,
 				8397186B1C7BFA5A001931CF /* EditContactView.swift in Sources */,
 				8363D1691C7FA75400777C5C /* ContactView.swift in Sources */,
 				83C084BC1C85668000B8C383 /* RegisterView.swift in Sources */,
