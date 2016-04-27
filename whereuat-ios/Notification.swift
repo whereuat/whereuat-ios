@@ -120,10 +120,25 @@ class Notification {
     
     // Fires the notification based on its notificationType
     func fire() {
-        if(self.notificationType == NotificationType.PushNotification) {
-            UIApplication.sharedApplication().scheduleLocalNotification(self.notification!)
-        } else {
-            self.viewController!.presentViewController(self.alert!, animated: true, completion: nil)
+        var hasOnAutoShare = false
+        // Check if auto share for the particular contact is enabled and send location if so
+        if self.requestType == RequestType.AtRequest {
+            let number = self.data["from-#"]! as! String
+            let contact = Database.sharedInstance.contactTable.getContact(number)
+            if contact != nil {
+                if contact!.autoShare {
+                    hasOnAutoShare = true
+                    self.locManager.sendLocation(number)
+                }
+            }
+        }
+        // If the user is not on auto share, post the notification
+        if !hasOnAutoShare {
+            if(self.notificationType == NotificationType.PushNotification) {
+                UIApplication.sharedApplication().scheduleLocalNotification(self.notification!)
+            } else {
+                self.viewController!.presentViewController(self.alert!, animated: true, completion: nil)
+            }
         }
     }
 }

@@ -133,14 +133,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
                      didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
                      fetchCompletionHandler handler: (UIBackgroundFetchResult) -> Void) {
         GCMService.sharedInstance().appDidReceiveMessage(userInfo)
+        let notification: Notification
         if application.applicationState == .Background {
-            let notification = Notification(data: userInfo, notificationType: NotificationType.PushNotification)
-            notification.fire()
+            notification = Notification(data: userInfo, notificationType: NotificationType.PushNotification)
         }
         else {
-            let notification = Notification(data: userInfo, notificationType: NotificationType.Alert)
-            notification.fire()
+            notification = Notification(data: userInfo, notificationType: NotificationType.Alert)
         }
+        notification.fire()
         handler(UIBackgroundFetchResult.NoData);
     }
     
