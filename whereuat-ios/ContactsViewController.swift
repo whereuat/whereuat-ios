@@ -100,10 +100,12 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                     var formattedNumberString = "+"
                     formattedNumberString += countryCodeLookup[countryCode]!
                     formattedNumberString += numberString
-                    let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0, color: ColorWheel.randomColor())
-                    self.contactData.append(newContact)
-                    self.database.contactTable.insert(newContact)
-                    self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: contactCount, inSection: 0)])
+                    if (Database.sharedInstance.contactTable.getContact(formattedNumberString) == nil) {
+                        let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0, color: ColorWheel.randomColor())
+                        self.contactData.append(newContact)
+                        self.database.contactTable.insert(newContact)
+                        self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: contactCount, inSection: 0)])
+                    }
                     break
                 }
             }
