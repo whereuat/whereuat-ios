@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import JLToast
 
 class ContactView: UIView {
     
@@ -90,6 +91,7 @@ class ContactView: UIView {
             "from" : fromPhoneNumber,
             "to" : toPhoneNumber,
         ]
+        JLToast.makeText(Language.atRequestSent).show()
         Alamofire.request(.POST, whereRequestURL, parameters: verificationParameters, encoding: .JSON)
             .validate()
             .responseString { response in
@@ -99,6 +101,7 @@ class ContactView: UIView {
                     print("Location requested:", toPhoneNumber)
                 case .Failure(let error):
                     print(error)
+                    JLToast.makeText(Language.atRequestFailed).show()
                     print("Failed to request location:", toPhoneNumber)
                 }
         }
