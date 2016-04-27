@@ -21,6 +21,25 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
         self.registerView.delegate = self
         
         view.addSubview(self.registerView)
+        registerForKeyboardNotifications()
+    }
+    
+    func registerForKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeShown:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWillBeShown(aNotification: NSNotification) {
+        let frame = (aNotification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        UIView.animateWithDuration(0.25, animations: {
+            self.registerView.frame.origin.y = -(frame.height-20)
+            }, completion: {
+                (value: Bool) in
+        })
+    }
+    
+    func keyboardWillBeHidden(aNotification: NSNotification) {
+        self.registerView.frame.origin.y = 0
     }
 
     override func didReceiveMemoryWarning() {
