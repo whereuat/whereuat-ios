@@ -64,15 +64,25 @@ class Notification {
         localNotification.userInfo = self.data
         if (self.requestType == RequestType.AtRequest) {
             let fromNumber = data["from-#"]! as! String
+            let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
             localNotification.soundName = UILocalNotificationDefaultSoundName
-            localNotification.alertBody = fromNumber + Language.atRequest
+            if (contactName != nil) {
+                localNotification.alertBody = contactName! + Language.atRequest
+            } else {
+                localNotification.alertBody = fromNumber + Language.atRequest
+            }
             localNotification.fireDate = NSDate()
             localNotification.category = "REQUEST_LOCATION_CATEGORY";
         } else if (self.requestType == RequestType.AtResponse) {
             let fromNumber = data["from-#"]! as! String
+            let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
             let place = data["place"]! as! String
             localNotification.soundName = UILocalNotificationDefaultSoundName
-            localNotification.alertBody = fromNumber + Language.atResponse + place
+            if (contactName != nil) {
+                localNotification.alertBody = contactName! + Language.atResponse + place
+            } else {
+                localNotification.alertBody = fromNumber + Language.atResponse + place
+            }
             localNotification.fireDate = NSDate()
             localNotification.category = "RECEIVE_LOCATION_CATEGORY";
         }
@@ -83,7 +93,12 @@ class Notification {
         var alertController = UIAlertController()
         if (self.requestType == RequestType.AtRequest) {
             let fromNumber = data["from-#"]! as! String
-            alertController.message = fromNumber + Language.atRequest
+            let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
+            if (contactName != nil) {
+                alertController.message = contactName! + Language.atRequest
+            } else {
+                alertController.message = fromNumber + Language.atRequest
+            }
             alertController.addAction(UIAlertAction(title: "Ignore", style: UIAlertActionStyle.Default, handler: nil))
             alertController.addAction(UIAlertAction(title: "Send", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction) in
                 let number = self.data["from-#"]! as! String
@@ -91,8 +106,13 @@ class Notification {
             }))
         } else if (self.requestType == RequestType.AtResponse) {
             let fromNumber = data["from-#"]! as! String
+            let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
             let place = data["place"]! as! String
-            alertController.message = fromNumber + Language.atResponse + place
+            if (contactName != nil) {
+                alertController.message = contactName! + Language.atResponse + place
+            } else {
+                alertController.message = fromNumber + Language.atResponse + place
+            }
             alertController.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.Default, handler: nil))
         }
         return alertController
