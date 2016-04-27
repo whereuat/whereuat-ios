@@ -84,6 +84,11 @@ class ContactView: UIView {
     }
     
     func requestLocationFromContact(sender: UITapGestureRecognizer) {
+        // Fade the view out a little
+        UIView.animateWithDuration(1.0) {
+            self.alpha = 0.5
+        }
+        
         let whereRequestURL = Global.serverURL + "/where"
         let fromPhoneNumber = NSUserDefaults.standardUserDefaults().stringForKey("phoneNumber")!
         let toPhoneNumber = contactData.phoneNumber
@@ -107,6 +112,11 @@ class ContactView: UIView {
         }
         // Propagate request to database layer: update request count number
         Database.sharedInstance.contactTable.updateRequestedCount(self.contactData.phoneNumber)
+        
+        // Fade the view back in
+        UIView.animateWithDuration(1.0) {
+            self.alpha = 1.0
+        }
     }
     
     func addConstrainedSubview(viewName: UIView) {
