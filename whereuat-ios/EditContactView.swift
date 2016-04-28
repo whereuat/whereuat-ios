@@ -123,7 +123,7 @@ class EditContactView: UIView {
         self.autoShareView.addSubview(self.autoShareShapeView)
         self.autoShareShapeView.translatesAutoresizingMaskIntoConstraints = false
         let widthConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 0.33, constant: 0.0)
-        let topConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Top, relatedBy: .Equal, toItem: self.autoShareTextView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let topConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Top, relatedBy: .Equal, toItem: self.autoShareTextView, attribute: .Top, multiplier: 1.0, constant: SizingConstants.quarterSpacingMargin)
         let leftConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Left, relatedBy: .Equal, toItem: self.autoShareTextView, attribute: .Right, multiplier: 1.0, constant: 0.0)
         self.addConstraints([widthConstraint, leftConstraint, topConstraint])
         
