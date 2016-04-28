@@ -79,7 +79,7 @@ class ContactTable: Table {
         let contact1 = Contact(firstName: "Damian",
                                lastName: "Mastylo",
                                phoneNumber: "+19133700735",
-                               autoShare: false,
+                               autoShare: true,
                                requestedCount: 0,
                                color: ColorWheel.randomColor())
         let contact2 = Contact(firstName: "Raymond",
@@ -118,6 +118,7 @@ class ContactTable: Table {
         let insert = self.contacts.insert(self.firstNameColumn <- c.firstName,
                                           self.lastNameColumn <- c.lastName,
                                           self.phoneNumberColumn <- c.phoneNumber,
+                                          self.autoShareColumn <- c.autoShare,
                                           self.colorColumn <- NSKeyedArchiver.archivedDataWithRootObject(c.color))
         do {
             try (self.db!).run(insert)
