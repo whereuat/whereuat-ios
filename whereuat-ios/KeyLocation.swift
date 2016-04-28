@@ -8,6 +8,9 @@
 
 import Foundation
 
+/*
+ * KeyLocation stores relevant information for a key location
+ */
 class KeyLocation: Model {
     var name: String
     var longitude: Double

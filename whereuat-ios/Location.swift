@@ -8,6 +8,9 @@
 
 import Foundation
 
+/*
+ * Location represents a latitude and longitude and supports helper methods
+ */
 class Location {
     
     var long: Double
@@ -21,6 +24,11 @@ class Location {
     class func degreesToRadians(degrees: Double) -> Double { return degrees * M_PI / 180.0 }
     class func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / M_PI }
     
+    /*
+     * getDistance computes the haversine distance between two points
+     * @param point1 - the first location as Location type
+     * @param point2 - the second location as Location type
+     */
     class func getDistance(point1: Location, point2: Location) -> Double {
         
         let lat1 = degreesToRadians(point1.lat)

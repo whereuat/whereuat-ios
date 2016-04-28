@@ -8,6 +8,9 @@
 
 import Foundation
 
+/* 
+ * Table is a protocol implemented by SQLite database tables
+ */
 protocol Table {
     // This method should set a schema for a table
     func setUpTable()

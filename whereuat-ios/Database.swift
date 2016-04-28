@@ -8,6 +8,11 @@
 
 import Foundation
 
+/* 
+ * Database maintains the SQLite database instance for on-phone storage.
+ * It is implemented as a singleton and during initialization, optionally auto drops the tables
+ * and generates mock data if DEBUG mode is set
+ */
 class Database {
     static let sharedInstance = Database()
     
@@ -22,8 +27,14 @@ class Database {
         initTable(self.keyLocationTable)
     }
     
+    /*
+     * initTable initializes a table belonging to the database
+     * @param table - the Table to be initialized
+     */
     func initTable(table: Table) {
-        table.dropTable()
+        #if DEBUG
+            table.dropTable()
+        #endif
         // Create database tables
         table.setUpTable()
         #if DEBUG

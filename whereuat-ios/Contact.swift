@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// Contact stores relevant information for a contact
 class Contact: Model {
     var firstName: String
     var lastName: String
@@ -26,12 +27,18 @@ class Contact: Model {
         self.color = color
     }
     
-    // This function gets a concatenated version of a contact's first and last names
+    /*
+     * getName gets a concatenated version of a contact's first and last names
+     * @return - concatenated first and last name
+     */
     func getName() -> String {
         return self.firstName + " " + self.lastName
     }
     
-    // This function returns the initials of a contact (first letter of first and last names)
+    /*
+     * generateInitials gets the initials of a contact
+     * @return - first letter of first and last names
+     */
     func generateInitials() -> String {
         if (self.firstName.characters.count == 0 && self.lastName.characters.count == 0) {
             return "**"

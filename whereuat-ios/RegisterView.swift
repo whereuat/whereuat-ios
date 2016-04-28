@@ -14,6 +14,9 @@ protocol RegisterViewDelegate : class {
     func goButtonClickHandler()
 }
 
+/*
+ * RegisterView draws the UI elements inside the registration page
+ */
 class RegisterView: UIView {
     
     var delegate: RegisterViewDelegate!
@@ -43,14 +46,21 @@ class RegisterView: UIView {
         self.drawVerificationCodeView()
         self.drawGoButton()
         
-        let keyboardDismissTap = UITapGestureRecognizer(target: self, action: "dismissKeyboard:")
+        // Register keyboard dismiss
+        let keyboardDismissTap = UITapGestureRecognizer(target: self, action: #selector(RegisterView.dismissKeyboard(_:)))
         self.addGestureRecognizer(keyboardDismissTap)
     }
     
+    /*
+     * dismissKeyboard dismisses the keyboard from the view
+     */
     func dismissKeyboard(sender:UITapGestureRecognizer){
         self.endEditing(true)
     }
     
+    /*
+     * drawLogoView draws the whereu@ logo at the top of the view
+     */
     func drawLogoView() {
         let imageName = "whereuat.png"
         let image = UIImage(named: imageName)
@@ -65,6 +75,10 @@ class RegisterView: UIView {
         self.addSubview(self.logoView)
     }
     
+    /*
+     * drawEnterTextView is the helper text to fill out the form.
+     * It is drawn under the logo.
+     */
     func drawEnterTextView() {
         self.enterTextView = UITextView()
         
@@ -82,6 +96,9 @@ class RegisterView: UIView {
         self.addConstraints([widthConstraint, topConstraint, heightConstraint])
     }
     
+    /*
+     * drawPhoneNumberView draws two child phone number views under the helper text
+     */
     func drawPhoneNumberView() {
         self.phoneNumberView = UIView()
         
@@ -98,6 +115,9 @@ class RegisterView: UIView {
         self.drawLineNumberView()
     }
     
+    /*
+     * drawAreaCodeView draws the text box to write an area code in
+     */
     func drawAreaCodeView() {
         self.areaCodeView = UITextField()
         
@@ -122,11 +142,42 @@ class RegisterView: UIView {
         self.addConstraints([widthConstraint, topConstraint, heightConstraint, leftConstraint])
     }
     
+    /*
+     * drawLineNumberView draws the text box to write a phone line number in
+     */
+    func drawLineNumberView() {
+        self.lineNumberView = UITextField()
+        
+        self.lineNumberView.backgroundColor = ColorWheel.offWhite
+        let placeholder = NSAttributedString(string: "XXXXXXX", attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
+        self.lineNumberView.attributedPlaceholder = placeholder
+        self.lineNumberView.font = FontStyle.smallLight
+        self.lineNumberView.textColor = ColorWheel.offBlack
+        self.lineNumberView.textAlignment = .Center
+        self.lineNumberView.keyboardType = UIKeyboardType.NumberPad
+        
+        self.lineNumberView.layer.borderWidth = 1
+        self.lineNumberView.layer.borderColor = ColorWheel.darkGray.CGColor
+        
+        self.addSubview(self.lineNumberView)
+        self.lineNumberView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let widthConstraint = NSLayoutConstraint(item: self.lineNumberView, attribute: .Width, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Width, multiplier: 0.65, constant: 0.0)
+        let topConstraint = NSLayoutConstraint(item: self.lineNumberView, attribute: .Top, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let heightConstraint = NSLayoutConstraint(item: self.lineNumberView, attribute: .Height, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Height, multiplier: 1.0, constant: 0.0)
+        let rightConstraint = NSLayoutConstraint(item: self.lineNumberView, attribute: .Right, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Right, multiplier: 1.0, constant: 0.0)
+        self.addConstraints([widthConstraint, topConstraint, heightConstraint, rightConstraint])
+    }
+    
+    /*
+     * drawVerificationCodeView draws the verification code view in the same location as the
+     * phoneNumberView
+     */
     func drawVerificationCodeView() {
         self.verificationCodeView = UITextField()
         
         self.verificationCodeView.backgroundColor = ColorWheel.offWhite
-        let placeholder = NSAttributedString(string: "12345", attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
+        let placeholder = NSAttributedString(string: "00000", attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
         self.verificationCodeView.attributedPlaceholder = placeholder
         self.verificationCodeView.font = FontStyle.smallLight
         self.verificationCodeView.textColor = ColorWheel.offBlack
@@ -147,30 +198,9 @@ class RegisterView: UIView {
         self.addConstraints([widthConstraint, topConstraint, heightConstraint, centerXConstraint])
     }
     
-    func drawLineNumberView() {
-        self.lineNumberView = UITextField()
-        
-        self.lineNumberView.backgroundColor = ColorWheel.offWhite
-        let placeholder = NSAttributedString(string: "XXX - XXXX", attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
-        self.lineNumberView.attributedPlaceholder = placeholder
-        self.lineNumberView.font = FontStyle.smallLight
-        self.lineNumberView.textColor = ColorWheel.offBlack
-        self.lineNumberView.textAlignment = .Center
-        self.lineNumberView.keyboardType = UIKeyboardType.NumberPad
-        
-        self.lineNumberView.layer.borderWidth = 1
-        self.lineNumberView.layer.borderColor = ColorWheel.darkGray.CGColor
-        
-        self.addSubview(self.lineNumberView)
-        self.lineNumberView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let widthConstraint = NSLayoutConstraint(item: self.lineNumberView, attribute: .Width, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Width, multiplier: 0.65, constant: 0.0)
-        let topConstraint = NSLayoutConstraint(item: self.lineNumberView, attribute: .Top, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Top, multiplier: 1.0, constant: 0.0)
-        let heightConstraint = NSLayoutConstraint(item: self.lineNumberView, attribute: .Height, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Height, multiplier: 1.0, constant: 0.0)
-        let rightConstraint = NSLayoutConstraint(item: self.lineNumberView, attribute: .Right, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Right, multiplier: 1.0, constant: 0.0)
-        self.addConstraints([widthConstraint, topConstraint, heightConstraint, rightConstraint])
-    }
-    
+    /*
+     * drawGoButton draws the button that performs actions on the page
+     */
     func drawGoButton() {
         self.goButton = UIButton()
         self.goButton.setTitle("send sms", forState: .Normal)
@@ -187,9 +217,14 @@ class RegisterView: UIView {
         let centerXConstraint = NSLayoutConstraint(item: self.goButton, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
         self.addConstraints([widthConstraint, topConstraint, heightConstraint, centerXConstraint])
         
-        self.goButton.addTarget(self.delegate, action: "goButtonClickHandler", forControlEvents: .TouchUpInside)
+        // delegate the button's action to the controller
+        self.goButton.addTarget(self.delegate, action: Selector("goButtonClickHandler"), forControlEvents: .TouchUpInside)
     }
     
+    /*
+     * changeToVerificationUI transitions to the verification text area from the phone number
+     * text area
+     */
     func changeToVerificationUI() {
         UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
             self.lineNumberView.alpha = 0.0

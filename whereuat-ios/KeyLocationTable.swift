@@ -9,6 +9,9 @@
 import Foundation
 import SQLite
 
+/*
+ * KeyLocationTable is the SQLite database tables for key locations
+ */
 class KeyLocationTable: Table {
     static let sharedInstance = KeyLocationTable(databaseFilePath: "database.sqlite")
     
@@ -21,6 +24,9 @@ class KeyLocationTable: Table {
     var longitudeColumn: SQLite.Expression<Double>
     var latitutdeColumn: SQLite.Expression<Double>
     
+    /*
+     * Init sets up the SQLite connection and constructs the schema
+     */
     init(databaseFilePath: String) {
         self.databaseFilePath = databaseFilePath
         
@@ -43,6 +49,9 @@ class KeyLocationTable: Table {
         self.latitutdeColumn = SQLite.Expression<Double>("latitude")
     }
     
+    /*
+     * setUpTable initializes the schema
+     */
     func setUpTable() {
         
         do {
@@ -57,6 +66,9 @@ class KeyLocationTable: Table {
         }
     }
     
+    /*
+     * dropTable drops the database table
+     */
     func dropTable() {
         // Clean the database
         do {
@@ -66,6 +78,9 @@ class KeyLocationTable: Table {
         }
     }
     
+    /*
+     * generateMockData fills the table with 1 mock key location
+     */
     func generateMockData() {
         // Insert mock data
         let keyLocation1 = KeyLocation(name: "Home",
@@ -74,6 +89,9 @@ class KeyLocationTable: Table {
         insert(keyLocation1)
     }
     
+    /* insert inserts a row into the database
+     * @param - keyLocation to insert
+     */
     func insert(keyLocation: Model) {
         let kL = keyLocation as! KeyLocation
         let insert = self.keyLocations.insert(self.nameColumn <- kL.name,
@@ -86,6 +104,10 @@ class KeyLocationTable: Table {
         }
     }
     
+    /*
+     * getAll returns all of the rows in the table, a SELECT * FROM
+     * @return - Array of Model type
+     */
     func getAll() -> Array<Model> {
         var keyLocationArray = Array<KeyLocation>()
         do {
@@ -101,6 +123,10 @@ class KeyLocationTable: Table {
         return keyLocationArray
     }
     
+    /*
+     * getNearestKeyLocation returns the closest location by distance (haversine)
+     * @return - Key location closest to current device location
+     */
     func getNearestKeyLocation() -> KeyLocation? {
         // TODO: Perhaps this should do an intelligent query on the db
         // but for no we'll assume that there just aren't many keylocations, so this is

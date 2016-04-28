@@ -10,6 +10,7 @@ import UIKit
 import RandomColorSwift
 
 extension UIColor {
+    // UIColor is extended to include a hex constructor
     convenience init(hex : Int) {
         let blue = CGFloat(hex & 0xFF)
         let green = CGFloat((hex >> 8) & 0xFF)
@@ -18,6 +19,9 @@ extension UIColor {
     }
 }
 
+/*
+ * ColorWheel represents the color palette used for whereu@
+ */
 struct ColorWheel {
     
     static let transparent = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
@@ -32,6 +36,10 @@ struct ColorWheel {
     }
 }
 
+/*
+ * FontStyle represents the font styles used for whereu@
+ * Font sizes are scaled according to the display
+ */
 struct FontStyle {
     static let h1 = UIFont(name: "Lato-Semibold", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 75)
     static let h2 = UIFont(name: "Lato-Semibold", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 150)
@@ -44,7 +52,18 @@ struct FontStyle {
     
 }
 
+/*
+ * Shape draws shapes needed for whereu@
+ */
 struct Shape {
+    /*
+     * drawStar draws a star
+     * @param bounds - the CGRect to draw in
+     * @param width - the width of the star
+     * @param height - the height of the star
+     * @param borderColor - the color of the start to draw
+     * @param fillColor - the color of the fill to draw
+     */
     static func drawStar(bounds: CGRect , _ width: CGFloat, _ height: CGFloat, _ borderColor: UIColor, _ fillColor: UIColor) -> CAShapeLayer {
         let path = CGPathCreateMutable()
         
@@ -73,9 +92,11 @@ struct Shape {
         shape.fillColor = fillColor.CGColor
         return shape
     }
-
+    
 }
 
 struct SizingConstants {
     static let spacingMargin = CGFloat(10)
+    static let halfSpacingMargin = CGFloat(5)
+    static let quarterSpacingMargin = CGFloat(2.5)
 }

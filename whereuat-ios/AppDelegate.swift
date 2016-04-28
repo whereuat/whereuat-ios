@@ -47,8 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         let gcmConfig = GCMConfig.defaultConfig()
         gcmConfig.receiverDelegate = self
         GCMService.sharedInstance().startWithConfig(gcmConfig)
-
-        print("App is launching")
         
         // Override point for customization after application launch.
         window?.tintColor = themeColor
@@ -71,6 +69,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         return true
     }
     
+    /*
+     * getRequestLocationNotificationCategory sets up the push notification actions
+     * for an AtRequest push notification message
+     */
     func getRequestLocationNotificationCategory() -> UIMutableUserNotificationCategory {
         let ignoreAction = UIMutableUserNotificationAction()
         ignoreAction.identifier = "IGNORE_IDENTIFIER"
@@ -89,6 +91,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         return request_location_category
     }
     
+    /*
+     * getReceiveLocationNotificationCategory sets up the push notification actions
+     * for an AtResponse push notification message
+     */
     func getReceiveLocationNotificationCategory() -> UIMutableUserNotificationCategory {
         let doneAction = UIMutableUserNotificationAction()
         doneAction.identifier = "DONE_IDENTIFIER"
@@ -103,8 +109,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         return received_location_category
     }
     
-    func application( application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken
-        deviceToken: NSData ) {
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken
+        deviceToken: NSData) {
             // Create a config and set a delegate that implements the GGLInstaceIDDelegate protocol.
             let instanceIDConfig = GGLInstanceIDConfig.defaultConfig()
             instanceIDConfig.delegate = self
@@ -117,8 +123,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
                 scope: kGGLInstanceIDScopeGCM, options: registrationOptions, handler: registrationHandler)
     }
     
-    func application( application: UIApplication, didFailToRegisterForRemoteNotificationsWithError
-        error: NSError ) {
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError
+        error: NSError) {
             print("Registration for remote notification failed with error: \(error.localizedDescription)")
             // [END receive_apns_token_error]
             let userInfo = ["error": error.localizedDescription]
@@ -126,9 +132,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
                 registrationKey, object: nil, userInfo: userInfo)
     }
     
-    // This method is invoked when a notification is received.
-    // If the application is in the foreground, it is received as an alert
-    // If the application is in the background, it is received as a push notification
+    /*
+     * This method is invoked when a notification is received.
+     * If the application is in the foreground, it is received as an alert
+     * If the application is in the background, it is received as a push notification
+     */
     func application(application: UIApplication,
                      didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
                      fetchCompletionHandler handler: (UIBackgroundFetchResult) -> Void) {
@@ -209,9 +217,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
 
     func applicationDidEnterBackground(application: UIApplication) {
         GCMService.sharedInstance().disconnect()
-        // [START_EXCLUDE]
         self.connectedToGCM = false
-        // [END_EXCLUDE]
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -222,6 +228,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
+    /*
+     * This method handles the SEND action for a push notification
+     */
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
         if (notification.category == "REQUEST_LOCATION_CATEGORY") {
             switch identifier!{

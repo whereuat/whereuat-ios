@@ -14,6 +14,9 @@ protocol FABDelegate : class {
     func addKeyLocation()
 }
 
+/*
+ * FloatingActionButton manages a floating action button for whereu@
+ */
 class FloatingActionButton: LiquidFloatingActionButtonDataSource, LiquidFloatingActionButtonDelegate {
     
     var delegate: FABDelegate!
@@ -21,6 +24,10 @@ class FloatingActionButton: LiquidFloatingActionButtonDataSource, LiquidFloating
     var cells: [LiquidFloatingCell] = []
     var floatingActionButton: LiquidFloatingActionButton!
     
+    /*
+     * init creates the floating action button
+     * @param color - the color to be drawn
+     */
     init(color: UIColor) {
         let createButton: (CGRect, LiquidFloatingActionButtonAnimateStyle) -> LiquidFloatingActionButton = { (frame, style) in
             let floatingActionButton = LiquidFloatingActionButton(frame: frame)
@@ -44,7 +51,11 @@ class FloatingActionButton: LiquidFloatingActionButtonDataSource, LiquidFloating
         self.floatingActionButton = bottomRightButton
     }
     
-    
+    /*
+     * numberOfCells gets the number of items in the FAB
+     * @param liquidFloatingActionButton - the target FAB
+     * @return the number of cells
+     */
     @objc func numberOfCells(liquidFloatingActionButton: LiquidFloatingActionButton) -> Int {
         return cells.count
     }
@@ -53,6 +64,9 @@ class FloatingActionButton: LiquidFloatingActionButtonDataSource, LiquidFloating
         return cells[index]
     }
     
+    /*
+     * liquidFloatingActionButton handles the selection of items in the FAB
+     */
     @objc func liquidFloatingActionButton(liquidFloatingActionButton: LiquidFloatingActionButton, didSelectItemAtIndex index: Int) {
         switch index {
         case 0: // Add key location

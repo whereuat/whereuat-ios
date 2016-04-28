@@ -10,6 +10,9 @@ import Foundation
 import Alamofire
 import CoreLocation
 
+/*
+ * LocationSender tracks a location and a destination number and sends message
+ */
 class LocationSender {
     
     var toPhoneNumber: String
@@ -20,6 +23,10 @@ class LocationSender {
         self.location = location
     }
     
+    /*
+     * sendLocation uses the current location and toPhoneNumber to send a the location via
+     * http POST request
+     */
     func sendLocation() {
         let fromPhoneNumber = NSUserDefaults.standardUserDefaults().stringForKey("phoneNumber")!
         let nearestKeyLocation = Database.sharedInstance.keyLocationTable.getNearestKeyLocation()

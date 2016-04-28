@@ -10,6 +10,9 @@ import UIKit
 import Alamofire
 import JLToast
 
+/* 
+ * ContactView is the parent view that contains the individual contact's information
+ */
 class ContactView: UIView {
     
     var delegate: ContactsViewController!
@@ -41,17 +44,20 @@ class ContactView: UIView {
         displayContactView = DisplayContactView(contactData: contactData)
         editContactView = EditContactView(contactData: contactData)
         
-        let longPress = UILongPressGestureRecognizer(target: self, action: Selector("contactCardFlip:"))
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(ContactView.contactCardFlip(_:)))
         longPress.minimumPressDuration = 0.25
         self.addGestureRecognizer(longPress)
         
-        let tap = UITapGestureRecognizer(target: self, action: Selector("requestLocationFromContact:"))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(ContactView.requestLocationFromContact(_:)))
         self.addGestureRecognizer(tap)
         
         self.userInteractionEnabled = true
         self.addConstrainedSubview(displayContactView)
     }
     
+    /*
+     * contactCardFlip flips the displayContactView to the EditContactView by a flipping transition
+     */
     func contactCardFlip(sender: UILongPressGestureRecognizer) {
         // TODO: This should be moved to a more sensible location, but it needs to happen
         // after initialization because of the order in which the contactViewCell is drawn
@@ -64,6 +70,8 @@ class ContactView: UIView {
         self.editContactView.autoShareEnabled = contactData.autoShare
         self.editContactView.requestedCount = contactData.requestedCount
         
+        // Return out of the function if we have ended the transition.
+        // This prevents the animation from getting called twice during a long press.
         if (sender.state != UIGestureRecognizerState.Ended) {
             return
         }
@@ -83,6 +91,10 @@ class ContactView: UIView {
         }
     }
     
+    /*
+     * requestLocationFromContact performs an AtRequest to get the location of a given contact
+     * TODO: Break up this logic into a smarter place
+     */
     func requestLocationFromContact(sender: UITapGestureRecognizer) {
         // Fade the view out a little
         UIView.animateWithDuration(1.0) {
@@ -119,6 +131,9 @@ class ContactView: UIView {
         }
     }
     
+    /*
+     * addConstrainedSubview adds views to the contactView in a uniformly constrained manner
+     */
     func addConstrainedSubview(viewName: UIView) {
         // Constrain the size of a view so that it conforms to self's size (constrained to screen-size adjusted ContactCell)
         self.addSubview(viewName)
@@ -130,5 +145,4 @@ class ContactView: UIView {
         let heightConstraint = NSLayoutConstraint(item: viewName, attribute: .Height, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: 1.0, constant: 0.0)
         self.addConstraints([leftSideConstraint, bottomConstraint, widthConstraint, heightConstraint])
     }
-
 }

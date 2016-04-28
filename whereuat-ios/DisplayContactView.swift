@@ -8,6 +8,9 @@
 
 import UIKit
 
+/*
+ * DisplayContactView is the front of the contact card
+ */
 class DisplayContactView: UIView {
     
     var delegate: ContactsViewController!

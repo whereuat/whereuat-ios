@@ -8,18 +8,26 @@
 
 import Foundation
 
+/*
+ * NotificationType represents two types of notifications, alerts and push notifications
+ */
 enum NotificationType {
     case Alert
     case PushNotification
 }
 
-// A RequestType represents the two kinds of requests
+/*
+ * RequestType represents the two kinds of confirmed requests and an unknown request type
+ */
 enum RequestType {
     case AtRequest
     case AtResponse
     case UnknownRequest
 }
 
+/*
+ * Notification represents a generic type that constructs and fires an alert or a push notification
+ */
 class Notification {
     var viewController: UIViewController?
     var notificationType: NotificationType!
@@ -30,7 +38,12 @@ class Notification {
     
     let locManager = LocationManager.sharedInstance
     
-    // Initialize a notification. If the isAlert parameter is true, the notification is presented as an alert
+    /*
+     * init initialize a notification.
+     * If the isAlert parameter is true, the notification is presented as an alert
+     * @param data - the data payload for the push notification
+     * @param notificationType - the type of notification to build
+     */
     init(data: [NSObject : AnyObject], notificationType: NotificationType = NotificationType.PushNotification) {
         self.notificationType = notificationType
         self.data = data
@@ -59,6 +72,10 @@ class Notification {
         }
     }
     
+    /*
+     * constructPushNotification constructs a push notification
+     * @return a UILocalNotification to be fired
+     */
     func constructPushNotification() -> UILocalNotification {
         let localNotification:UILocalNotification = UILocalNotification()
         localNotification.userInfo = self.data
@@ -89,8 +106,12 @@ class Notification {
         return localNotification
     }
     
+    /*
+     * constructAlertNotification constructs an alert notification
+     * @return a UIAlertController to be transitioned to
+     */
     func constructAlertNotification() -> UIAlertController {
-        var alertController = UIAlertController()
+        let alertController = UIAlertController()
         if (self.requestType == RequestType.AtRequest) {
             let fromNumber = data["from-#"]! as! String
             let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
@@ -118,7 +139,9 @@ class Notification {
         return alertController
     }
     
-    // Fires the notification based on its notificationType
+    /*
+     * fire Fires the notification based on its notificationType
+     */
     func fire() {
         var hasOnAutoShare = false
         // Check if auto share for the particular contact is enabled and send location if so

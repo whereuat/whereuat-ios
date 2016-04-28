@@ -8,6 +8,9 @@
 
 import UIKit
 
+/*
+ * EditContactView is the back of the contact card
+ */
 class EditContactView: UIView {
     
     var delegate: ContactsViewController!
@@ -135,10 +138,14 @@ class EditContactView: UIView {
         self.autoShareShapeView.layer.insertSublayer(shape, atIndex: 0)
         
         // Add gestures
-        let tap = UITapGestureRecognizer(target: self, action: Selector("toggleAutoShare"))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(EditContactView.toggleAutoShare))
         self.autoShareView.addGestureRecognizer(tap)
     }
     
+    /*
+     * toggleAutoShare changes the star drawable on the edit contact view and propagates
+     * that change to the database
+     */
     func toggleAutoShare() {
         var star = CAShapeLayer()
         star = self.autoShareShapeView.layer.sublayers![0] as! CAShapeLayer

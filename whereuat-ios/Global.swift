@@ -8,10 +8,17 @@
 
 import Foundation
 
+/*
+ * Global is a list of constants used by whereu@
+ */
 struct Global {
     static let serverURL = "http://whereuat.xyz"
 }
 
+/*
+ * Language is a list of global constants representing language to be used throughout
+ * application UX
+ */
 struct Language {
     static let atRequest = ": whereu@?"
     static let atResponse = " is @ "

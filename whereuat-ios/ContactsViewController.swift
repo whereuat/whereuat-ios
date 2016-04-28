@@ -68,6 +68,9 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         return CGSizeMake(cellSize, cellSize);
     }
     
+    /*
+     * addContact gets a contact and delegates its work to the system contact picker
+     */
     func addContact() {
         // Ensure user hasn't previously denied contact access
         let status = CNContactStore.authorizationStatusForEntityType(.Contacts)
@@ -83,6 +86,10 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
             animated: true, completion: nil)
     }
     
+    /*
+     * contactPicker gets a contact from the system contact picker, inserts it into the database,
+     * and appends the contact to the data
+     */
     func contactPicker(picker: CNContactPickerViewController, didSelectContact contact: CNContact) {
         // Get the total number of already drawn contacts
         let contactCount = self.contactData.count
@@ -112,6 +119,9 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         }
     }
     
+    /*
+     * addKeyLocation spawns an alert with a text view and adds the key location to the database
+     */
     func addKeyLocation() {
         let alert = UIAlertController(title: nil, message: "Set Current Location As", preferredStyle: .Alert)
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in

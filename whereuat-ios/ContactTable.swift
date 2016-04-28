@@ -9,6 +9,9 @@
 import Foundation
 import SQLite
 
+/*
+ * ContactTable is the SQLite database tables for contacts
+ */
 class ContactTable: Table {
     static let sharedInstance = ContactTable(databaseFilePath: "database.sqlite")
     
@@ -24,6 +27,9 @@ class ContactTable: Table {
     var requestedCountColumn: SQLite.Expression<Int>
     var colorColumn: SQLite.Expression<NSData> // Color is stored as NSData of a UIColor object
   
+    /*
+     * Init sets up the SQLite connection and constructs the schema
+     */
     init(databaseFilePath: String) {
         self.databaseFilePath = databaseFilePath
         
@@ -49,6 +55,9 @@ class ContactTable: Table {
         self.colorColumn = SQLite.Expression<NSData>("color")
     }
 
+    /*
+     * setUpTable instantiates the schema
+     */
     func setUpTable() {
         do {
             try (self.db!).run(self.contacts.create(ifNotExists: true) { t in
@@ -65,6 +74,9 @@ class ContactTable: Table {
         }
     }
     
+    /*
+     * dropTable drops the database table
+     */
     func dropTable() {
         // Clean the database
         do {
@@ -74,8 +86,10 @@ class ContactTable: Table {
         }
     }
     
+    /*
+     * generateMockData fills the table with 5 mock contacts
+     */
     func generateMockData() {
-        // Insert mock data
         let contact1 = Contact(firstName: "Damian",
                                lastName: "Mastylo",
                                phoneNumber: "+19133700735",
@@ -98,7 +112,7 @@ class ContactTable: Table {
                                lastName: "Manning",
                                phoneNumber: "+12073308728",
                                autoShare: false,
-                               requestedCount: 0,
+                               requestedCount: 20,
                                color: ColorWheel.randomColor())
         let contact5 = Contact(firstName: "Dante",
                                lastName: "Inferno",
@@ -106,6 +120,7 @@ class ContactTable: Table {
                                autoShare: false,
                                requestedCount: 0,
                                color: ColorWheel.randomColor())
+        // Insert mock data
         insert(contact1)
         insert(contact2)
         insert(contact3)
@@ -113,6 +128,10 @@ class ContactTable: Table {
         insert(contact5)
     }
     
+    /*
+     * insert inserts a row into the database
+     * @param - contact to insert
+     */
     func insert(contact: Model) {
         let c = contact as! Contact
         let insert = self.contacts.insert(self.firstNameColumn <- c.firstName,
@@ -127,6 +146,10 @@ class ContactTable: Table {
         }
     }
     
+    /*
+     * getAll returns all of the rows in the table, a SELECT * FROM
+     * @return - Array of Model type
+     */
     func getAll() -> Array<Model> {
         var contactArray = Array<Contact>()
         do {
@@ -145,6 +168,11 @@ class ContactTable: Table {
         return contactArray
     }
     
+    /*
+     * getContact retrives a particular contact by phone number, a SELECT * FROM WHERE phoneNumber =
+     * @param - phoneNumber is the phone number for the contact lookup
+     * @return - Contact model that is found
+     */
     func getContact(phoneNumber: String) -> Contact? {
         do {
             let query = contacts.filter(phoneNumberColumn == phoneNumber)
@@ -164,6 +192,10 @@ class ContactTable: Table {
         }
     }
     
+    /*
+     * toggleAutoShare toggles the auto sharing capacity of a contact in the database
+     * @param - phoneNumber is the phone number of the contact to update
+     */
     func toggleAutoShare(phoneNumber: String) {
         let contact = getContact(phoneNumber)!
         let query = contacts.filter(phoneNumberColumn == phoneNumber)
@@ -178,6 +210,11 @@ class ContactTable: Table {
         }
     }
     
+    /*
+     * updateRequestedCount updates the number of times a contact has been requested, stored
+     * in the database
+     * @param - phoneNumber is the phone number of the contact to update
+     */
     func updateRequestedCount(phoneNumber: String) {
         let contact = getContact(phoneNumber)!
         let query = contacts.filter(phoneNumberColumn == phoneNumber)

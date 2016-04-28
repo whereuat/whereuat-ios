@@ -8,5 +8,8 @@
 
 import Foundation
 
+/*
+ * Model is a protocol implemented by data models
+ */
 @objc protocol Model {
 }

@@ -19,6 +19,9 @@ class ContactViewCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
+    /*
+     * addContactView loads the contact data into the contact view and constrains it
+     */
     func addContactView() {
         self.contactView = ContactView(contactData: contactData)
         self.contactView.delegate = delegate
@@ -32,6 +35,10 @@ class ContactViewCell: UICollectionViewCell {
         self.addConstraints([leftSideConstraint, bottomConstraint, widthConstraint, heightConstraint])
     }
     
+    /*
+     * prepareForReuse is called when the cell leaves the screen.
+     * The contact view is removed from the superview to prevent duplicate drawing
+     */
     override func prepareForReuse() {
         super.prepareForReuse()
         self.contactView.removeFromSuperview()
