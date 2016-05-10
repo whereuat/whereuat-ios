@@ -79,13 +79,14 @@ class Notification {
     func constructPushNotification() -> UILocalNotification {
         let localNotification:UILocalNotification = UILocalNotification()
         localNotification.userInfo = self.data
+        
         if (self.requestType == RequestType.AtRequest) {
             let fromNumber = data["from-#"]! as! String
             let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
-            localNotification.soundName = UILocalNotificationDefaultSoundName
             if (contactName != nil) {
                 localNotification.alertBody = contactName! + Language.atRequest
             } else {
+                // TODO: We probably don't want to accept requests from arbitrary numbers
                 localNotification.alertBody = fromNumber + Language.atRequest
             }
             localNotification.fireDate = NSDate()
@@ -94,12 +95,13 @@ class Notification {
             let fromNumber = data["from-#"]! as! String
             let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
             let place = data["place"]! as! String
-            localNotification.soundName = UILocalNotificationDefaultSoundName
             if (contactName != nil) {
                 localNotification.alertBody = contactName! + Language.atResponse + place
             } else {
+                // TODO: We probably don't want to accept requests from arbitrary numbers
                 localNotification.alertBody = fromNumber + Language.atResponse + place
             }
+            localNotification.soundName = UILocalNotificationDefaultSoundName
             localNotification.fireDate = NSDate()
             localNotification.category = "RECEIVE_LOCATION_CATEGORY";
         }
@@ -112,6 +114,7 @@ class Notification {
      */
     func constructAlertNotification() -> UIAlertController {
         let alertController = UIAlertController()
+
         if (self.requestType == RequestType.AtRequest) {
             let fromNumber = data["from-#"]! as! String
             let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
@@ -140,7 +143,7 @@ class Notification {
     }
     
     /*
-     * fire Fires the notification based on its notificationType
+     * fire fires the notification based on its notificationType
      */
     func fire() {
         var hasOnAutoShare = false
@@ -163,5 +166,45 @@ class Notification {
                 self.viewController!.presentViewController(self.alert!, animated: true, completion: nil)
             }
         }
+    }
+    
+    /*
+     * getRequestLocationNotificationCategory sets up the push notification actions
+     * for an AtRequest push notification message
+     */
+    static func getRequestLocationNotificationCategory() -> UIMutableUserNotificationCategory {
+        let ignoreAction = UIMutableUserNotificationAction()
+        ignoreAction.identifier = "IGNORE_IDENTIFIER"
+        ignoreAction.title = "Ignore"
+        ignoreAction.activationMode = .Background
+        let sendAction = UIMutableUserNotificationAction()
+        sendAction.identifier = "SEND_IDENTIFIER"
+        sendAction.title = "Send"
+        sendAction.activationMode = .Background
+        
+        let request_location_category = UIMutableUserNotificationCategory()
+        request_location_category.identifier = "REQUEST_LOCATION_CATEGORY"
+        request_location_category.setActions([sendAction, ignoreAction], forContext: .Default)
+        request_location_category.setActions([sendAction, ignoreAction], forContext: .Minimal)
+        
+        return request_location_category
+    }
+    
+    /*
+     * getReceiveLocationNotificationCategory sets up the push notification actions
+     * for an AtResponse push notification message
+     */
+    static func getReceiveLocationNotificationCategory() -> UIMutableUserNotificationCategory {
+        let doneAction = UIMutableUserNotificationAction()
+        doneAction.identifier = "DONE_IDENTIFIER"
+        doneAction.title = "Done"
+        doneAction.activationMode = .Background
+        
+        let received_location_category = UIMutableUserNotificationCategory()
+        received_location_category.identifier = "RECEIVE_LOCATION_CATEGORY"
+        received_location_category.setActions([doneAction], forContext: .Default)
+        received_location_category.setActions([doneAction], forContext: .Minimal)
+        
+        return received_location_category
     }
 }

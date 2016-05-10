@@ -33,8 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         // Configure push notifications
-        let request_location_category = getRequestLocationNotificationCategory()
-        let receive_location_category = getReceiveLocationNotificationCategory()
+        let request_location_category = Notification.getRequestLocationNotificationCategory()
+        let receive_location_category = Notification.getReceiveLocationNotificationCategory()
         let pushNotificationSettings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: [request_location_category, receive_location_category])
         application.registerUserNotificationSettings(pushNotificationSettings)
         application.registerForRemoteNotifications()
@@ -69,46 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         return true
     }
     
-    /*
-     * getRequestLocationNotificationCategory sets up the push notification actions
-     * for an AtRequest push notification message
-     */
-    func getRequestLocationNotificationCategory() -> UIMutableUserNotificationCategory {
-        let ignoreAction = UIMutableUserNotificationAction()
-        ignoreAction.identifier = "IGNORE_IDENTIFIER"
-        ignoreAction.title = "Ignore"
-        ignoreAction.activationMode = .Background
-        let sendAction = UIMutableUserNotificationAction()
-        sendAction.identifier = "SEND_IDENTIFIER"
-        sendAction.title = "Send"
-        sendAction.activationMode = .Background
-        
-        let request_location_category = UIMutableUserNotificationCategory()
-        request_location_category.identifier = "REQUEST_LOCATION_CATEGORY"
-        request_location_category.setActions([sendAction, ignoreAction], forContext: .Default)
-        request_location_category.setActions([sendAction, ignoreAction], forContext: .Minimal)
-        
-        return request_location_category
-    }
-    
-    /*
-     * getReceiveLocationNotificationCategory sets up the push notification actions
-     * for an AtResponse push notification message
-     */
-    func getReceiveLocationNotificationCategory() -> UIMutableUserNotificationCategory {
-        let doneAction = UIMutableUserNotificationAction()
-        doneAction.identifier = "DONE_IDENTIFIER"
-        doneAction.title = "Done"
-        doneAction.activationMode = .Background
-        
-        let received_location_category = UIMutableUserNotificationCategory()
-        received_location_category.identifier = "RECEIVE_LOCATION_CATEGORY"
-        received_location_category.setActions([doneAction], forContext: .Default)
-        received_location_category.setActions([doneAction], forContext: .Minimal)
-        
-        return received_location_category
-    }
-    
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken
         deviceToken: NSData) {
             // Create a config and set a delegate that implements the GGLInstaceIDDelegate protocol.
@@ -126,7 +86,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError
         error: NSError) {
             print("Registration for remote notification failed with error: \(error.localizedDescription)")
-            // [END receive_apns_token_error]
             let userInfo = ["error": error.localizedDescription]
             NSNotificationCenter.defaultCenter().postNotificationName(
                 registrationKey, object: nil, userInfo: userInfo)
