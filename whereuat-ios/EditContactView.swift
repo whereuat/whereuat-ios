@@ -8,9 +8,16 @@
 
 import UIKit
 
+/*
+ * EditContactView is the back of the contact card
+ */
 class EditContactView: UIView {
     
+    var delegate: ContactsViewController!
+
     var contactName: String!
+    var phoneNumber: String!
+    var requestedCount: Int!
     
     var nameView: UITextView!
     
@@ -34,6 +41,9 @@ class EditContactView: UIView {
         
         self.backgroundColor = ColorWheel.lightGray
         self.contactName = contactData.getName()
+        self.phoneNumber = contactData.phoneNumber
+        self.requestedCount = contactData.requestedCount
+        self.autoShareEnabled = contactData.autoShare
         
         self.drawEditContactContent()
     }
@@ -113,7 +123,7 @@ class EditContactView: UIView {
         self.autoShareView.addSubview(self.autoShareShapeView)
         self.autoShareShapeView.translatesAutoresizingMaskIntoConstraints = false
         let widthConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 0.33, constant: 0.0)
-        let topConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Top, relatedBy: .Equal, toItem: self.autoShareTextView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let topConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Top, relatedBy: .Equal, toItem: self.autoShareTextView, attribute: .Top, multiplier: 1.0, constant: SizingConstants.quarterSpacingMargin)
         let leftConstraint = NSLayoutConstraint(item: self.autoShareShapeView, attribute: .Left, relatedBy: .Equal, toItem: self.autoShareTextView, attribute: .Right, multiplier: 1.0, constant: 0.0)
         self.addConstraints([widthConstraint, leftConstraint, topConstraint])
         
@@ -122,13 +132,20 @@ class EditContactView: UIView {
         let height = self.autoShareShapeView.layer.frame.size.height
         let shape = Shape.drawStar(self.bounds, width, height, ColorWheel.darkGray, ColorWheel.transparent)
         
+        if (autoShareEnabled) {
+            shape.fillColor = shape.strokeColor
+        }
         self.autoShareShapeView.layer.insertSublayer(shape, atIndex: 0)
         
         // Add gestures
-        let tap = UITapGestureRecognizer(target: self, action: Selector("toggleAutoShare"))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(EditContactView.toggleAutoShare))
         self.autoShareView.addGestureRecognizer(tap)
     }
     
+    /*
+     * toggleAutoShare changes the star drawable on the edit contact view and propagates
+     * that change to the database
+     */
     func toggleAutoShare() {
         var star = CAShapeLayer()
         star = self.autoShareShapeView.layer.sublayers![0] as! CAShapeLayer
@@ -138,6 +155,8 @@ class EditContactView: UIView {
             star.fillColor = ColorWheel.transparent.CGColor
         }
         autoShareEnabled = !autoShareEnabled
+        // Propagate change to database layer
+        Database.sharedInstance.contactTable.toggleAutoShare(self.phoneNumber)
     }
 
     func drawRequestedCountTextView() {
@@ -157,7 +176,7 @@ class EditContactView: UIView {
         self.requestedCountView.backgroundColor = ColorWheel.transparent
         self.requestedCountView.textColor = ColorWheel.darkGray
         self.requestedCountView.font = FontStyle.p
-        self.requestedCountView.text = "Requested 5002 times"
+        self.requestedCountView.text = "Requested " + String(self.requestedCount) + " times"
         
         // Disable interactions
         self.requestedCountView.userInteractionEnabled = false

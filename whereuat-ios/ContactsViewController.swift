@@ -9,38 +9,41 @@
 import UIKit
 import Contacts
 import ContactsUI
+import CoreLocation
 
 private let reuseIdentifier = "Cell"
 
-class ContactsViewController: UICollectionViewController, CNContactPickerDelegate {
+class ContactsViewController: UICollectionViewController, CNContactPickerDelegate, FABDelegate {
 
     private let reuseIdentifier = "ContactCell"
     
-    // Set up Database as Singleton
-    var contactDatabase = ContactDatabase.sharedInstance
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
+    // Set up Databases as Singletons
+    var database: Database!
     
     var contactData: Array<Contact>!
+    var keyLocationData: Array<KeyLocation>!
 
-    var buttonContainer: UIView!
-    var addContactButton: PushButtonView!
+    var mainFAB: FloatingActionButton!
     
     override func viewDidLoad() {
         
+        // Prevent the ContactsView from displaying underneath the status bar
         self.collectionView?.contentInset = UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0)
         
         super.viewDidLoad()
         self.view.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
-        
-        self.contactDatabase.dropDatabase()
 
-        // Create database tables
-        self.contactDatabase.setUpDatabase()
-        // Load mock data into database
-        self.contactDatabase.generateMockData()
         // Load mock data into contactData array
-        self.contactData = self.contactDatabase.getContacts()
+        database = Database.sharedInstance
+        self.contactData = database.contactTable.getAll() as! Array<Contact>
+        self.keyLocationData = database.keyLocationTable.getAll() as! Array<KeyLocation>
         
-        self.drawAddContactButton()
+        // Draw the FAB to appear on the bottom right of the screen
+        self.mainFAB = FloatingActionButton(color: ColorWheel.coolRed)
+        self.mainFAB.delegate = self
+        self.view.addSubview(self.mainFAB.floatingActionButton)
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -49,6 +52,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ContactViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ContactViewCell
+        cell.delegate = self
         cell.contactData = self.contactData[indexPath.row]
         cell.addContactView()
         return cell
@@ -65,40 +69,10 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         return CGSizeMake(cellSize, cellSize);
     }
     
-    func drawAddContactButton() {
-        // Draw the add contact button
-        self.buttonContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        self.addContactButton = PushButtonView()
-        self.addContactButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-        
-        self.addContactButton.layer.shadowColor = UIColor.blackColor().CGColor
-        self.addContactButton.layer.shadowOffset = CGSizeMake(3, 3)
-        self.addContactButton.layer.shadowRadius = 2
-        self.addContactButton.layer.shadowOpacity = 0.3
-        self.addContactButton.layer.shadowPath = UIBezierPath(roundedRect: self.addContactButton.bounds, cornerRadius: 100.0).CGPath
-        
-        // Add the button to the button container
-        self.buttonContainer.addSubview(self.addContactButton)
-        let bottomButtonConstraint = NSLayoutConstraint(item: self.addContactButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.buttonContainer, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        let rightButtonConstraint = NSLayoutConstraint(item: self.addContactButton, attribute: .Right, relatedBy: .Equal, toItem: self.buttonContainer, attribute: .Right, multiplier: 1.0, constant: 0.0)
-        self.buttonContainer.addConstraints([bottomButtonConstraint, rightButtonConstraint])
-        
-        self.buttonContainer.translatesAutoresizingMaskIntoConstraints = false
-        // Click event handler for add contact
-        self.addContactButton.userInteractionEnabled = true
-        self.addContactButton.becomeFirstResponder()
-        let tap = UITapGestureRecognizer(target: self, action: Selector("addContact:"))
-        self.addContactButton.addGestureRecognizer(tap)
-        
-        // Add the button container to the parent view and constrain it
-        self.view.addSubview(self.buttonContainer)
-        let bottomConstraint = NSLayoutConstraint(item: self.buttonContainer, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: -2*SizingConstants.spacingMargin)
-        let rightContstraint = NSLayoutConstraint(item: self.buttonContainer, attribute: .Right, relatedBy: .Equal, toItem: self.view, attribute: .Right, multiplier: 1.0, constant: -2*SizingConstants.spacingMargin)
-        self.view.addConstraints([bottomConstraint, rightContstraint])
-
-    }
-    
-    func addContact(sender: UITapGestureRecognizer) {
+    /*
+     * addContact gets a contact and delegates its work to the system contact picker
+     */
+    func addContact() {
         // Ensure user hasn't previously denied contact access
         let status = CNContactStore.authorizationStatusForEntityType(.Contacts)
         if status == .Denied || status == .Restricted {
@@ -113,6 +87,10 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
             animated: true, completion: nil)
     }
     
+    /*
+     * contactPicker gets a contact from the system contact picker, inserts it into the database,
+     * and appends the contact to the data
+     */
     func contactPicker(picker: CNContactPickerViewController, didSelectContact contact: CNContact) {
         // Get the total number of already drawn contacts
         let contactCount = self.contactData.count
@@ -123,6 +101,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                 let countryCodeLookup: [String: String] = [
                      "us": "1"
                 ]
+                // TODO: Put this in a constant
                 if (phoneNumber.label == "_$!<Mobile>!$_") {
                     let number = phoneNumber.value as! CNPhoneNumber
                     let countryCode = number.valueForKey("countryCode") as! String
@@ -130,14 +109,39 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                     var formattedNumberString = "+"
                     formattedNumberString += countryCodeLookup[countryCode]!
                     formattedNumberString += numberString
-                    let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0, color: ColorWheel.randomColor())
-                    self.contactData.append(newContact)
-                    self.contactDatabase.insertContact(newContact)
-                    self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: contactCount, inSection: 0)])
+                    if (Database.sharedInstance.contactTable.getContact(formattedNumberString) == nil) {
+                        let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0, color: ColorWheel.randomColor())
+                        self.contactData.append(newContact)
+                        self.database.contactTable.insert(newContact)
+                        self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: contactCount, inSection: 0)])
+                    }
                     break
                 }
             }
         }
+    }
+    
+    /*
+     * addKeyLocation spawns an alert with a text view and adds the key location to the database
+     */
+    func addKeyLocation() {
+        let alert = UIAlertController(title: nil, message: "Set Current Location As", preferredStyle: .Alert)
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
+            let textField = alert.textFields![0] as UITextField
+            print("Text field: \(textField.text)")
+        }))
+        alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: { (action) -> Void in
+            let textField = alert.textFields![0] as UITextField
+            let loc = self.appDelegate.locManager.location
+            let newKeyLocation = KeyLocation(name: textField.text!, longitude: loc.longitude, latitude: loc.latitude)
+            self.database.keyLocationTable.insert(newKeyLocation)
+            for kl in self.database.keyLocationTable.getAll() {
+                print((kl as! KeyLocation).name)
+            }
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 
 }
