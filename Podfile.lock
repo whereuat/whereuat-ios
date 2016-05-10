@@ -33,7 +33,7 @@ DEPENDENCIES:
   - Alamofire (~> 3.3.0)
   - Google/CloudMessaging
   - JLToast (~> 1.4)
-  - LiquidFloatingActionButton (from `https://github.com/yoavlt/LiquidFloatingActionButton.git`,
+  - LiquidFloatingActionButton (from `https://github.com/whereuat/LiquidFloatingActionButton.git`,
     branch `swift-2.0`)
   - RandomColorSwift
   - SQLite.swift (~> 0.9.2)
@@ -41,12 +41,12 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   LiquidFloatingActionButton:
     :branch: swift-2.0
-    :git: https://github.com/yoavlt/LiquidFloatingActionButton.git
+    :git: https://github.com/whereuat/LiquidFloatingActionButton.git
 
 CHECKOUT OPTIONS:
   LiquidFloatingActionButton:
-    :commit: 25de77f23df84e0a0981193abecced8afc2ed9c7
-    :git: https://github.com/yoavlt/LiquidFloatingActionButton.git
+    :commit: 66557ab317f10bf78eabd0bf4095771d21e06918
+    :git: https://github.com/whereuat/LiquidFloatingActionButton.git
 
 SPEC CHECKSUMS:
   Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
