@@ -11,7 +11,7 @@ import Alamofire
 import CoreLocation
 
 /*
- * LocationSender tracks a location and a destination number and sends message
+ * LocationSender tracks a location and a destination number and sends a message
  */
 class LocationSender {
     
@@ -28,6 +28,7 @@ class LocationSender {
      * http POST request
      */
     func sendLocation() {
+        // Get currenty user's phoneNumber
         let fromPhoneNumber = NSUserDefaults.standardUserDefaults().stringForKey("phoneNumber")!
         let nearestKeyLocation = Database.sharedInstance.keyLocationTable.getNearestKeyLocation()
         var keyLocation: AnyObject?

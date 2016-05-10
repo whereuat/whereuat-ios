@@ -29,6 +29,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
     
     override func viewDidLoad() {
         
+        // Prevent the ContactsView from displaying underneath the status bar
         self.collectionView?.contentInset = UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0)
         
         super.viewDidLoad()
@@ -100,6 +101,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                 let countryCodeLookup: [String: String] = [
                      "us": "1"
                 ]
+                // TODO: Put this in a constant
                 if (phoneNumber.label == "_$!<Mobile>!$_") {
                     let number = phoneNumber.value as! CNPhoneNumber
                     let countryCode = number.valueForKey("countryCode") as! String
