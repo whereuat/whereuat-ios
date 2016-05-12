@@ -49,7 +49,7 @@ struct FontStyle {
     static let p = UIFont(name: "Lato-Regular", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 280)
     static let small = UIFont(name: "Lato-Light", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 320)
     static let smallLight = UIFont(name: "Lato-Thin", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 320)
-    
+    static let appName = UIFont(name: "Lato-Light", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 90)
 }
 
 /*

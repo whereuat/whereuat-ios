@@ -22,6 +22,7 @@ class RegisterView: UIView {
     var delegate: RegisterViewDelegate!
     
     var logoView: UIImageView!
+    var appNameView: UITextView!
     var enterTextView: UITextView!
     var phoneNumberView: UIView!
     var areaCodeView: UITextField!
@@ -41,6 +42,7 @@ class RegisterView: UIView {
     func drawRegisterView() {
         self.backgroundColor = ColorWheel.lightGray
         self.drawLogoView()
+        self.drawAppNameView()
         self.drawEnterTextView()
         self.drawPhoneNumberView()
         self.drawVerificationCodeView()
@@ -59,20 +61,43 @@ class RegisterView: UIView {
     }
     
     /*
-     * drawLogoView draws the whereu@ logo at the top of the view
+     * drawLogoView draws the whereu@ city logo at the top of the view
      */
     func drawLogoView() {
-        let imageName = "whereuat.png"
-        let image = UIImage(named: imageName)
+        let image = UIImage(named: UIFiles.homeLogo)
         self.logoView = UIImageView(image: image!)
         
-        self.logoView.contentMode = UIViewContentMode.ScaleAspectFill
-
-        let size = CGSizeApplyAffineTransform(image!.size, CGAffineTransformMakeScale(0.3, 0.3))
-
-        self.logoView.frame = CGRect(origin: CGPoint(x: 0, y: 150), size: size)
-        self.logoView.center.x = self.center.x
+        self.logoView.contentMode = UIViewContentMode.ScaleAspectFit
+        
         self.addSubview(self.logoView)
+        self.logoView.translatesAutoresizingMaskIntoConstraints = false
+        let topConstraint = NSLayoutConstraint(item: self.logoView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 2*SizingConstants.spacingMargin)
+        let widthConstraint = NSLayoutConstraint(item: self.logoView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1.0, constant: 0.0)
+        self.addConstraints([topConstraint, widthConstraint])
+    }
+    
+    /*
+     * drawAppNameView draws the whereu@ app name at the top of the view under the logo
+     */
+    func drawAppNameView() {
+        self.appNameView = UITextView()
+        self.appNameView.textContainer.lineFragmentPadding = 0;
+        self.appNameView.textContainerInset = UIEdgeInsetsZero;
+        self.appNameView.editable = false
+        self.appNameView.userInteractionEnabled = false
+
+        self.appNameView.backgroundColor = ColorWheel.transparent
+        self.appNameView.textColor = ColorWheel.coolRed
+        self.appNameView.font = FontStyle.appName
+        self.appNameView.text = Language.appName
+        self.appNameView.textAlignment = .Center
+
+        self.addSubview(self.appNameView)
+        self.appNameView.translatesAutoresizingMaskIntoConstraints = false
+        let widthConstraint = NSLayoutConstraint(item: self.appNameView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1.0, constant: 0.0)
+        let topConstraint = NSLayoutConstraint(item: self.appNameView, attribute: .Top, relatedBy: .Equal, toItem: self.logoView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let heightConstraint = NSLayoutConstraint(item: self.appNameView, attribute: .Height, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: 0.15, constant: 0.0)
+        self.addConstraints([widthConstraint, topConstraint, heightConstraint])
     }
     
     /*
@@ -81,18 +106,20 @@ class RegisterView: UIView {
      */
     func drawEnterTextView() {
         self.enterTextView = UITextView()
+        self.enterTextView.editable = false
+        self.enterTextView.userInteractionEnabled = false
         
         self.enterTextView.backgroundColor = ColorWheel.transparent
         self.enterTextView.textColor = ColorWheel.coolRed
         self.enterTextView.font = FontStyle.small
-        self.enterTextView.text = "please enter your phone number"
+        self.enterTextView.text = Language.enterPhoneNumber
         self.enterTextView.textAlignment = .Center
         
         self.addSubview(self.enterTextView)
         self.enterTextView.translatesAutoresizingMaskIntoConstraints = false
         let widthConstraint = NSLayoutConstraint(item: self.enterTextView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 1.0, constant: 0.0)
-        let topConstraint = NSLayoutConstraint(item: self.enterTextView, attribute: .Top, relatedBy: .Equal, toItem: self.logoView, attribute: .Bottom, multiplier: 1.0, constant: 4*SizingConstants.spacingMargin)
-        let heightConstraint = NSLayoutConstraint(item: self.enterTextView, attribute: .Height, relatedBy: .Equal, toItem: self.logoView, attribute: .Height, multiplier: 0.5, constant: 0.0)
+        let topConstraint = NSLayoutConstraint(item: self.enterTextView, attribute: .Top, relatedBy: .Equal, toItem: self.appNameView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        let heightConstraint = NSLayoutConstraint(item: self.enterTextView, attribute: .Height, relatedBy: .Equal, toItem: self.appNameView, attribute: .Height, multiplier: 0.5, constant: 0.0)
         self.addConstraints([widthConstraint, topConstraint, heightConstraint])
     }
     
@@ -106,7 +133,7 @@ class RegisterView: UIView {
         self.phoneNumberView.translatesAutoresizingMaskIntoConstraints = false
         
         let widthConstraint = NSLayoutConstraint(item: self.phoneNumberView, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 0.7, constant: 0.0)
-        let topConstraint = NSLayoutConstraint(item: self.phoneNumberView, attribute: .Top, relatedBy: .Equal, toItem: self.enterTextView, attribute: .Bottom, multiplier: 1.0, constant: SizingConstants.spacingMargin)
+        let topConstraint = NSLayoutConstraint(item: self.phoneNumberView, attribute: .Top, relatedBy: .Equal, toItem: self.enterTextView, attribute: .Bottom, multiplier: 1.0, constant: SizingConstants.halfSpacingMargin)
         let heightConstraint = NSLayoutConstraint(item: self.phoneNumberView, attribute: .Height, relatedBy: .Equal, toItem: self.enterTextView, attribute: .Height, multiplier: 1.0, constant: 0.0)
         let centerXConstraint = NSLayoutConstraint(item: self.phoneNumberView, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
         self.addConstraints([widthConstraint, topConstraint, heightConstraint, centerXConstraint])
@@ -122,7 +149,7 @@ class RegisterView: UIView {
         self.areaCodeView = UITextField()
         
         self.areaCodeView.backgroundColor = ColorWheel.offWhite
-        let placeholder = NSAttributedString(string: "XXX", attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
+        let placeholder = NSAttributedString(string: Language.defaultAreaCode, attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
         self.areaCodeView.attributedPlaceholder = placeholder
         self.areaCodeView.font = FontStyle.smallLight
         self.areaCodeView.textColor = ColorWheel.offBlack
@@ -149,7 +176,7 @@ class RegisterView: UIView {
         self.lineNumberView = UITextField()
         
         self.lineNumberView.backgroundColor = ColorWheel.offWhite
-        let placeholder = NSAttributedString(string: "XXXXXXX", attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
+        let placeholder = NSAttributedString(string: Language.defaultLineNumber, attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
         self.lineNumberView.attributedPlaceholder = placeholder
         self.lineNumberView.font = FontStyle.smallLight
         self.lineNumberView.textColor = ColorWheel.offBlack
@@ -177,7 +204,7 @@ class RegisterView: UIView {
         self.verificationCodeView = UITextField()
         
         self.verificationCodeView.backgroundColor = ColorWheel.offWhite
-        let placeholder = NSAttributedString(string: "00000", attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
+        let placeholder = NSAttributedString(string: Language.defaultVerificationCode, attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
         self.verificationCodeView.attributedPlaceholder = placeholder
         self.verificationCodeView.font = FontStyle.smallLight
         self.verificationCodeView.textColor = ColorWheel.offBlack
@@ -203,19 +230,20 @@ class RegisterView: UIView {
      */
     func drawGoButton() {
         self.goButton = UIButton()
-        self.goButton.setTitle("send sms", forState: .Normal)
+        self.goButton.setTitle(Language.verifyPhoneNumber, forState: .Normal)
         self.goButton.setTitleColor(ColorWheel.lightGray, forState: .Normal)
         self.goButton.titleLabel!.font = FontStyle.h5
+        
         self.goButton.backgroundColor = ColorWheel.coolRed
         
         self.addSubview(self.goButton)
         self.goButton.translatesAutoresizingMaskIntoConstraints = false
 
         let widthConstraint = NSLayoutConstraint(item: self.goButton, attribute: .Width, relatedBy: .Equal, toItem: self, attribute: .Width, multiplier: 0.4, constant: 0.0)
+        let heightConstraint = NSLayoutConstraint(item: self.goButton, attribute: .Height, relatedBy: .Equal, toItem: self, attribute: .Height, multiplier: 0.1, constant: 0.0)
         let topConstraint = NSLayoutConstraint(item: self.goButton, attribute: .Top, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Bottom, multiplier: 1.0, constant: 4*SizingConstants.spacingMargin)
-        let heightConstraint = NSLayoutConstraint(item: self.goButton, attribute: .Height, relatedBy: .Equal, toItem: self.logoView, attribute: .Height, multiplier: 0.7, constant: 0.0)
         let centerXConstraint = NSLayoutConstraint(item: self.goButton, attribute: .CenterX, relatedBy: .Equal, toItem: self, attribute: .CenterX, multiplier: 1.0, constant: 0.0)
-        self.addConstraints([widthConstraint, topConstraint, heightConstraint, centerXConstraint])
+        self.addConstraints([widthConstraint, heightConstraint, topConstraint, centerXConstraint])
         
         // delegate the button's action to the controller
         self.goButton.addTarget(self.delegate, action: Selector("goButtonClickHandler"), forControlEvents: .TouchUpInside)
@@ -230,8 +258,8 @@ class RegisterView: UIView {
             self.lineNumberView.alpha = 0.0
             self.areaCodeView.alpha = 0.0
             self.verificationCodeView.alpha = 1.0
-            self.enterTextView.text = "enter the sms verification code here"
-            self.goButton.setTitle("register", forState: .Normal)
+            self.enterTextView.text = Language.enterVerificationCode
+            self.goButton.setTitle(Language.submitRegistrationCode, forState: .Normal)
             }, completion: { finished in
                 self.lineNumberView.removeFromSuperview()
                 self.areaCodeView.removeFromSuperview()

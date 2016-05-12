@@ -20,8 +20,28 @@ struct Global {
  * application UX
  */
 struct Language {
+    static let appName = "whereu@"
+    
+    // Push notification context
     static let atRequest = ": whereu@?"
     static let atResponse = " is @ "
     static let atRequestSent = "whereu@ sent!"
     static let atRequestFailed = "whereu@ failed!"
+    
+    // Registration context
+    static let enterPhoneNumber = "please enter your phone number"
+    static let enterVerificationCode = "enter the sms verification code"
+    static let verifyPhoneNumber = "verify"
+    static let submitRegistrationCode = "submit"
+    static let defaultVerificationCode = "00000"
+    static let defaultAreaCode = "XXX"
+    static let defaultLineNumber = "XXXXXXX"
+}
+
+/*
+ * UIFiles is a list of global constants that relate to images stored in XCAssets
+ */
+struct UIFiles {
+    static let homeLogo = "home_logo"
+    static let sideBarLogo = "side_bar_logo"
 }
