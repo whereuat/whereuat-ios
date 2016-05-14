@@ -27,11 +27,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
 
     var mainFAB: FloatingActionButton!
     
-    override func viewDidLoad() {
-        
-        // Prevent the ContactsView from displaying underneath the status bar
-        self.collectionView?.contentInset = UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0)
-        
+    override func viewDidLoad() {      
         super.viewDidLoad()
         self.view.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
 
@@ -44,6 +40,11 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         self.mainFAB = FloatingActionButton(color: ColorWheel.coolRed)
         self.mainFAB.delegate = self
         self.view.addSubview(self.mainFAB.floatingActionButton)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.setNavigationBarItems()
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

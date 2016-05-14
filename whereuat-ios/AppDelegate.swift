@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SlideMenuControllerSwift
 
 let themeColor = UIColor(red: 0.01, green: 0.41, blue: 0.22, alpha: 1.0)
 
@@ -57,7 +58,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         
         // Check if we are registered already. If so, instantiate ContactsViewController. Otherwise present RegisterViewController
         if (isRegistered) {
-            initialViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
+            // Instantiate view controllers for main views
+            let contactsViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
+            let leftViewController = UIViewController()
+            
+            // Instantiate navigation bar view, which wraps the contactsView
+            let nvc: UINavigationController = UINavigationController(rootViewController: contactsViewController)
+            // Instantiate the slide menu, which wraps the navigation controller
+            initialViewController = SlideMenuController(mainViewController: nvc, leftMenuViewController: leftViewController)
         } else {
             initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
         }
