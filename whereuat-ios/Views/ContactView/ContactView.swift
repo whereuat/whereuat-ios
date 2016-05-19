@@ -108,12 +108,13 @@ class ContactView: UIView {
             "from" : fromPhoneNumber,
             "to" : toPhoneNumber,
         ]
-        JLToast.makeText(Language.atRequestSent).show()
+        JLToast.makeText(Language.atRequestSending).show()
         Alamofire.request(.POST, whereRequestURL, parameters: verificationParameters, encoding: .JSON)
             .validate()
             .responseString { response in
                 switch response.result {
                 case .Success:
+                    JLToast.makeText(Language.atRequestSent).show()
                     debugPrint(response)
                     print("Location requested:", toPhoneNumber)
                 case .Failure(let error):

@@ -25,8 +25,9 @@ struct Language {
     // Push notification context
     static let atRequest = ": whereu@?"
     static let atResponse = " is @ "
+    static let atRequestSending = "Sending whereu@..."
     static let atRequestSent = "whereu@ sent!"
-    static let atRequestFailed = "whereu@ failed!"
+    static let atRequestFailed = "whereu@ failed :("
     
     // Registration context
     static let enterPhoneNumber = "please enter your phone number"
