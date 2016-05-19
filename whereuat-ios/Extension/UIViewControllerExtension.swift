@@ -28,8 +28,12 @@ extension UIViewController {
         let drawerButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_menu")!, style:UIBarButtonItemStyle.Plain, target: self, action: #selector(self.toggleLeft))
         let pageDescription: UIBarButtonItem = UIBarButtonItem(title: pageTitle, style: UIBarButtonItemStyle.Plain, target: self, action: nil)
         if let font = FontStyle.h4 {
-            pageDescription.setTitleTextAttributes([NSFontAttributeName: font], forState: UIControlState.Normal)
+            pageDescription.setTitleTextAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName:ColorWheel.darkGray], forState: UIControlState.Normal)
+            pageDescription.setTitleTextAttributes([NSFontAttributeName: font, NSForegroundColorAttributeName:ColorWheel.darkGray], forState: UIControlState.Disabled)
         }
+        // Disable the page description so it is not a button
+        pageDescription.enabled = false
+        
         self.navigationItem.leftBarButtonItems = [drawerButton, pageDescription]
 
         self.slideMenuController()?.removeLeftGestures()

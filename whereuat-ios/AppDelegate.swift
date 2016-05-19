@@ -31,6 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
     let messageKey = "onMessageReceived"
     let subscriptionTopic = "/topics/global"
 
+    /*
+     * Application startup logic
+     */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         // Configure push notifications
@@ -60,12 +63,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         if (isRegistered) {
             // Instantiate view controllers for main views
             let contactsViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
-            let leftViewController = UIViewController()
+            let drawerViewController = storyBoard.instantiateViewControllerWithIdentifier("DrawerViewController") as! DrawerViewController
             
             // Instantiate navigation bar view, which wraps the contactsView
             let nvc: UINavigationController = UINavigationController(rootViewController: contactsViewController)
+            drawerViewController.homeViewController = nvc
+            
             // Instantiate the slide menu, which wraps the navigation controller
-            initialViewController = SlideMenuController(mainViewController: nvc, leftMenuViewController: leftViewController)
+            SlideMenuOptions.contentViewScale = 1.0
+            initialViewController = SlideMenuController(mainViewController: nvc, leftMenuViewController: drawerViewController)
         } else {
             initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
         }

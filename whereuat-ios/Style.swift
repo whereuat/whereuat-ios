@@ -26,6 +26,7 @@ struct ColorWheel {
     
     static let transparent = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
     static let lightGray = UIColor(hex: 0xF8F7F3)
+    static let mediumGray = UIColor(hex: 0xD8D8D8)
     static let darkGray = UIColor(hex: 0x979797)
     static let coolRed = UIColor(hex: 0xF15369)
     static let offBlack = UIColor(hex: 0x101820)
@@ -44,7 +45,7 @@ struct FontStyle {
     static let h1 = UIFont(name: "Lato-Semibold", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 75)
     static let h2 = UIFont(name: "Lato-Semibold", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 150)
     static let h3 = UIFont(name: "Lato-Semibold", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 200)
-    static let h4 = UIFont(name: "Lato-Semibold", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 240)
+    static let h4 = UIFont(name: "Lato-Semibold", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 260)
     static let h5 = UIFont(name: "Lato-Bold", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 280)
     static let p = UIFont(name: "Lato-Regular", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 280)
     static let small = UIFont(name: "Lato-Light", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 320)

@@ -39,6 +39,20 @@ struct Language {
 }
 
 /*
+ * AppDrawer maintains global constants relevant to drawing the side navigation drawer
+ */
+struct AppDrawer {
+    // App drawer context
+    static let selfName = "Me"
+    static let menuItems = [
+        ["Home", "ic_home"],
+        ["Key Locations", "ic_pin_drop"],
+        ["Pending Requests", "ic_phone_missed"],
+        ["Settings", "ic_settings"]
+    ]
+}
+
+/*
  * UIFiles is a list of global constants that relate to images stored in XCAssets
  */
 struct UIFiles {
