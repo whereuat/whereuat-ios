@@ -8,31 +8,23 @@
 
 import UIKit
 
-public class DrawerTableViewCell : UITableViewCell {
+class DrawerTableViewCell : UITableViewCell {
     static var identifier = "DrawerTableViewCell"
     static var height:CGFloat = 64.0
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setup()
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setup()
-    }
-    
-    public override func awakeFromNib() {
-    }
-    
-    public func setup() {
     }
     
     /*
      * setData sets the contents of a nav item in the drawer
      * @param data - Any object that carrys the payload. The data can be found in Globals.
      */
-    public func setData(data: Any?) {
+    func setData(data: Any?) {
         self.backgroundColor = ColorWheel.transparent
         self.textLabel!.font = FontStyle.h4
         self.textLabel!.textColor = ColorWheel.darkGray

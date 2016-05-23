@@ -37,6 +37,23 @@ struct Language {
     static let defaultVerificationCode = "00000"
     static let defaultAreaCode = "XXX"
     static let defaultLineNumber = "XXXXXXX"
+    
+    // Alert context
+    static let setKeyLocation = "Okay"
+    static let cancelKeyLocation = "Cancel"
+}
+
+/*
+ * Icons is a list of global icons constant
+ */
+struct Icons {
+    static let delete = "ic_cancel"
+    static let edit = "ic_mode_edit"
+    static let contactAdd = "ic_person_add"
+    static let home = "ic_home"
+    static let keyLocations = "ic_pin_drop"
+    static let pendingRequests = "ic_phone_missed"
+    static let settings = "ic_settings"
 }
 
 /*
@@ -46,10 +63,10 @@ struct AppDrawer {
     // App drawer context
     static let selfName = "Me"
     static let menuItems = [
-        ["Home", "ic_home"],
-        ["Key Locations", "ic_pin_drop"],
-        ["Pending Requests", "ic_phone_missed"],
-        ["Settings", "ic_settings"]
+        ["Home", Icons.home],
+        ["Key Locations", Icons.keyLocations],
+        ["Pending Requests", Icons.pendingRequests],
+        ["Settings", Icons.settings]
     ]
 }
 

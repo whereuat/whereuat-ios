@@ -83,10 +83,46 @@ class KeyLocationTable: Table {
      */
     func generateMockData() {
         // Insert mock data
-        let keyLocation1 = KeyLocation(name: "Home",
+        let keyLocation1 = KeyLocation(id: 1,
+                                       name: "Home",
                                        longitude: -74.6901100,
                                        latitude: 42.7279760)
+        let keyLocation2 = KeyLocation(id: 2,
+                                       name: "Canta Rana",
+                                       longitude: -74.6901105,
+                                       latitude: 42.7279765)
+        let keyLocation3 = KeyLocation(id: 3,
+                                       name: "Peter's",
+                                       longitude: -74.6901100,
+                                       latitude: 42.7279760)
+        let keyLocation4 = KeyLocation(id: 4,
+                                       name: "Julius' Palace",
+                                       longitude: -74.6901105,
+                                       latitude: 42.7279765)
+        let keyLocation5 = KeyLocation(id: 5,
+                                       name: "Frisbee House",
+                                       longitude: -74.6901100,
+                                       latitude: 42.7279760)
+        let keyLocation6 = KeyLocation(id: 6,
+                                       name: "Non of your business",
+                                       longitude: -74.6901105,
+                                       latitude: 42.7279765)
+        let keyLocation7 = KeyLocation(id: 7,
+                                       name: "Anders' House",
+                                       longitude: -74.6901100,
+                                       latitude: 42.7279760)
+        let keyLocation8 = KeyLocation(id: 8,
+                                       name: "Workin' @ the Pyramid",
+                                       longitude: -74.6901105,
+                                       latitude: 42.7279765)
         insert(keyLocation1)
+        insert(keyLocation2)
+        insert(keyLocation3)
+        insert(keyLocation4)
+        insert(keyLocation5)
+        insert(keyLocation6)
+        insert(keyLocation7)
+        insert(keyLocation8)
     }
     
     /* insert inserts a row into the database
@@ -112,7 +148,8 @@ class KeyLocationTable: Table {
         var keyLocationArray = Array<KeyLocation>()
         do {
             for keyLocation in (try (self.db!).prepare(self.keyLocations)) {
-                keyLocationArray.append(KeyLocation(name: keyLocation[self.nameColumn],
+                keyLocationArray.append(KeyLocation(id: keyLocation[self.idColumn],
+                                                    name: keyLocation[self.nameColumn],
                                                     longitude: keyLocation[self.longitudeColumn],
                                                     latitude:  keyLocation[self.latitutdeColumn]))
             }
@@ -121,6 +158,32 @@ class KeyLocationTable: Table {
             return Array<KeyLocation>()
         }
         return keyLocationArray
+    }
+    
+    /*
+     * renameKeyLocation retrieves a particular key location by id and renames it
+     * @param - id is the id for the key location lookup
+     */
+    func renameKeyLocation(id: Int64, newName: String) {
+        let query = keyLocations.filter(idColumn == id)
+        do {
+            try db!.run(query.update(self.nameColumn <- newName))
+        } catch {
+            print("Unable to update key location")
+        }
+    }
+    
+    /*
+     * dropKeyLocation retrieves a particular key location by id and removes it from the table
+     * @param - id is the id for the key location lookup
+     */
+    func dropKeyLocation(id: Int64) {
+        let query = keyLocations.filter(idColumn == id)
+        do {
+            try db!.run(query.delete())
+        } catch {
+            print("Unable to delete key location")
+        }
     }
     
     /*

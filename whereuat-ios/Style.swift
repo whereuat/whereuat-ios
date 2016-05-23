@@ -50,6 +50,7 @@ struct FontStyle {
     static let p = UIFont(name: "Lato-Regular", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 280)
     static let small = UIFont(name: "Lato-Light", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 320)
     static let smallLight = UIFont(name: "Lato-Thin", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 320)
+    static let smallRegular = UIFont(name: "Lato-Regular", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 360)
     static let appName = UIFont(name: "Lato-Light", size: UIFont.systemFontSize() * UIScreen.mainScreen().bounds.width / 90)
 }
 
@@ -113,4 +114,6 @@ struct SizingConstants {
     static let spacingMargin = CGFloat(10)
     static let halfSpacingMargin = CGFloat(5)
     static let quarterSpacingMargin = CGFloat(2.5)
+    
+    static let tableBottomPadding = CGFloat(44)
 }

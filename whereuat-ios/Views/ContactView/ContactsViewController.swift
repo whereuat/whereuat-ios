@@ -17,8 +17,6 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
 
     private let reuseIdentifier = "ContactCell"
     
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    
     // Set up Databases as Singletons
     var database: Database!
     
@@ -37,7 +35,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         self.keyLocationData = database.keyLocationTable.getAll() as! Array<KeyLocation>
         
         // Draw the FAB to appear on the bottom right of the screen
-        self.mainFAB = FloatingActionButton(color: ColorWheel.coolRed)
+        self.mainFAB = FloatingActionButton(color: ColorWheel.coolRed, type: FABType.Main)
         self.mainFAB.delegate = self
         self.view.addSubview(self.mainFAB.floatingActionButton)
     }
@@ -126,23 +124,6 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
      * addKeyLocation spawns an alert with a text view and adds the key location to the database
      */
     func addKeyLocation() {
-        let alert = UIAlertController(title: nil, message: "Set Current Location As", preferredStyle: .Alert)
-        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
-        })
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
-            let textField = alert.textFields![0] as UITextField
-            print("Text field: \(textField.text)")
-        }))
-        alert.addAction(UIAlertAction(title: "Okay", style: .Default, handler: { (action) -> Void in
-            let textField = alert.textFields![0] as UITextField
-            let loc = self.appDelegate.locManager.location
-            let newKeyLocation = KeyLocation(name: textField.text!, longitude: loc.longitude, latitude: loc.latitude)
-            self.database.keyLocationTable.insert(newKeyLocation)
-            for kl in self.database.keyLocationTable.getAll() {
-                print((kl as! KeyLocation).name)
-            }
-        }))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.presentViewController(ContentPopup.addKeyLocationAlert(), animated: true, completion: nil)
     }
-
 }

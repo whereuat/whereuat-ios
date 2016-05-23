@@ -9,9 +9,17 @@
 import UIKit
 import LiquidFloatingActionButton
 
-protocol FABDelegate : class {
-    func addContact()
-    func addKeyLocation()
+@objc protocol FABDelegate : class {
+    optional func addContact()
+    optional func addKeyLocation()
+}
+
+/*
+ * FABType represents two types of notifications, alerts and push notifications
+ */
+enum FABType {
+    case Main
+    case KeyLocationOnly
 }
 
 /*
@@ -24,11 +32,14 @@ class FloatingActionButton: LiquidFloatingActionButtonDataSource, LiquidFloating
     var cells: [LiquidFloatingCell] = []
     var floatingActionButton: LiquidFloatingActionButton!
     
+    var type: FABType!
+    
     /*
      * init creates the floating action button
      * @param color - the color to be drawn
      */
-    init(color: UIColor) {
+    init(color: UIColor, type: FABType) {
+        self.type = type
         let createButton: (CGRect, LiquidFloatingActionButtonAnimateStyle) -> LiquidFloatingActionButton = { (frame, style) in
             let floatingActionButton = LiquidFloatingActionButton(frame: frame)
             floatingActionButton.animateStyle = style
@@ -41,7 +52,9 @@ class FloatingActionButton: LiquidFloatingActionButtonDataSource, LiquidFloating
             return LiquidFloatingCell(icon: UIImage(named: iconName)!)
         }
         cells.append(cellFactory("ic_add_location"))
-        cells.append(cellFactory("ic_person_add"))
+        if (self.type == FABType.Main) {
+            cells.append(cellFactory("ic_person_add"))
+        }
         
         // A FAB has an absolute positioning relative to the UI Main Screen
         let floatingFrame = CGRect(x: UIScreen.mainScreen().bounds.width - 56 - 16, y: UIScreen.mainScreen().bounds.height - 56 - 16, width: 56, height: 56)
@@ -68,15 +81,24 @@ class FloatingActionButton: LiquidFloatingActionButtonDataSource, LiquidFloating
      * liquidFloatingActionButton handles the selection of items in the FAB
      */
     @objc func liquidFloatingActionButton(liquidFloatingActionButton: LiquidFloatingActionButton, didSelectItemAtIndex index: Int) {
-        switch index {
-        case 0: // Add key location
-            self.delegate.addKeyLocation()
-        case 1: // Add contact
-            self.delegate.addContact()
-        default:
-            print("Incorrect selection in floating action button")
+        if self.type == FABType.Main {
+            switch index {
+            case 0: // Add key location
+                self.delegate.addKeyLocation!()
+            case 1: // Add contact
+                self.delegate.addContact!()
+            default:
+                print("Incorrect selection in floating action button")
+            }
+        }
+        else if self.type == FABType.KeyLocationOnly {
+            switch index {
+            case 0: // Add key location
+                self.delegate.addKeyLocation!()
+            default:
+                print("Incorrect selection in floating action button")
+            }
         }
         liquidFloatingActionButton.close()
     }
-    
 }
