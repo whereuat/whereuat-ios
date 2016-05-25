@@ -13,6 +13,10 @@ import Foundation
  */
 struct Global {
     static let serverURL = "http://whereuat.xyz"
+    
+    static let areaCodeLength = 3
+    static let lineNumberLength = 7
+    static let verificationCodeLength = 5
 }
 
 /*

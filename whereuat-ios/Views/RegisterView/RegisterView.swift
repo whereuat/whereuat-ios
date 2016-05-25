@@ -26,8 +26,11 @@ class RegisterView: UIView {
     var enterTextView: UITextView!
     var phoneNumberView: UIView!
     var areaCodeView: UITextField!
+    static let areaCodeViewTag = 0
     var lineNumberView: UITextField!
+    static let lineNumberViewTag = 1
     var verificationCodeView: UITextField!
+    static let verificationCodeViewTag = 2
     var goButton: UIButton!
 
     required init?(coder aDecoder: NSCoder) {
@@ -147,6 +150,7 @@ class RegisterView: UIView {
      */
     func drawAreaCodeView() {
         self.areaCodeView = UITextField()
+        self.areaCodeView.tag = RegisterView.areaCodeViewTag
         
         self.areaCodeView.backgroundColor = ColorWheel.offWhite
         let placeholder = NSAttributedString(string: Language.defaultAreaCode, attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
@@ -174,6 +178,7 @@ class RegisterView: UIView {
      */
     func drawLineNumberView() {
         self.lineNumberView = UITextField()
+        self.lineNumberView.tag = RegisterView.lineNumberViewTag
         
         self.lineNumberView.backgroundColor = ColorWheel.offWhite
         let placeholder = NSAttributedString(string: Language.defaultLineNumber, attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])
@@ -202,6 +207,7 @@ class RegisterView: UIView {
      */
     func drawVerificationCodeView() {
         self.verificationCodeView = UITextField()
+        self.verificationCodeView.tag = RegisterView.verificationCodeViewTag
         
         self.verificationCodeView.backgroundColor = ColorWheel.offWhite
         let placeholder = NSAttributedString(string: Language.defaultVerificationCode, attributes: [NSForegroundColorAttributeName: ColorWheel.offBlack])

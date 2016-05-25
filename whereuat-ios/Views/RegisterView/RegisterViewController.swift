@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SlideMenuControllerSwift
 
-class RegisterViewController: UIViewController, RegisterViewDelegate {
+class RegisterViewController: UIViewController, RegisterViewDelegate, UITextFieldDelegate {
     
     var verificationRequested = false
     var registerView: RegisterView!
@@ -23,6 +23,10 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
         
         view.addSubview(self.registerView)
         registerForKeyboardNotifications()
+        
+        self.registerView.areaCodeView.delegate = self
+        self.registerView.lineNumberView.delegate = self
+        self.registerView.verificationCodeView.delegate = self
     }
     
     func registerForKeyboardNotifications() {
@@ -134,5 +138,37 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
                 }
         }
     }
-
+    
+    /*
+     * Set max length of input fields
+     */
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        var allowedLength: Int
+        switch textField.tag {
+        case RegisterView.areaCodeViewTag:
+            allowedLength = Global.areaCodeLength
+            if textField.text?.characters.count == allowedLength && string.characters.count != 0 {
+                self.registerView.lineNumberView.becomeFirstResponder()
+                allowedLength = Global.lineNumberLength
+            }
+        case RegisterView.lineNumberViewTag:
+            allowedLength = Global.lineNumberLength
+            if textField.text?.characters.count == 0 && string.characters.count == 0 && self.registerView.lineNumberView.text?.characters.count == 0 {
+                self.registerView.areaCodeView.becomeFirstResponder()
+                allowedLength = Global.areaCodeLength
+            }
+        case RegisterView.verificationCodeViewTag:
+            allowedLength = Global.verificationCodeLength
+        default:
+            allowedLength = 255
+        }
+        if textField.text?.characters.count >= allowedLength && range.length == 0 {
+            // Change not allowed
+            return false
+        }
+        else {
+            // Change allowed
+            return true
+        }
+    }
 }
