@@ -103,11 +103,15 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                 ]
                 // TODO: Put this in a constant
                 if (phoneNumber.label == "_$!<Mobile>!$_") {
+                    var formattedNumberString = ""
                     let number = phoneNumber.value as! CNPhoneNumber
                     let countryCode = number.valueForKey("countryCode") as! String
                     let numberString = number.valueForKey("digits") as! String
-                    var formattedNumberString = "+"
-                    formattedNumberString += countryCodeLookup[countryCode]!
+                    // Check if the user already has +1 prepended before a cell phone number
+                    if !numberString.hasPrefix("+1") {
+                        formattedNumberString += "+"
+                        formattedNumberString += countryCodeLookup[countryCode]!
+                    }
                     formattedNumberString += numberString
                     if (Database.sharedInstance.contactTable.getContact(formattedNumberString) == nil) {
                         let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0, color: ColorWheel.randomColor())
