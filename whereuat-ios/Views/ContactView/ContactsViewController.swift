@@ -11,11 +11,9 @@ import Contacts
 import ContactsUI
 import CoreLocation
 
-private let reuseIdentifier = "Cell"
-
 class ContactsViewController: UICollectionViewController, CNContactPickerDelegate, FABDelegate {
 
-    private let reuseIdentifier = "ContactCell"
+    private let reuseIdentifier = "ContactViewCell"
     
     // Set up Databases as Singletons
     var database: Database!
@@ -38,11 +36,14 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         self.mainFAB = FloatingActionButton(color: ColorWheel.coolRed, type: FABType.Main)
         self.mainFAB.delegate = self
         self.view.addSubview(self.mainFAB.floatingActionButton)
+        self.setNavigationBarItems()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.setNavigationBarItems()
+        self.contactData = database.contactTable.getAll() as! Array<Contact>
+        self.collectionView!.reloadData()
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

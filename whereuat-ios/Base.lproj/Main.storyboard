@@ -8,7 +8,8 @@
         <!--Contacts View Controller-->
         <scene sceneID="7bc-ke-5Nb">
             <objects>
-                <collectionViewController storyboardIdentifier="ContactsViewController" extendedLayoutIncludesOpaqueBars="YES" id="zhz-X9-nu2" customClass="ContactsViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nGg-iT-52D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <collectionViewController storyboardIdentifier="ContactsViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zhz-X9-nu2" customClass="ContactsViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="b2r-0r-UoT">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -20,7 +21,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ContactCell" id="EIg-1z-KG1" customClass="ContactViewCell" customModule="whereuat" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ContactViewCell" id="EIg-1z-KG1" customClass="ContactViewCell" customModule="whereuat" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="150" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -37,15 +38,17 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="aGo-66-zVr"/>
+                    <connections>
+                        <outlet property="collectionView" destination="b2r-0r-UoT" id="NGM-aL-ouA"/>
+                    </connections>
                 </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nGg-iT-52D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="933" y="493"/>
+            <point key="canvasLocation" x="921" y="485"/>
         </scene>
         <!--Drawer View Controller-->
         <scene sceneID="GJG-of-2iY">
             <objects>
-                <viewController storyboardIdentifier="DrawerViewController" id="82t-9H-EvQ" customClass="DrawerViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DrawerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="82t-9H-EvQ" customClass="DrawerViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="G8r-Bo-zwd"/>
                         <viewControllerLayoutGuide type="bottom" id="vaB-dk-IUl"/>
@@ -82,7 +85,7 @@
         <!--Register View Controller-->
         <scene sceneID="coD-kA-Xtx">
             <objects>
-                <viewController storyboardIdentifier="RegisterViewController" id="T5d-BM-53d" customClass="RegisterViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RegisterViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="T5d-BM-53d" customClass="RegisterViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Yc0-DL-UdY"/>
                         <viewControllerLayoutGuide type="bottom" id="xBA-FU-PI8"/>
@@ -100,7 +103,7 @@
         <!--Settings View Controller-->
         <scene sceneID="ijP-79-jrN">
             <objects>
-                <viewController storyboardIdentifier="SettingsViewController" id="Du7-B8-fl3" customClass="SettingsViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Du7-B8-fl3" customClass="SettingsViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Qbl-Q5-yxf"/>
                         <viewControllerLayoutGuide type="bottom" id="6fC-3L-TgW"/>
@@ -115,10 +118,10 @@
             </objects>
             <point key="canvasLocation" x="1641" y="1208"/>
         </scene>
-        <!--Pending Requests View Controller-->
+        <!--Contact Requests View Controller-->
         <scene sceneID="kQZ-3x-6KJ">
             <objects>
-                <viewController storyboardIdentifier="PendingRequestsViewController" id="8at-Lf-q8Z" customClass="PendingRequestsViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ContactRequestsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8at-Lf-q8Z" customClass="ContactRequestsViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7CM-V6-BMe"/>
                         <viewControllerLayoutGuide type="bottom" id="7GA-60-oVk"/>
@@ -126,8 +129,21 @@
                     <view key="view" contentMode="scaleToFill" id="fT8-PY-qk8">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VwU-NN-lPV">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="8at-Lf-q8Z" id="JjW-hF-DOf"/>
+                                    <outlet property="delegate" destination="8at-Lf-q8Z" id="g8t-fZ-QgZ"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="VwU-NN-lPV" id="wKu-Mo-geL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WkY-tg-htz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -136,7 +152,7 @@
         <!--Key Locations View Controller-->
         <scene sceneID="bz9-mP-Cnf">
             <objects>
-                <viewController storyboardIdentifier="KeyLocationsViewController" id="gUf-nj-Im0" customClass="KeyLocationsViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="KeyLocationsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gUf-nj-Im0" customClass="KeyLocationsViewController" customModule="whereuat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7NI-Yn-Aoq"/>
                         <viewControllerLayoutGuide type="bottom" id="Hu2-lX-N4R"/>

@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import SlideMenuControllerSwift
 
 class RegisterViewController: UIViewController, RegisterViewDelegate {
     
@@ -83,9 +84,20 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
                     debugPrint(response)
                     NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isRegistered")
                     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                    let contactsViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
                     
-                    self.presentViewController(contactsViewController, animated: true, completion: nil)
+                    // Instantiate view controllers for main views
+                    let contactsViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
+                    let drawerViewController = storyBoard.instantiateViewControllerWithIdentifier("DrawerViewController") as! DrawerViewController
+                    
+                    // Instantiate navigation bar view, which wraps the contactsView
+                    let nvc: UINavigationController = UINavigationController(rootViewController: contactsViewController)
+                    drawerViewController.homeViewController = nvc
+                    
+                    // Instantiate the slide menu, which wraps the navigation controller
+                    SlideMenuOptions.contentViewScale = 1.0
+                    let controller = SlideMenuController(mainViewController: nvc, leftMenuViewController: drawerViewController)
+                    
+                    self.presentViewController(controller, animated: true, completion: nil)
                 case .Failure(let error):
                     print(error)
                 }

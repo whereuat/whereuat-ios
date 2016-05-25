@@ -18,13 +18,16 @@ class Database {
     
     var contactTable: ContactTable!
     var keyLocationTable: KeyLocationTable!
+    var contactRequestTable: ContactRequestTable!
     
     init() {
         self.contactTable = ContactTable.sharedInstance
         self.keyLocationTable = KeyLocationTable.sharedInstance
+        self.contactRequestTable = ContactRequestTable.sharedInstance
         
         initTable(self.contactTable)
         initTable(self.keyLocationTable)
+        initTable(self.contactRequestTable)
     }
     
     /*

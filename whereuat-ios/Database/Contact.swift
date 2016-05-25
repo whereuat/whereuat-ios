@@ -28,6 +28,19 @@ class Contact: Model {
     }
     
     /*
+     * Initialize a contact with a name and phone number and set default values for 
+     * autoShare, rquestedCount, and color
+     */
+    init(firstName: String, lastName: String, phoneNumber: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.phoneNumber = phoneNumber
+        self.autoShare = false
+        self.requestedCount = 0
+        self.color = ColorWheel.randomColor()
+    }
+    
+    /*
      * getName gets a concatenated version of a contact's first and last names
      * @return - concatenated first and last name
      */

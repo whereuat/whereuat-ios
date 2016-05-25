@@ -41,6 +41,12 @@ struct Language {
     // Alert context
     static let setKeyLocation = "Okay"
     static let cancelKeyLocation = "Cancel"
+    static let contactFirstName = "First name"
+    static let contactLastName = "Last name"
+    
+    // Contact Requests context
+    static let contactAdded = "Contact added!"
+    static let openContactRequests = "Open Contact Requests"
 }
 
 /*
@@ -52,7 +58,7 @@ struct Icons {
     static let contactAdd = "ic_person_add"
     static let home = "ic_home"
     static let keyLocations = "ic_pin_drop"
-    static let pendingRequests = "ic_phone_missed"
+    static let contactRequests = "ic_phone_missed"
     static let settings = "ic_settings"
 }
 
@@ -65,7 +71,7 @@ struct AppDrawer {
     static let menuItems = [
         ["Home", Icons.home],
         ["Key Locations", Icons.keyLocations],
-        ["Pending Requests", Icons.pendingRequests],
+        ["Contact Requests", Icons.contactRequests],
         ["Settings", Icons.settings]
     ]
 }

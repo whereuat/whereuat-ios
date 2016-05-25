@@ -39,7 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         // Configure push notifications
         let request_location_category = Notification.getRequestLocationNotificationCategory()
         let receive_location_category = Notification.getReceiveLocationNotificationCategory()
-        let pushNotificationSettings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: [request_location_category, receive_location_category])
+        let contact_requests_category = Notification.getContactRequestNotificationCategory()
+        let pushNotificationSettings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: [request_location_category, receive_location_category, contact_requests_category])
         application.registerUserNotificationSettings(pushNotificationSettings)
         application.registerForRemoteNotifications()
         
@@ -210,6 +211,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
             case "SEND_IDENTIFIER":
                 let number = notification.userInfo!["from-#"]! as! String
                 self.locManager.sendLocation(number)
+            default:
+                print("Invalid response type")
+            }
+        } else if (notification.category == "CONTACT_REQUESTS_CATEGORY") {
+            switch identifier!{
+            case "OPEN_IDENTIFIER":
+                self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                let isRegistered = NSUserDefaults.standardUserDefaults().boolForKey("isRegistered")
+                var initialViewController: UIViewController
+                
+                // Check if we are registered already. If so, instantiate ContactsViewController. Otherwise present RegisterViewController
+                if (isRegistered) {
+                    // Instantiate view controllers for main views
+                    let contactsViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
+                    let drawerViewController = storyBoard.instantiateViewControllerWithIdentifier("DrawerViewController") as! DrawerViewController
+                    
+                    // Instantiate navigation bar view, which wraps the contactsView
+                    let nvc: UINavigationController = UINavigationController(rootViewController: contactsViewController)
+                    drawerViewController.homeViewController = nvc
+                    
+                    // Instantiate the slide menu, which wraps the navigation controller
+                    SlideMenuOptions.contentViewScale = 1.0
+                    initialViewController = SlideMenuController(mainViewController: nvc, leftMenuViewController: drawerViewController)
+                } else {
+                    initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
+                }
+                
+                // Set up the initial view controller
+                self.window?.rootViewController = initialViewController
+                self.window?.makeKeyAndVisible()
             default:
                 print("Invalid response type")
             }

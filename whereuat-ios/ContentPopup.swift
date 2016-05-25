@@ -55,4 +55,34 @@ class ContentPopup {
         }))
         return alert
     }
+    
+    /*
+     * addContactWithNewNameAlert spawns an alert with two text views for a contact's first and last name
+     * and adds the contact into the database with the first and last name.
+     * It is used for adding pending request contacts to the database.
+     */
+    class func addContactWithNewNameAlert(phoneNumber: String, refreshCallback: (() -> ())?=nil) -> UIAlertController {
+        let alert = UIAlertController(title: nil, message: "Contact Name", preferredStyle: .Alert)
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+            textField.placeholder = Language.contactFirstName
+        })
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+            textField.placeholder = Language.contactLastName
+        })
+        alert.addAction(UIAlertAction(title: Language.cancelKeyLocation, style: .Default, handler: { (action) -> Void in
+            let textField = alert.textFields![0] as UITextField
+            print("Text field: \(textField.text)")
+        }))
+        alert.addAction(UIAlertAction(title: Language.setKeyLocation, style: .Default, handler: { (action) -> Void in
+            let firstName = (alert.textFields![0] as UITextField).text!
+            let lastName = (alert.textFields![1] as UITextField).text!
+            self.database.contactRequestTable.dropContactRequest(phoneNumber)
+            self.database.contactTable.insert(Contact(firstName: firstName, lastName: lastName, phoneNumber: phoneNumber))
+            // Perform necessary refresh callback on contact update
+            if refreshCallback != nil {
+                refreshCallback!()
+            }
+        }))
+        return alert
+    }
 }

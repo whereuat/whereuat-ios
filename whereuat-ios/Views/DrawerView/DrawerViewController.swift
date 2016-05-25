@@ -12,7 +12,7 @@ import SlideMenuControllerSwift
 enum Menu: Int {
     case Home = 0
     case KeyLocations
-    case PendingRequests
+    case ContactRequests
     case Settings
 }
 
@@ -32,7 +32,7 @@ class DrawerViewController: UIViewController, DrawerProtocol {
     var menus = AppDrawer.menuItems
     var homeViewController: UIViewController!
     var keyLocationsViewController: UIViewController!
-    var pendingRequestsViewController: UIViewController!
+    var contactRequestsViewController: UIViewController!
     var settingsViewController: UIViewController!
     
     required init?(coder aDecoder: NSCoder) {
@@ -46,16 +46,15 @@ class DrawerViewController: UIViewController, DrawerProtocol {
         let keyLocationsViewController = storyboard.instantiateViewControllerWithIdentifier("KeyLocationsViewController") as! KeyLocationsViewController
         self.keyLocationsViewController = UINavigationController(rootViewController: keyLocationsViewController)
         
-        let pendingRequestsViewController = storyboard.instantiateViewControllerWithIdentifier("PendingRequestsViewController") as! PendingRequestsViewController
-        self.pendingRequestsViewController = UINavigationController(rootViewController: pendingRequestsViewController)
+        let contactRequestsViewController = storyboard.instantiateViewControllerWithIdentifier("ContactRequestsViewController") as! ContactRequestsViewController
+        self.contactRequestsViewController = UINavigationController(rootViewController: contactRequestsViewController)
         
         let settingsViewController = storyboard.instantiateViewControllerWithIdentifier("SettingsViewController") as! SettingsViewController
         self.settingsViewController = UINavigationController(rootViewController: settingsViewController)
         
         self.tableView.registerClass(DrawerTableViewCell.self, forCellReuseIdentifier: DrawerTableViewCell.identifier)
         self.tableView.alwaysBounceVertical = false
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        self.changeMenuSelection(Menu.Home)
         
         self.view.backgroundColor = ColorWheel.offWhite
         self.view.alpha = 1.0
@@ -64,6 +63,15 @@ class DrawerViewController: UIViewController, DrawerProtocol {
         self.drawSelfNumberView()
         self.drawHorizontalLineSeparator()
         self.drawFooterImageView()
+    }
+    
+    /*
+     * changeMenuSelection selects the menu item in the drawer
+     * @param menu - Menu enum to select
+     */
+    func changeMenuSelection(menu: Menu) {
+        let indexPath = NSIndexPath(forRow: menu.rawValue, inSection: 0)
+        self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .None)
     }
     
     /*
@@ -132,8 +140,8 @@ class DrawerViewController: UIViewController, DrawerProtocol {
             self.slideMenuController()?.changeMainViewController(self.homeViewController, close: true)
         case .KeyLocations:
             self.slideMenuController()?.changeMainViewController(self.keyLocationsViewController, close: true)
-        case .PendingRequests:
-            self.slideMenuController()?.changeMainViewController(self.pendingRequestsViewController, close: true)
+        case .ContactRequests:
+            self.slideMenuController()?.changeMainViewController(self.contactRequestsViewController, close: true)
         case .Settings:
             self.slideMenuController()?.changeMainViewController(self.settingsViewController, close: true)
         }
@@ -144,7 +152,7 @@ extension DrawerViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if let menu = Menu(rawValue: indexPath.item) {
             switch menu {
-            case .Home, .KeyLocations, .PendingRequests, .Settings:
+            case .Home, .KeyLocations, .ContactRequests, .Settings:
                 return DrawerTableViewCell.height
             }
         }
@@ -161,7 +169,7 @@ extension DrawerViewController: UITableViewDataSource {
         
         if let menu = Menu(rawValue: indexPath.item) {
             switch menu {
-            case .Home, .KeyLocations, .PendingRequests, .Settings:
+            case .Home, .KeyLocations, .ContactRequests, .Settings:
                 let cell = DrawerTableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: DrawerTableViewCell.identifier)
                 cell.setData(menus[indexPath.row])
                 

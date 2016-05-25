@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Contacts
+import SlideMenuControllerSwift
 
 /*
  * NotificationType represents two types of notifications, alerts and push notifications
@@ -73,10 +75,60 @@ class Notification {
     }
     
     /*
-     * constructPushNotification constructs a push notification
+     * findAndRegisterContact finds whether a phone number is already stored in contacts.
+     * As a callback, it inserts a contact into the pending requests database table.
+     * @param phoneNumber - string for the phone number to search by
+     * @return (First, Last) names as a string type tuple
+     */
+    func findAndRegisterContact(phoneNumber: String) {
+        let contactStore = CNContactStore()
+        let keysToFetch = [
+            CNContactFormatter.descriptorForRequiredKeysForStyle(.FullName),
+            CNContactEmailAddressesKey,
+            CNContactPhoneNumbersKey,
+            CNContactImageDataAvailableKey,
+            CNContactThumbnailImageDataKey]
+        contactStore.requestAccessForEntityType(.Contacts, completionHandler: { (granted, error) -> Void in
+            if granted {
+                let predicate = CNContact.predicateForContactsInContainerWithIdentifier(contactStore.defaultContainerIdentifier())
+                var contacts: [CNContact]! = []
+                do {
+                    contacts = try contactStore.unifiedContactsMatchingPredicate(predicate, keysToFetch: keysToFetch)
+                } catch {}
+                for contact in contacts {
+                    var phoneStr = ""
+                    var number: CNPhoneNumber!
+                    if contact.phoneNumbers.count > 0 {
+                        number = contact.phoneNumbers[0].value as! CNPhoneNumber
+                        phoneStr = number.stringValue.stringByReplacingOccurrencesOfString("-", withString: "")
+                        phoneStr = phoneStr.stringByReplacingOccurrencesOfString("(", withString: "")
+                        phoneStr = phoneStr.stringByReplacingOccurrencesOfString(")", withString: "")
+                        phoneStr = phoneStr.stringByReplacingOccurrencesOfString(" ", withString: "")
+                        // If the phone number we are searching for finds a match in the contacts, create a new contact
+                        // and insert it into the contactRequestTable
+                        if (phoneStr == phoneNumber) || (("+1" + phoneStr) == phoneNumber) {
+                            let newContact = Contact(firstName: contact.givenName,
+                                                     lastName: contact.familyName,
+                                                     phoneNumber: phoneNumber)
+                            Database.sharedInstance.contactRequestTable.insert(newContact)
+                            return
+                        }
+                    }
+                }
+                let newContact = Contact(firstName: "", lastName: "", phoneNumber: phoneNumber)
+                Database.sharedInstance.contactRequestTable.insert(newContact)
+            }
+        })
+    }
+    
+    /*
+     * constructPushNotification constructs a push notification taking into account the type of
+     * push notification to send (AtRequest, AtResponse).
+     * If a notification is received from a number not added to the contacts, it is inserted into
+     * the contactRequestTable and a push notification is displayed. Subsequent requests are blocked.
      * @return a UILocalNotification to be fired
      */
-    func constructPushNotification() -> UILocalNotification {
+    func constructPushNotification() -> UILocalNotification? {
         let localNotification:UILocalNotification = UILocalNotification()
         localNotification.userInfo = self.data
         
@@ -85,12 +137,23 @@ class Notification {
             let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
             if (contactName != nil) {
                 localNotification.alertBody = contactName! + Language.atRequest
+                localNotification.fireDate = NSDate()
+                localNotification.category = "REQUEST_LOCATION_CATEGORY";
             } else {
-                // TODO: We probably don't want to accept requests from arbitrary numbers
-                localNotification.alertBody = fromNumber + Language.atRequest
+                // Check if the contact is already in a pending request. If it is not, create a push notification
+                let contact = Database.sharedInstance.contactRequestTable.getContactRequest(fromNumber)
+                if contact == nil {
+                    localNotification.alertBody = fromNumber + Language.atRequest
+                    // The pending request contact doesn't exist, check if we can find the number in the contact book
+                    findAndRegisterContact(fromNumber)
+                } else {
+                    // A pending request for this contact already exists
+                    return nil
+                }
+                localNotification.fireDate = NSDate()
+                localNotification.category = "CONTACT_REQUEST_CATEGORY";
             }
-            localNotification.fireDate = NSDate()
-            localNotification.category = "REQUEST_LOCATION_CATEGORY";
+            
         } else if (self.requestType == RequestType.AtResponse) {
             let fromNumber = data["from-#"]! as! String
             let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
@@ -98,7 +161,6 @@ class Notification {
             if (contactName != nil) {
                 localNotification.alertBody = contactName! + Language.atResponse + place
             } else {
-                // TODO: We probably don't want to accept requests from arbitrary numbers
                 localNotification.alertBody = fromNumber + Language.atResponse + place
             }
             localNotification.soundName = UILocalNotificationDefaultSoundName
@@ -112,22 +174,40 @@ class Notification {
      * constructAlertNotification constructs an alert notification
      * @return a UIAlertController to be transitioned to
      */
-    func constructAlertNotification() -> UIAlertController {
+    func constructAlertNotification() -> UIAlertController? {
         let alertController = UIAlertController()
 
         if (self.requestType == RequestType.AtRequest) {
             let fromNumber = data["from-#"]! as! String
             let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
+            // We know the name of the contact sending an AtRequest because it has already been added to the Contacts Table
             if (contactName != nil) {
                 alertController.message = contactName! + Language.atRequest
+                alertController.addAction(UIAlertAction(title: "Ignore", style: UIAlertActionStyle.Default, handler: nil))
+                alertController.addAction(UIAlertAction(title: "Send", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction) in
+                    let number = self.data["from-#"]! as! String
+                    self.locManager.sendLocation(number)
+                }))
             } else {
-                alertController.message = fromNumber + Language.atRequest
+                alertController.addAction(UIAlertAction(title: Language.openContactRequests, style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction) in
+                    if let drawerViewController = ((self.viewController as! SlideMenuController).leftViewController as? DrawerViewController) {
+                        // Change the active view controller to the ContactRequestsViewController
+                        drawerViewController.changeViewController(Menu.ContactRequests)
+                        // Set the drawer selector to the ContactRequestViewController
+                        drawerViewController.changeMenuSelection(Menu.ContactRequests)
+                    }
+                }))
+                // Check if the contact is already in a pending request. If it is not, create a push notification
+                let contact = Database.sharedInstance.contactRequestTable.getContactRequest(fromNumber)
+                if contact == nil {
+                    alertController.message = fromNumber + Language.atRequest
+                    // The pending request contact doesn't exist, check if we can find the number in the contact book
+                    findAndRegisterContact(fromNumber)
+                } else {
+                    // A pending request for this contact already exists
+                    return nil
+                }
             }
-            alertController.addAction(UIAlertAction(title: "Ignore", style: UIAlertActionStyle.Default, handler: nil))
-            alertController.addAction(UIAlertAction(title: "Send", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction) in
-                let number = self.data["from-#"]! as! String
-                self.locManager.sendLocation(number)
-            }))
         } else if (self.requestType == RequestType.AtResponse) {
             let fromNumber = data["from-#"]! as! String
             let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
@@ -161,9 +241,13 @@ class Notification {
         // If the user is not on auto share, post the notification
         if !hasOnAutoShare {
             if(self.notificationType == NotificationType.PushNotification) {
-                UIApplication.sharedApplication().scheduleLocalNotification(self.notification!)
+                if self.notification != nil {
+                    UIApplication.sharedApplication().scheduleLocalNotification(self.notification!)
+                }
             } else {
-                self.viewController!.presentViewController(self.alert!, animated: true, completion: nil)
+                if self.alert != nil {
+                    self.viewController!.presentViewController(self.alert!, animated: true, completion: nil)
+                }
             }
         }
     }
@@ -186,6 +270,28 @@ class Notification {
         request_location_category.identifier = "REQUEST_LOCATION_CATEGORY"
         request_location_category.setActions([sendAction, ignoreAction], forContext: .Default)
         request_location_category.setActions([sendAction, ignoreAction], forContext: .Minimal)
+        
+        return request_location_category
+    }
+    
+    /*
+     * getContactRequestNotificationCategory sets up the push notification actions
+     * for an AtRequest push notification message when a contact has not been added
+     */
+    static func getContactRequestNotificationCategory() -> UIMutableUserNotificationCategory {
+        let ignoreAction = UIMutableUserNotificationAction()
+        ignoreAction.identifier = "IGNORE_IDENTIFIER"
+        ignoreAction.title = "Ignore"
+        ignoreAction.activationMode = .Background
+        let openAction = UIMutableUserNotificationAction()
+        openAction.identifier = "OPEN_CONTACT_REQUESTS_IDENTIFIER"
+        openAction.title = "Open"
+        openAction.activationMode = .Background
+        
+        let request_location_category = UIMutableUserNotificationCategory()
+        request_location_category.identifier = "CONTACT_REQUEST_CATEGORY"
+        request_location_category.setActions([openAction, ignoreAction], forContext: .Default)
+        request_location_category.setActions([openAction, ignoreAction], forContext: .Minimal)
         
         return request_location_category
     }
