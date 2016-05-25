@@ -130,7 +130,6 @@ class Notification {
      */
     func constructPushNotification() -> UILocalNotification? {
         let localNotification:UILocalNotification = UILocalNotification()
-        localNotification.userInfo = self.data
         
         if (self.requestType == RequestType.AtRequest) {
             let fromNumber = data["from-#"]! as! String
@@ -138,9 +137,9 @@ class Notification {
             if (contactName != nil) {
                 localNotification.alertBody = contactName! + Language.atRequest
                 localNotification.fireDate = NSDate()
-                localNotification.category = "REQUEST_LOCATION_CATEGORY";
+                localNotification.category = "REQUEST_LOCATION_CATEGORY"
             } else {
-                // Check if the contact is already in a pending request. If it is not, create a push notification
+                // Check if the contact is already in a pending request. If it is not, create a push notification.
                 let contact = Database.sharedInstance.contactRequestTable.getContactRequest(fromNumber)
                 if contact == nil {
                     localNotification.alertBody = fromNumber + Language.atRequest
@@ -151,22 +150,27 @@ class Notification {
                     return nil
                 }
                 localNotification.fireDate = NSDate()
-                localNotification.category = "CONTACT_REQUEST_CATEGORY";
+                localNotification.category = "CONTACT_REQUEST_CATEGORY"
             }
             
         } else if (self.requestType == RequestType.AtResponse) {
             let fromNumber = data["from-#"]! as! String
-            let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
+            var contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
             let place = data["place"]! as! String
             if (contactName != nil) {
                 localNotification.alertBody = contactName! + Language.atResponse + place
             } else {
                 localNotification.alertBody = fromNumber + Language.atResponse + place
+                // If for some odd reason we have received a location from a contact that we don't have added
+                // just set their contactName to their phone number for display in maps
+                contactName = fromNumber
             }
             localNotification.soundName = UILocalNotificationDefaultSoundName
             localNotification.fireDate = NSDate()
-            localNotification.category = "RECEIVE_LOCATION_CATEGORY";
+            localNotification.category = "RECEIVE_LOCATION_CATEGORY"
+            self.data["contactName"] = contactName!
         }
+        localNotification.userInfo = self.data
         return localNotification
     }
     
@@ -209,15 +213,27 @@ class Notification {
                 }
             }
         } else if (self.requestType == RequestType.AtResponse) {
-            let fromNumber = data["from-#"]! as! String
-            let contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
-            let place = data["place"]! as! String
+            let fromNumber = self.data["from-#"]! as! String
+            var contactName = Database.sharedInstance.contactTable.getContact(fromNumber)?.getName()
+            let place = self.data["place"]! as! String
             if (contactName != nil) {
                 alertController.message = contactName! + Language.atResponse + place
             } else {
                 alertController.message = fromNumber + Language.atResponse + place
+                // If for some odd reason we have received a location from a contact that we don't have added
+                // just set their contactName to their phone number for display in maps
+                contactName = fromNumber
             }
             alertController.addAction(UIAlertAction(title: "Done", style: UIAlertActionStyle.Default, handler: nil))
+            alertController.addAction(UIAlertAction(title: "Open in Maps",
+                                                    style: UIAlertActionStyle.Default,
+                                                    handler: {(UIAlertAction) -> Void in
+                let latitude = self.data["lat"]! as! String
+                let longitude = self.data["lng"]! as! String
+                let lat = LocationManager.stringToCLLocationDegrees(latitude)
+                let lng = LocationManager.stringToCLLocationDegrees(longitude)
+                LocationManager.openMapsWithLocation(lat, lng: lng, placemarker: contactName!)
+            }))
         }
         return alertController
     }
@@ -283,15 +299,11 @@ class Notification {
         ignoreAction.identifier = "IGNORE_IDENTIFIER"
         ignoreAction.title = "Ignore"
         ignoreAction.activationMode = .Background
-        let openAction = UIMutableUserNotificationAction()
-        openAction.identifier = "OPEN_CONTACT_REQUESTS_IDENTIFIER"
-        openAction.title = "Open"
-        openAction.activationMode = .Background
         
         let request_location_category = UIMutableUserNotificationCategory()
         request_location_category.identifier = "CONTACT_REQUEST_CATEGORY"
-        request_location_category.setActions([openAction, ignoreAction], forContext: .Default)
-        request_location_category.setActions([openAction, ignoreAction], forContext: .Minimal)
+        request_location_category.setActions([ignoreAction], forContext: .Default)
+        request_location_category.setActions([ignoreAction], forContext: .Minimal)
         
         return request_location_category
     }

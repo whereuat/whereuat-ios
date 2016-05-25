@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreLocation
+import MapKit
 
 /*
  * LocationManager manages location of the current device and supplies information about it
@@ -59,5 +60,39 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
      */
     @objc func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.location = manager.location!.coordinate
+    }
+    
+    /*
+     * stringToCLLocationDegrees converts a latitude or longitude string value to a
+     * CLLocationDegrees type
+     * @param value - string degrees value of latitude or longitude
+     * @return value as CLLocationDegrees type
+     */
+    class func stringToCLLocationDegrees(value: String) -> CLLocationDegrees {
+        return CLLocationDegrees(value)!
+    }
+    
+    /*
+     * openMapsWithLocation opens the default Maps application with a given lat and lng
+     * as well as the name of the placemarker.
+     * @param lat - latitude of location to open
+     * @param lng - longitude of location to open
+     * @param placemarker - the name of the placemarker
+     */
+    class func openMapsWithLocation(lat: CLLocationDegrees, lng: CLLocationDegrees, placemarker: String) {
+        // Dispatching this task as async makes it switch to the Maps app much faster
+        dispatch_async(dispatch_get_main_queue(), {() -> Void in
+            let regionDistance:CLLocationDistance = 10000
+            let coordinates = CLLocationCoordinate2DMake(lat, lng)
+            let regionSpan = MKCoordinateRegionMakeWithDistance(coordinates, regionDistance, regionDistance)
+            let options = [
+                MKLaunchOptionsMapCenterKey: NSValue(MKCoordinate: regionSpan.center),
+                MKLaunchOptionsMapSpanKey: NSValue(MKCoordinateSpan: regionSpan.span)
+            ]
+            let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+            let mapItem = MKMapItem(placemark: placemark)
+            mapItem.name = placemarker
+            mapItem.openInMapsWithLaunchOptions(options)
+        })
     }
 }

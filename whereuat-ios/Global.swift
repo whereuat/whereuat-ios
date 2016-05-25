@@ -32,6 +32,7 @@ struct Language {
     static let atRequestSending = "Sending whereu@..."
     static let atRequestSent = "whereu@ sent!"
     static let atRequestFailed = "whereu@ failed :("
+    static let locationSent = "Location sent!"
     
     // Registration context
     static let enterPhoneNumber = "please enter your phone number"

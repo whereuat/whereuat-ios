@@ -8,6 +8,7 @@
 
 import UIKit
 import SlideMenuControllerSwift
+import JLToast
 
 let themeColor = UIColor(red: 0.01, green: 0.41, blue: 0.22, alpha: 1.0)
 
@@ -118,14 +119,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
         let notification: Notification
         if application.applicationState == .Background {
             notification = Notification(data: userInfo, notificationType: NotificationType.PushNotification)
-        }
-        else {
+        } else {
             notification = Notification(data: userInfo, notificationType: NotificationType.Alert)
         }
         notification.fire()
         handler(UIBackgroundFetchResult.NoData);
     }
     
+    /*
+     * This method is invoked when a notification is clicked
+     */
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        if (notification.category == "REQUEST_LOCATION_CATEGORY") {
+            // If the user clicks a notification that requests their location, we send it to the requester
+            let number = notification.userInfo!["from-#"]! as! String
+            self.locManager.sendLocation(number)
+            JLToast.makeText(Language.locationSent).show()
+        } else if (notification.category == "CONTACT_REQUEST_CATEGORY") {
+            // If the user clicks a notfication that signifies a contact request, open the contact requests page
+            self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let isRegistered = NSUserDefaults.standardUserDefaults().boolForKey("isRegistered")
+            var initialViewController: UIViewController
+            
+            // Check if we are registered already. If so, instantiate ContactsViewController. Otherwise present RegisterViewController
+            if (isRegistered) {
+                // Instantiate view controllers for contact requests view
+                let contactRequestsViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactRequestsViewController") as! ContactRequestsViewController
+                let drawerViewController = storyBoard.instantiateViewControllerWithIdentifier("DrawerViewController") as! DrawerViewController
+                
+                // Instantiate navigation bar view, which wraps the contactsView
+                let nvc: UINavigationController = UINavigationController(rootViewController: contactRequestsViewController)
+                drawerViewController.homeViewController = nvc
+                
+                // Instantiate the slide menu, which wraps the navigation controller
+                SlideMenuOptions.contentViewScale = 1.0
+                initialViewController = SlideMenuController(mainViewController: nvc, leftMenuViewController: drawerViewController)
+                
+                // Set up the initial view controller
+                self.window?.rootViewController = initialViewController
+                self.window?.makeKeyAndVisible()
+            }
+        } else if (notification.category == "RECEIVE_LOCATION_CATEGORY") {
+            // If the user clicks a received location, open the default maps app with a marker on the received location
+            let latitude = notification.userInfo!["lat"]! as! String
+            let longitude = notification.userInfo!["lng"]! as! String
+            let placemarker = notification.userInfo!["contactName"] as! String
+            let lat = LocationManager.stringToCLLocationDegrees(latitude)
+            let lng = LocationManager.stringToCLLocationDegrees(longitude)
+            LocationManager.openMapsWithLocation(lat, lng: lng, placemarker: placemarker)
+        }
+    }
+
     func registrationHandler(registrationToken: String!, error: NSError!) {
         if (registrationToken != nil) {
             self.registrationToken = registrationToken
@@ -211,37 +256,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GGLInstanceIDDelegate, GC
             case "SEND_IDENTIFIER":
                 let number = notification.userInfo!["from-#"]! as! String
                 self.locManager.sendLocation(number)
-            default:
-                print("Invalid response type")
-            }
-        } else if (notification.category == "CONTACT_REQUESTS_CATEGORY") {
-            switch identifier!{
-            case "OPEN_IDENTIFIER":
-                self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                let isRegistered = NSUserDefaults.standardUserDefaults().boolForKey("isRegistered")
-                var initialViewController: UIViewController
-                
-                // Check if we are registered already. If so, instantiate ContactsViewController. Otherwise present RegisterViewController
-                if (isRegistered) {
-                    // Instantiate view controllers for main views
-                    let contactsViewController = storyBoard.instantiateViewControllerWithIdentifier("ContactsViewController") as! ContactsViewController
-                    let drawerViewController = storyBoard.instantiateViewControllerWithIdentifier("DrawerViewController") as! DrawerViewController
-                    
-                    // Instantiate navigation bar view, which wraps the contactsView
-                    let nvc: UINavigationController = UINavigationController(rootViewController: contactsViewController)
-                    drawerViewController.homeViewController = nvc
-                    
-                    // Instantiate the slide menu, which wraps the navigation controller
-                    SlideMenuOptions.contentViewScale = 1.0
-                    initialViewController = SlideMenuController(mainViewController: nvc, leftMenuViewController: drawerViewController)
-                } else {
-                    initialViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
-                }
-                
-                // Set up the initial view controller
-                self.window?.rootViewController = initialViewController
-                self.window?.makeKeyAndVisible()
             default:
                 print("Invalid response type")
             }
