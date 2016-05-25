@@ -54,6 +54,12 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
      * there are two code paths to take.
      */
     func goButtonClickHandler() {
+        // Fade the button out and disable it
+        UIView.animateWithDuration(1.0) {
+            self.registerView.goButton.alpha = 0.3
+            self.registerView.goButton.backgroundColor = ColorWheel.darkGray
+            self.registerView.goButton.enabled = false
+        }
         if (self.verificationRequested) {
             // We have sent a phone number to the server already and are now sending a verification code
             self.sendVerificationCode()
@@ -99,7 +105,9 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
                     
                     self.presentViewController(controller, animated: true, completion: nil)
                 case .Failure(let error):
-                    print(error)
+                    print("Request failed with error: \(error)")
+                    self.verificationRequested = false;
+                    self.registerView.changeToPhoneNumberUI()
                 }
         }
     }
@@ -115,10 +123,15 @@ class RegisterViewController: UIViewController, RegisterViewDelegate {
         Alamofire.request(.POST, Global.serverURL + "/account/request", parameters: requestAuthParameters, encoding: .JSON)
             .responseString { response in
                 debugPrint(response)
-                NSUserDefaults.standardUserDefaults().setObject(phoneNumber, forKey: "phoneNumber")
-                // The next time goButtonClickHandler() is invoked, we are going to be requesting a verificationr
-                self.verificationRequested = true;
-                self.registerView.changeToVerificationUI()
+                switch response.result {
+                case .Success(_):
+                    NSUserDefaults.standardUserDefaults().setObject(phoneNumber, forKey: "phoneNumber")
+                    // The next time goButtonClickHandler() is invoked, we are going to be requesting a verification
+                    self.verificationRequested = true;
+                    self.registerView.changeToVerificationUI()
+                case .Failure(let error):
+                    print("Request failed with error: \(error)")
+                }
         }
     }
 

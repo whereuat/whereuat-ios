@@ -214,8 +214,8 @@ class RegisterView: UIView {
         self.verificationCodeView.layer.borderWidth = 1
         self.verificationCodeView.layer.borderColor = ColorWheel.darkGray.CGColor
         
-        self.verificationCodeView.alpha = 0.0
         self.addSubview(self.verificationCodeView)
+        self.verificationCodeView.alpha = 0.0
         self.verificationCodeView.translatesAutoresizingMaskIntoConstraints = false
         
         let widthConstraint = NSLayoutConstraint(item: self.verificationCodeView, attribute: .Width, relatedBy: .Equal, toItem: self.phoneNumberView, attribute: .Width, multiplier: 0.33, constant: 0.0)
@@ -254,6 +254,7 @@ class RegisterView: UIView {
      * text area
      */
     func changeToVerificationUI() {
+        self.addSubview(self.verificationCodeView)
         UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
             self.lineNumberView.alpha = 0.0
             self.areaCodeView.alpha = 0.0
@@ -261,9 +262,36 @@ class RegisterView: UIView {
             self.enterTextView.text = Language.enterVerificationCode
             self.goButton.setTitle(Language.submitRegistrationCode, forState: .Normal)
             }, completion: { finished in
-                self.lineNumberView.removeFromSuperview()
-                self.areaCodeView.removeFromSuperview()
+                // Fade the go button in and enable it
+                UIView.animateWithDuration(0.5) {
+                    self.goButton.alpha = 1.0
+                    self.goButton.enabled = true
+                    self.goButton.backgroundColor = ColorWheel.coolRed
+                }
         })
     }
     
+    /*
+     * changeToPhoneNumberUI transitions to the phone number text area from the verification
+     * text area. The verification code view's content is also cleared.
+     */
+    func changeToPhoneNumberUI() {
+        self.addSubview(self.areaCodeView)
+        self.addSubview(self.lineNumberView)
+        UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseOut, animations: {
+            self.lineNumberView.alpha = 1.0
+            self.areaCodeView.alpha = 1.0
+            self.verificationCodeView.alpha = 0.0
+            self.enterTextView.text = Language.enterPhoneNumber
+            self.goButton.setTitle(Language.verifyPhoneNumber, forState: .Normal)
+            }, completion: { finished in
+                self.verificationCodeView.text = ""
+                // Fade the go button in and enable it
+                UIView.animateWithDuration(0.5) {
+                    self.goButton.alpha = 1.0
+                    self.goButton.enabled = true
+                    self.goButton.backgroundColor = ColorWheel.coolRed
+                }
+        })
+    }
 }
