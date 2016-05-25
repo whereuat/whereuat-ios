@@ -23,6 +23,8 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
 
     var mainFAB: FloatingActionButton!
     
+    var contactViews: Array<ContactView>!
+    
     override func viewDidLoad() {      
         super.viewDidLoad()
         self.view.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
@@ -31,6 +33,12 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         database = Database.sharedInstance
         self.contactData = database.contactTable.getAll() as! Array<Contact>
         self.keyLocationData = database.keyLocationTable.getAll() as! Array<KeyLocation>
+        
+        // Preload contact views so they just need to be loaded into cells on display
+        self.contactViews = []
+        for contact in self.contactData {
+            self.contactViews.append(ContactView(contactData: contact))
+        }
         
         // Draw the FAB to appear on the bottom right of the screen
         self.mainFAB = FloatingActionButton(color: ColorWheel.coolRed, type: FABType.Main)
@@ -54,7 +62,11 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ContactViewCell
         cell.delegate = self
         cell.contactData = self.contactData[indexPath.row]
-        cell.addContactView()
+        cell.contactView = self.contactViews[indexPath.row]
+        
+        dispatch_async(dispatch_get_main_queue(), {() -> Void in
+            cell.addContactView()
+        })
         return cell
     }
     
@@ -66,7 +78,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         // many times the idealCellSize can fit into the screen width
         let numCells = Int(round(Double(screenWidth) / idealCellSize))
         let cellSize = screenWidth / CGFloat(numCells)
-        return CGSizeMake(cellSize, cellSize);
+        return CGSizeMake(cellSize, cellSize)
     }
     
     /*
@@ -116,6 +128,7 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
                     if (Database.sharedInstance.contactTable.getContact(formattedNumberString) == nil) {
                         let newContact = Contact(firstName: contact.givenName, lastName: contact.familyName, phoneNumber: formattedNumberString, autoShare: false, requestedCount: 0, color: ColorWheel.randomColor())
                         self.contactData.append(newContact)
+                        self.contactViews.append(ContactView(contactData: newContact))
                         self.database.contactTable.insert(newContact)
                         self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: contactCount, inSection: 0)])
                     }

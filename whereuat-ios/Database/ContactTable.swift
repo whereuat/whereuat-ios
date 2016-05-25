@@ -120,12 +120,82 @@ class ContactTable: Table {
                                autoShare: false,
                                requestedCount: 0,
                                color: ColorWheel.randomColor())
+        let contact6 = Contact(firstName: "Damian",
+                               lastName: "Mastylo",
+                               phoneNumber: "+19133700731",
+                               autoShare: true,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact7 = Contact(firstName: "Raymond",
+                               lastName: "Jacobson",
+                               phoneNumber: "+13014672871",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact8 = Contact(firstName: "Anders",
+                               lastName: "Jepson",
+                               phoneNumber: "+12077308721",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact9 = Contact(firstName: "Peyton",
+                               lastName: "Manning",
+                               phoneNumber: "+12073308721",
+                               autoShare: false,
+                               requestedCount: 20,
+                               color: ColorWheel.randomColor())
+        let contact10 = Contact(firstName: "Dante",
+                               lastName: "Inferno",
+                               phoneNumber: "+12075308721",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact11 = Contact(firstName: "Damian",
+                               lastName: "Mastylo",
+                               phoneNumber: "+19133700732",
+                               autoShare: true,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact12 = Contact(firstName: "Raymond",
+                               lastName: "Jacobson",
+                               phoneNumber: "+13014672872",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact13 = Contact(firstName: "Anders",
+                               lastName: "Jepson",
+                               phoneNumber: "+12077308722",
+                               autoShare: false,
+                               requestedCount: 0,
+                               color: ColorWheel.randomColor())
+        let contact14 = Contact(firstName: "Peyton",
+                               lastName: "Manning",
+                               phoneNumber: "+12073308722",
+                               autoShare: false,
+                               requestedCount: 20,
+                               color: ColorWheel.randomColor())
+        let contact15 = Contact(firstName: "Dante",
+                                lastName: "Inferno",
+                                phoneNumber: "+12075308722",
+                                autoShare: false,
+                                requestedCount: 0,
+                                color: ColorWheel.randomColor())
         // Insert mock data
         insert(contact1)
         insert(contact2)
         insert(contact3)
         insert(contact4)
         insert(contact5)
+        insert(contact6)
+        insert(contact7)
+        insert(contact8)
+        insert(contact9)
+        insert(contact10)
+        insert(contact11)
+        insert(contact12)
+        insert(contact13)
+        insert(contact14)
+        insert(contact15)
     }
     
     /*

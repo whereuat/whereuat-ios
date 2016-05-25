@@ -23,10 +23,9 @@ class ContactViewCell: UICollectionViewCell {
      * addContactView loads the contact data into the contact view and constrains it
      */
     func addContactView() {
-        self.contactView = ContactView(contactData: contactData)
-        self.contactView.delegate = delegate
-        
-        self.contentView.addSubview(contactView)
+        self.contactView.delegate = self.delegate
+    
+        self.contentView.addSubview(self.contactView)
         self.contactView.translatesAutoresizingMaskIntoConstraints = false
         let leftSideConstraint = NSLayoutConstraint(item: self.contactView, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1.0, constant: 0.0)
         let bottomConstraint = NSLayoutConstraint(item: self.contactView, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
