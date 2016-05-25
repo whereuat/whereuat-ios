@@ -51,6 +51,11 @@ class ContactsViewController: UICollectionViewController, CNContactPickerDelegat
         super.viewWillAppear(animated)
         self.setNavigationBarItems()
         self.contactData = database.contactTable.getAll() as! Array<Contact>
+        // Preload contact views so they just need to be loaded into cells on display
+        self.contactViews = []
+        for contact in self.contactData {
+            self.contactViews.append(ContactView(contactData: contact))
+        }
         self.collectionView!.reloadData()
     }
     

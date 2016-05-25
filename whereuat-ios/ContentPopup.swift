@@ -65,13 +65,13 @@ class ContentPopup {
         let alert = UIAlertController(title: nil, message: "Contact Name", preferredStyle: .Alert)
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
             textField.placeholder = Language.contactFirstName
+            textField.tintColor = ColorWheel.darkGray
         })
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
             textField.placeholder = Language.contactLastName
+            textField.tintColor = ColorWheel.darkGray
         })
         alert.addAction(UIAlertAction(title: Language.cancelKeyLocation, style: .Default, handler: { (action) -> Void in
-            let textField = alert.textFields![0] as UITextField
-            print("Text field: \(textField.text)")
         }))
         alert.addAction(UIAlertAction(title: Language.setKeyLocation, style: .Default, handler: { (action) -> Void in
             let firstName = (alert.textFields![0] as UITextField).text!
